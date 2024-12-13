@@ -1,0 +1,29 @@
+html {
+    /* define light-mode variable overrides here */
+    /* f58324 */
+    --primary-color: #f58324;
+    --primary-dark-color: #DF7721;
+    --primary-light-color: #F6903C;
+    --primary-lighter-color: #F79A4E;
+    --pripary-lightest-color: #F8A35E;
+}
+ 
+@media (prefers-color-scheme: dark) {
+    html:not(.light-mode) {
+        /* define dark-mode variable overrides here if you DON'T use doxygen-awesome-darkmode-toggle.js */
+        --primary-color: #f58324;
+        --primary-dark-color: #DF7721;
+        --primary-light-color: #F6903C;
+        --primary-lighter-color: #F79A4E;
+        --pripary-lightest-color: #F8A35E;
+    }
+}
+ 
+html.dark-mode {
+    /* define dark-mode variable overrides here if you DO use doxygen-awesome-darkmode-toggle.js */
+    --primary-color: #f58324;
+    --primary-dark-color: #DF7721;
+    --primary-light-color: #F6903C;
+    --primary-lighter-color: #F79A4E;
+    --pripary-lightest-color: #F8A35E;
+}
