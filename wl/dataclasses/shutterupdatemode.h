@@ -20,8 +20,8 @@ struct ShutterUpdateMode
      */
     enum enum_type: uint8_t
     {
-        PERIODIC, ///< Shutter updates occur at regular intervals.
-        ADAPTIVE, ///< Shutter updates occur adaptively based on system conditions.
+        PERIODIC = 1, ///< Shutter updates occur at regular intervals.
+        ADAPTIVE = 2, ///< Shutter updates occur adaptively based on system conditions.
     };
 
     ETL_DECLARE_ENUM_TYPE(ShutterUpdateMode, uint8_t)

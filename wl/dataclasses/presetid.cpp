@@ -102,11 +102,11 @@ uint16_t Lens::getDeviceValue(const Lens item)
     {
         case NOT_DEFINED: return 0xF0;
         case WTC_35: return 0x00;
-        case WTC_25: return 0x10;
-        case WTC_14: return 0x20;
-        case WTC_7_5: return 0x30;
-        case USER_1: return 0x70;
-        case USER_2: return 0x80;
+        case WTC_25: return 0x01;
+        case WTC_14: return 0x02;
+        case WTC_7_5: return 0x03;
+        case USER_1: return 0x07;
+        case USER_2: return 0x08;
     }
     assert(false);
     return 0xF0;
@@ -116,13 +116,13 @@ etl::expected<Lens, Error> Lens::getFromDeviceValue(const uint16_t deviceValue)
 {
     switch(deviceValue)
     {
-        case 0xF0: return Lens(NOT_DEFINED);
+        case 0x0F: return Lens(NOT_DEFINED);
         case 0x00: return Lens(WTC_35);
-        case 0x10: return Lens(WTC_25);
-        case 0x20: return Lens(WTC_14);
-        case 0x30: return Lens(WTC_7_5);
-        case 0x70: return Lens(USER_1);
-        case 0x80: return Lens(USER_2);
+        case 0x01: return Lens(WTC_25);
+        case 0x02: return Lens(WTC_14);
+        case 0x03: return Lens(WTC_7_5);
+        case 0x07: return Lens(USER_1);
+        case 0x08: return Lens(USER_2);
         default: return etl::unexpected<Error>(Error::INVALID_DATA);
     }
 }
