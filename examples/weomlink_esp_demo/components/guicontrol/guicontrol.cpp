@@ -192,6 +192,14 @@ void GuiControl::initizalizeMenu()
         return;
     }
 
+    auto presetId = m_coreControl.getPresetId();
+    if (!presetId.has_value())
+    {
+        ESP_LOGE(TAG, "Failed to read preset ID (%s)", presetId.error().c_str());
+        return;
+    }
+    m_presetId = presetId.value();
+
     std::vector<MenuLine> menuDefinition = 
     {
         {"Serial number", std::make_shared<LabelMenuItem<wl::WEOM::SERIAL_NUMBER_STRING_SIZE>>(serialNumber.value().c_str())},
@@ -279,6 +287,20 @@ void GuiControl::initizalizeMenu()
                                                                      {
                                                                         return m_coreControl.setSpatialMedianFilterEnabled(index == 1);
                                                                      })},
+        {"Range", std::make_shared<ComboBoxMenuItem<6>>(etl::make_vector<const char*>("Not defined", "R1", "R2", "R3", "High gain", "Low gain"),
+                                                       static_cast<int>(m_presetId.getRange()),
+                                                       [this](int index) -> bool
+                                                       {
+                                                            m_presetId.setRange(static_cast<wl::Range>(index));
+                                                            return m_coreControl.setPresetId(m_presetId);
+                                                       })},
+        {"Lens", std::make_shared<ComboBoxMenuItem<7>>(etl::make_vector<const char*>("Not defined", "WTC 35", "WTC 25", "WTC 14", "WTC 7.5", "User 1", "User 2"),
+                                                       static_cast<int>(m_presetId.getLens()),
+                                                       [this](int index) -> bool
+                                                       {
+                                                            m_presetId.setLens(static_cast<wl::Lens>(index));
+                                                            return m_coreControl.setPresetId(m_presetId);
+                                                       })},
     };
 
     m_menu = std::make_unique<Menu>(menuDefinition);

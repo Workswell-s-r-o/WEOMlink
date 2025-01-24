@@ -57,6 +57,7 @@ private:
 
     wl::ContrastBrightness m_contrastBrightness;
     wl::ImageFlip m_imageFlip;
+    wl::PresetId m_presetId;
 
     wl::WEOM m_coreControl;
 };
