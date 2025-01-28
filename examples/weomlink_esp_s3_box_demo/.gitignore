@@ -1,0 +1,12 @@
+build/
+managed_components/
+*.png
+*.dot
+*.old
+.cproject
+.project
+*.diff
+*.lock
+*.backup
+./settings
+sdkconfig
