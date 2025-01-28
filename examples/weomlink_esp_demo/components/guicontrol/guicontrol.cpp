@@ -26,7 +26,7 @@ GuiControl::GuiControl()
     : m_msgBox(nullptr)
     , m_currentState(State::NOT_CONNECTED)
     , m_stateBeforeError(State::NOT_CONNECTED)
-    , m_coreControl([](const wl::Clock::duration& duration) { vTaskDelay(pdMS_TO_TICKS(std::chrono::duration_cast<std::chrono::milliseconds>(duration).count())); })
+    , m_coreControl(nullptr)
 {
 
 }
@@ -90,7 +90,7 @@ void GuiControl::initizalizeMenu()
 {
     ESP_LOGI(TAG, "Creating menu");
 
-    auto contrastBrightness = m_coreControl.getMgcConstrastBrightness();
+    auto contrastBrightness = m_coreControl->getMgcConstrastBrightness();
     if (!contrastBrightness.has_value())
     {
         ESP_LOGE(TAG, "Failed to read contrast and brightness (%s)", contrastBrightness.error().c_str());
@@ -99,7 +99,7 @@ void GuiControl::initizalizeMenu()
 
     m_contrastBrightness = contrastBrightness.value();
 
-    auto imageFlip = m_coreControl.getImageFlip();
+    auto imageFlip = m_coreControl->getImageFlip();
     if (!imageFlip.has_value())
     {
         ESP_LOGE(TAG, "Failed to read image flip (%s)", imageFlip.error().c_str());
@@ -108,97 +108,89 @@ void GuiControl::initizalizeMenu()
 
     m_imageFlip = imageFlip.value();
 
-    auto serialNumber = m_coreControl.getSerialNumber();
+    auto serialNumber = m_coreControl->getSerialNumber();
     if (!serialNumber.has_value())
     {
         ESP_LOGE(TAG, "Failed to read serial number (%s)", serialNumber.error().c_str());
         return;
     }
 
-    auto articleNumber = m_coreControl.getArticleNumber();
+    auto articleNumber = m_coreControl->getArticleNumber();
     if (!articleNumber.has_value())
     {
         ESP_LOGE(TAG, "Failed to read article number (%s)", articleNumber.error().c_str());
         return;
     }
 
-    auto firmwareVersion = m_coreControl.getFirmwareVersion();
+    auto firmwareVersion = m_coreControl->getFirmwareVersion();
     if (!firmwareVersion.has_value())
     {
         ESP_LOGE(TAG, "Failed to read firmwareVersion (%s)", firmwareVersion.error().c_str());
         return;
     }
     
-    auto paletteIndex = m_coreControl.getPaletteIndex();
+    auto paletteIndex = m_coreControl->getPaletteIndex();
     if (!paletteIndex.has_value())
     {
         ESP_LOGE(TAG, "Failed to read paletteIndex (%s)", paletteIndex.error().c_str());
         return;
     }
 
-    auto frameRate = m_coreControl.getFramerate();
+    auto frameRate = m_coreControl->getFramerate();
     if (!frameRate.has_value())
     {
         ESP_LOGE(TAG, "Failed to read frame rate (%s)", frameRate.error().c_str());
         return;
     }
 
-    auto imageFreeze = m_coreControl.getImageFreeze();
+    auto imageFreeze = m_coreControl->getImageFreeze();
     if (!imageFreeze.has_value())
     {
         ESP_LOGE(TAG, "Failed to read image freeze (%s)", imageFreeze.error().c_str());
         return;
     }
 
-    auto imageGenerator = m_coreControl.getImageGenerator();
+    auto imageGenerator = m_coreControl->getImageGenerator();
     if (!imageGenerator.has_value())
     {
         ESP_LOGE(TAG, "Failed to read image generator (%s)", imageGenerator.error().c_str());
         return;
     }
 
-    auto shutterUpdateMode = m_coreControl.getShutterUpdateMode();
+    auto shutterUpdateMode = m_coreControl->getShutterUpdateMode();
     if (!shutterUpdateMode.has_value())
     {
         ESP_LOGE(TAG, "Failed to read shutter update mode (%s)", shutterUpdateMode.error().c_str());
         return;
     }
 
-    auto timeDomainAveraging = m_coreControl.getTimeDomainAveraging();
+    auto timeDomainAveraging = m_coreControl->getTimeDomainAveraging();
     if (!timeDomainAveraging.has_value())
     {
         ESP_LOGE(TAG, "Failed to read time domain averaging (%s)", timeDomainAveraging.error().c_str());
         return;
     }
 
-    auto imageEqualizationType = m_coreControl.getImageEqualizationType();
+    auto imageEqualizationType = m_coreControl->getImageEqualizationType();
     if (!imageEqualizationType.has_value())
     {
         ESP_LOGE(TAG, "Failed to read image equalization type (%s)", imageEqualizationType.error().c_str());
         return;
     }
 
-    auto agcNhSmoothingFrames = m_coreControl.getAgcNhSmoothingFrames();
+    auto agcNhSmoothingFrames = m_coreControl->getAgcNhSmoothingFrames();
     if (!agcNhSmoothingFrames.has_value())
     {
         ESP_LOGE(TAG, "Failed to read article AGC NH smoothing frames (%s)", agcNhSmoothingFrames.error().c_str());
         return;
     }
 
-    auto spatialMedianFilterEnabled = m_coreControl.getSpatialMedianFilterEnabled();
+    auto spatialMedianFilterEnabled = m_coreControl->getSpatialMedianFilterEnabled();
     if (!spatialMedianFilterEnabled.has_value())
     {
         ESP_LOGE(TAG, "Failed to read spatial median filter enabled (%s)", spatialMedianFilterEnabled.error().c_str());
         return;
     }
-
-    auto presetId = m_coreControl.getPresetId();
-    if (!presetId.has_value())
-    {
-        ESP_LOGE(TAG, "Failed to read preset ID (%s)", presetId.error().c_str());
-        return;
-    }
-    m_presetId = presetId.value();
 
     std::vector<MenuLine> menuDefinition = 
     {
@@ -209,98 +201,84 @@ void GuiControl::initizalizeMenu()
                                                       static_cast<int>(paletteIndex.value()), 
                                                       [this](int index) -> bool
                                                       {
-                                                         return m_coreControl.setPaletteIndex(static_cast<uint8_t>(index));
+                                                         return m_coreControl->setPaletteIndex(static_cast<uint8_t>(index));
                                                       })},
         {"Framerate", std::make_shared<ComboBoxMenuItem<3>>(etl::make_vector<const char*>("9 Hz", "30 Hz", "60 Hz"), 
                                                          static_cast<int>(frameRate.value()), 
                                                          [this](int index) -> bool
                                                          {
-                                                            return m_coreControl.setFramerate(static_cast<wl::Framerate>(index));
+                                                            return m_coreControl->setFramerate(static_cast<wl::Framerate>(index));
                                                          })},
         {"Horizontal flip", std::make_shared<ComboBoxMenuItem<2>>(etl::make_vector<const char*>("OFF", "ON"), 
                                                           m_imageFlip.getHorizontalFlip() ? 1 : 0, 
                                                           [this](int index) -> bool
                                                           {
                                                               m_imageFlip.setHorizontalFlip(index == 1);
-                                                              return m_coreControl.setImageFlip(m_imageFlip);
+                                                              return m_coreControl->setImageFlip(m_imageFlip);
                                                           })},
         {"Vertical flip", std::make_shared<ComboBoxMenuItem<2>>(etl::make_vector<const char*>("OFF", "ON"), 
                                                           m_imageFlip.getVerticalFlip() ? 1 : 0, 
                                                           [this](int index) -> bool
                                                           {
                                                               m_imageFlip.setVerticalFlip(index == 1);
-                                                              return m_coreControl.setImageFlip(m_imageFlip);
+                                                              return m_coreControl->setImageFlip(m_imageFlip);
                                                           })},
         {"Image freeze", std::make_shared<ComboBoxMenuItem<2>>(etl::make_vector<const char*>("OFF", "ON"), 
                                                             imageFreeze.value() ? 1 : 0,  
                                                             [this](int index) -> bool
                                                             {
-                                                               return m_coreControl.setImageFreeze(index == 1);
+                                                               return m_coreControl->setImageFreeze(index == 1);
                                                             })},
         {"Image source", std::make_shared<ComboBoxMenuItem<2>>(etl::make_vector<const char*>("Sensor", "Pattern"), 
                                                             static_cast<int>(imageGenerator.value()), 
                                                             [this](int index) -> bool
                                                             {
-                                                               return m_coreControl.setImageGenerator(static_cast<wl::ImageGenerator>(index));
+                                                               return m_coreControl->setImageGenerator(static_cast<wl::ImageGenerator>(index));
                                                             })},
         {"NUC update mode", std::make_shared<ComboBoxMenuItem<2>>(etl::make_vector<const char*>("Periodic", "Adaptive"), 
                                                                static_cast<int>(shutterUpdateMode.value()) - 1, 
                                                                [this](int index) -> bool
                                                                {
-                                                                  return m_coreControl.setShutterUpdateMode(static_cast<wl::ShutterUpdateMode>(index + 1));
+                                                                  return m_coreControl->setShutterUpdateMode(static_cast<wl::ShutterUpdateMode>(index + 1));
                                                                })},
         {"Time domain average", std::make_shared<ComboBoxMenuItem<3>>(etl::make_vector<const char*>("OFF", "2 frames", "4 frames"), 
                                                                    static_cast<int>(timeDomainAveraging.value()),
                                                                    [this](int index) -> bool
                                                                    {
-                                                                      return m_coreControl.setTimeDomainAveraging(static_cast<wl::TimeDomainAveraging>(index));
+                                                                      return m_coreControl->setTimeDomainAveraging(static_cast<wl::TimeDomainAveraging>(index));
                                                                    })},
         {"Image equalization", std::make_shared<ComboBoxMenuItem<2>>(etl::make_vector<const char*>("AGC", "MGC"), 
                                                                   static_cast<int>(imageEqualizationType.value()),
                                                                   [this](int index) -> bool
                                                                   {
-                                                                     return m_coreControl.setImageEqualizationType(static_cast<wl::ImageEqualizationType>(index));
+                                                                     return m_coreControl->setImageEqualizationType(static_cast<wl::ImageEqualizationType>(index));
                                                                   })},
         {"Contrast", std::make_shared<SpinBoxMenuItem>(0, 100, 10, 
                                                        static_cast<int>(m_contrastBrightness.getContrastPercent()), 
                                                        [this](int contrastPercent) -> bool
                                                        {
                                                            m_contrastBrightness.setContrastPercent(static_cast<float>(contrastPercent));
-                                                           return m_coreControl.setMgcContrastBrightness(m_contrastBrightness);
+                                                           return m_coreControl->setMgcContrastBrightness(m_contrastBrightness);
                                                        })},
         {"Brightness", std::make_shared<SpinBoxMenuItem>(0, 100, 10, 
                                                          static_cast<int>(m_contrastBrightness.getBrightnessPercent()), 
                                                          [this](int brightnessPercent) -> bool
                                                          {
                                                              m_contrastBrightness.setBrightnessPercent(static_cast<float>(brightnessPercent));
-                                                             return m_coreControl.setMgcContrastBrightness(m_contrastBrightness);
+                                                             return m_coreControl->setMgcContrastBrightness(m_contrastBrightness);
                                                          })},
         {"AGC NH smoothing", std::make_shared<ComboBoxMenuItem<5>>(etl::make_vector<const char*>("1 frame", "2 frames", "4 frames", "8 frames", "16 frames"), 
                                                                 static_cast<int>(agcNhSmoothingFrames.value()),
                                                                 [this](int index) -> bool
                                                                 {
-                                                                   return m_coreControl.setAgcNhSmoothingFrames(static_cast<uint8_t>(index));
+                                                                   return m_coreControl->setAgcNhSmoothingFrames(static_cast<uint8_t>(index));
                                                                 })},
         {"Spatial median filter", std::make_shared<ComboBoxMenuItem<2>>(etl::make_vector<const char*>("OFF", "ON"), 
                                                                      spatialMedianFilterEnabled.value() ? 1 : 0,
                                                                      [this](int index) -> bool
                                                                      {
-                                                                        return m_coreControl.setSpatialMedianFilterEnabled(index == 1);
+                                                                        return m_coreControl->setSpatialMedianFilterEnabled(index == 1);
                                                                      })},
-        {"Range", std::make_shared<ComboBoxMenuItem<6>>(etl::make_vector<const char*>("Not defined", "R1", "R2", "R3", "High gain", "Low gain"),
-                                                       static_cast<int>(m_presetId.getRange()),
-                                                       [this](int index) -> bool
-                                                       {
-                                                            m_presetId.setRange(static_cast<wl::Range>(index));
-                                                            return m_coreControl.setPresetId(m_presetId);
-                                                       })},
-        {"Lens", std::make_shared<ComboBoxMenuItem<7>>(etl::make_vector<const char*>("Not defined", "WTC 35", "WTC 25", "WTC 14", "WTC 7.5", "User 1", "User 2"),
-                                                       static_cast<int>(m_presetId.getLens()),
-                                                       [this](int index) -> bool
-                                                       {
-                                                            m_presetId.setLens(static_cast<wl::Lens>(index));
-                                                            return m_coreControl.setPresetId(m_presetId);
-                                                       })},
     };
 
     m_menu = std::make_unique<Menu>(menuDefinition);
@@ -319,9 +297,11 @@ void GuiControl::connectWeom(int baudrate)
     auto uart = Uart::connectUart(baudrate);
     if (uart)
     {
-        auto result = m_coreControl.setDataLinkInterface(etl::move(uart));
+        auto coreControl = std::make_unique<wl::WEOM>([](const wl::Clock::duration& duration) { vTaskDelay(pdMS_TO_TICKS(std::chrono::duration_cast<std::chrono::milliseconds>(duration).count())); });
+        auto result = coreControl->setDataLinkInterface(etl::move(uart));
         if (result.has_value())
         {
+            m_coreControl = std::move(coreControl);
             setState(State::CONNECTED);
         }
         else

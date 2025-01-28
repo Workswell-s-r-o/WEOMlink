@@ -57,9 +57,8 @@ private:
 
     wl::ContrastBrightness m_contrastBrightness;
     wl::ImageFlip m_imageFlip;
-    wl::PresetId m_presetId;
 
-    wl::WEOM m_coreControl;
+    std::unique_ptr<wl::WEOM> m_coreControl;
 };
 
 #endif // DISPLAYCONTROL_HPP
