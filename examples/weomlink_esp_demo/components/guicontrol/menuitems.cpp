@@ -116,10 +116,8 @@ void SpinBoxMenuItem::initializeGuiImpl()
     lv_obj_set_state(m_rightButton, LV_STATE_DISABLED, m_editValue == m_maximum);
 }
 
-void SpinBoxMenuItem::actionNext()
+void SpinBoxMenuItem::updateGui()
 {
-    m_editValue = std::min(m_editValue + m_step, m_maximum);
-
     DisplayLockGuard lock;
     lv_obj_set_state(m_leftButton, LV_STATE_DISABLED, m_editValue == m_minimum);
     lv_obj_set_state(m_rightButton, LV_STATE_DISABLED, m_editValue == m_maximum);
@@ -127,15 +125,16 @@ void SpinBoxMenuItem::actionNext()
     lv_label_set_text_fmt(m_valueLabel, "%d", m_editValue);
 }
 
+void SpinBoxMenuItem::actionNext()
+{
+    m_editValue = std::min(m_editValue + m_step, m_maximum);
+    updateGui();
+}
+
 void SpinBoxMenuItem::actionPrevious()
 {
     m_editValue = std::max(m_editValue - m_step, m_minimum);
-
-    DisplayLockGuard lock;
-    lv_obj_set_state(m_leftButton, LV_STATE_DISABLED, m_editValue == m_minimum);
-    lv_obj_set_state(m_rightButton, LV_STATE_DISABLED, m_editValue == m_maximum);
-    lv_obj_set_state(m_object, LV_STATE_EDITED, m_editValue != m_value);
-    lv_label_set_text_fmt(m_valueLabel, "%d", m_editValue);
+    updateGui();
 }
 
 void SpinBoxMenuItem::actionApply()
@@ -149,18 +148,12 @@ void SpinBoxMenuItem::actionApply()
         m_editValue = m_value;
     }
 
-    DisplayLockGuard lock;
-    lv_obj_set_state(m_object, LV_STATE_EDITED, m_editValue != m_value);
-    lv_label_set_text_fmt(m_valueLabel, "%d", m_editValue);
+    updateGui();
 }
 
 void SpinBoxMenuItem::actionCancel()
 {
     m_editValue = m_value;
     
-    DisplayLockGuard lock;
-    lv_obj_set_state(m_leftButton, LV_STATE_DISABLED, m_editValue == m_minimum);
-    lv_obj_set_state(m_rightButton, LV_STATE_DISABLED, m_editValue == m_maximum);
-    lv_obj_set_state(m_object, LV_STATE_EDITED, m_editValue != m_value);
-    lv_label_set_text_fmt(m_valueLabel, "%d", m_editValue);
+    updateGui();
 }
