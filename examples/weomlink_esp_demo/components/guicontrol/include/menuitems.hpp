@@ -84,6 +84,8 @@ protected:
     virtual void initializeGuiImpl() override;
 
 private:
+    void updateGui();
+
     etl::vector<const char*, size> m_model;
     int m_currentIndex;
     std::function<bool(int)> m_callback;
@@ -113,6 +115,8 @@ protected:
     virtual void initializeGuiImpl() override;
 
 private:
+    void updateGui();
+
     int m_minimum;
     int m_maximum;
     int m_step;
@@ -167,7 +171,6 @@ void ComboBoxMenuItem<size>::initializeGuiImpl()
     lv_obj_align(m_leftButtonlabel, LV_ALIGN_CENTER, 0, 0);
 
     m_valueLabel = lv_label_create(m_object);
-    lv_label_set_text(m_valueLabel, m_model.at(m_currentIndex));
     lv_obj_set_flex_grow(m_valueLabel, 1);
 
     m_rightButton = lv_button_create(m_object);
@@ -177,8 +180,17 @@ void ComboBoxMenuItem<size>::initializeGuiImpl()
     lv_label_set_text(m_rightButtonlabel, ">");
     lv_obj_align(m_rightButtonlabel, LV_ALIGN_CENTER, 0, 0);
 
+    updateGui();
+}
+
+template <size_t size>
+void ComboBoxMenuItem<size>::updateGui()
+{
+    DisplayLockGuard lock;
     lv_obj_set_state(m_leftButton, LV_STATE_DISABLED, m_editIndex == 0);
     lv_obj_set_state(m_rightButton, LV_STATE_DISABLED, m_editIndex == m_model.size() - 1);
+    lv_obj_set_state(m_object, LV_STATE_EDITED, m_editIndex != m_currentIndex);
+    lv_label_set_text(m_valueLabel, m_model.at(m_editIndex));
 }
 
 template <size_t size>
@@ -188,11 +200,8 @@ void ComboBoxMenuItem<size>::actionNext()
     {
         m_editIndex += 1;
     }
-    DisplayLockGuard lock;
-    lv_obj_set_state(m_leftButton, LV_STATE_DISABLED, m_editIndex == 0);
-    lv_obj_set_state(m_rightButton, LV_STATE_DISABLED, m_editIndex == m_model.size() - 1);
-    lv_obj_set_state(m_object, LV_STATE_EDITED, m_editIndex != m_currentIndex);
-    lv_label_set_text(m_valueLabel, m_model.at(m_editIndex));
+
+    updateGui();
 }
 
 template <size_t size>
@@ -202,11 +211,8 @@ void ComboBoxMenuItem<size>::actionPrevious()
     {
         m_editIndex -= 1;
     }
-    DisplayLockGuard lock;
-    lv_obj_set_state(m_leftButton, LV_STATE_DISABLED, m_editIndex == 0);
-    lv_obj_set_state(m_rightButton, LV_STATE_DISABLED, m_editIndex == m_model.size() - 1);
-    lv_obj_set_state(m_object, LV_STATE_EDITED, m_editIndex != m_currentIndex);
-    lv_label_set_text(m_valueLabel, m_model.at(m_editIndex));
+
+    updateGui();
 }
 
 template <size_t size>
@@ -221,9 +227,7 @@ void ComboBoxMenuItem<size>::actionApply()
         m_editIndex = m_currentIndex;
     }
 
-    DisplayLockGuard lock;
-    lv_obj_set_state(m_object, LV_STATE_EDITED, m_editIndex != m_currentIndex);
-    lv_label_set_text(m_valueLabel, m_model.at(m_editIndex));
+    updateGui();
 }
 
 template <size_t size>
@@ -231,11 +235,7 @@ void ComboBoxMenuItem<size>::actionCancel()
 {
     m_editIndex = m_currentIndex;
 
-    DisplayLockGuard lock;
-    lv_obj_set_state(m_leftButton, LV_STATE_DISABLED, m_editIndex == 0);
-    lv_obj_set_state(m_rightButton, LV_STATE_DISABLED, m_editIndex == m_model.size() - 1);
-    lv_obj_set_state(m_object, LV_STATE_EDITED, m_editIndex != m_currentIndex);
-    lv_label_set_text(m_valueLabel, m_model.at(m_editIndex));
+    updateGui();
 }
 
 #endif // MENUITEMS_HPP
