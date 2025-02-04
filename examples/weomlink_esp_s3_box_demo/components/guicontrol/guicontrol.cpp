@@ -65,7 +65,7 @@ void GuiControl::initizalizeMenu()
     assert(m_coreControl);
     ESP_LOGI(TAG, "Creating menu");
     
-    auto contrastBrightness = m_coreControl->getMgcConstrastBrightness();
+    auto contrastBrightness = m_coreControl->getMgcContrastBrightness();
     if (!contrastBrightness.has_value())
     {
         ESP_LOGE(TAG, "Failed to read contrast and brightness (%s)", contrastBrightness.error().c_str());

@@ -250,7 +250,7 @@ etl::expected<void, Error> WEOM::setImageEqualizationType(ImageEqualizationType 
     return writeData(data, MemorySpaceWEOM::IMAGE_EQUALIZATION_TYPE_CURRENT.getFirstAddress());
 }
 
-etl::expected<ContrastBrightness, Error> WEOM::getMgcConstrastBrightness()
+etl::expected<ContrastBrightness, Error> WEOM::getMgcContrastBrightness()
 {
     auto result = readAddressRange<MemorySpaceWEOM::MGC_CONTRAST_BRIGHTNESS_CURRENT>();
     if (!result.has_value())
