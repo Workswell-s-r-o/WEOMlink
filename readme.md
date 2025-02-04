@@ -57,12 +57,18 @@ After implementing the data link interface, initialize an instance of wl::WEOM a
 ```cpp
 #include "wl/weom.h"
 
+void sleepFunction(const wl::Clock::duration& duration)
+{
+    // implement sleep function for your plaftorm
+    // std::this_thread::sleep_for(duration);
+    vTaskDelay(pdMS_TO_TICKS(std::chrono::duration_cast<std::chrono::milliseconds>(duration).count()));
+}
 
 int main(int argc, char** argv)
 {
-    wl::WEOM camera;
+    wl::WEOM camera(sleepFunction);
 
-    auto dataLink = etl::make_unique<MyDataLinkInterface>();
+    auto dataLink = etl::unique_ptr<MyDataLinkInterface>(new MyDataLinkInterface);
 
     camera.setDataLinkInterface(etl::move(dataLink));
 
