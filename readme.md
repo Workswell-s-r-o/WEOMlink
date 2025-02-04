@@ -5,13 +5,13 @@ WEOMlink is a C++ library designed to manage WEOM cameras on embedded platforms,
 Clone this repository into Your CMake project folder (or add it as submodule)
 
 ```sh
-git clone <>
+git clone https://github.com/Workswell-s-r-o/WEOMlink.git
 ```
 
 or
 
 ```sh
-git submodule add <>
+git submodule add https://github.com/Workswell-s-r-o/WEOMlink.git
 ```
 
 Add WEOMlink as subdirectory into CMake
