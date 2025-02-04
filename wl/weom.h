@@ -202,7 +202,7 @@ public:
      * @brief Retrieves the contrast and brightness settings.
      * @return An `etl::expected<ContrastBrightness, Error>` containing the settings or an error.
      */
-    [[nodiscard]] etl::expected<ContrastBrightness, Error> getMgcConstrastBrightness();
+    [[nodiscard]] etl::expected<ContrastBrightness, Error> getMgcContrastBrightness();
 
     /**
      * @brief Sets the contrast and brightness.
