@@ -34,8 +34,8 @@ private:
     static constexpr uart_word_length_t UART_WORD_LENGTH = UART_DATA_8_BITS;
     static constexpr uart_parity_t UART_PARITY = UART_PARITY_DISABLE;
     static constexpr uart_stop_bits_t UART_STOP_BITS = UART_STOP_BITS_1;
-    static constexpr gpio_num_t UART_RX = GPIO_NUM_39;
-    static constexpr gpio_num_t UART_TX = GPIO_NUM_40;
+    static constexpr gpio_num_t UART_RX = GPIO_NUM_44;
+    static constexpr gpio_num_t UART_TX = GPIO_NUM_43;
 };
 
 #endif // UART_HPP
