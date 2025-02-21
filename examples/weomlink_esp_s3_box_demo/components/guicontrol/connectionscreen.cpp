@@ -5,6 +5,9 @@
 
 #include <vector>
 #include <string>
+#include <esp_log.h>
+
+static const char* TAG = "connection_screen";
 
 ConnectionScreen::ConnectionScreen(const std::function<void(int)>& connnectCallback)
     : m_connectCallback(connnectCallback)
@@ -60,8 +63,10 @@ ConnectionScreen::ConnectionScreen(const std::function<void(int)>& connnectCallb
     auto* connectButton = lv_button_create(m_rootObject);
     static constexpr auto connectButtonCB = [](lv_event_t* e)
     {
+        ESP_LOGI(TAG,"Connect button pressed");
         auto connectionScreen = (ConnectionScreen*)lv_event_get_user_data(e);
-        connectionScreen->m_connectCallback(connectionScreen->m_baudrate);
+        connectionScreen->m_connectCallback(connectionScreen->m_baudrate);        
+        ESP_LOGI(TAG,"Connect button cb: %p",connectionScreen);
     };
     lv_obj_add_event_cb(connectButton, connectButtonCB, LV_EVENT_CLICKED, this);
     lv_obj_t* buttonLabel = lv_label_create(connectButton);

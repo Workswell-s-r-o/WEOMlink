@@ -2,6 +2,9 @@
 
 #include "menuitems.hpp"
 #include "displaylockguard.hpp"
+#include "esp_log.h"
+
+static const char* TAG = "menu";
 
 Menu::Menu(const std::vector<MenuLine>& menuLines)
     : m_menuLines(menuLines)
@@ -10,10 +13,14 @@ Menu::Menu(const std::vector<MenuLine>& menuLines)
 {
     DisplayLockGuard lock;
 
+    ESP_LOGI(TAG,"Creating menu");
+
+    ESP_LOGI(TAG,"Creating screen");
     lv_obj_t* screen = lv_screen_active();
     const int32_t screenWidth = lv_obj_get_width(screen);
     const int32_t screenHeight = lv_obj_get_height(screen);
 
+    ESP_LOGI(TAG,"Creating m_menuRootObject");
     m_menuRootObject = lv_obj_create(screen);
     lv_obj_set_size(m_menuRootObject, screenWidth, screenHeight);
     lv_obj_center(m_menuRootObject);
@@ -21,7 +28,9 @@ Menu::Menu(const std::vector<MenuLine>& menuLines)
     lv_obj_set_flex_flow(m_menuRootObject, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_style_pad_all(m_menuRootObject, 0, LV_STATE_DEFAULT);
     lv_obj_set_style_pad_row(m_menuRootObject, 0, LV_STATE_DEFAULT);
+    ESP_LOGI(TAG,"Done creating m_menuRootObject");
 
+    ESP_LOGI(TAG,"Creating m_panelRoot");
     m_panelRoot = lv_obj_create(m_menuRootObject);
     lv_obj_set_size(m_panelRoot, lv_pct(100), lv_pct(80));
     lv_obj_set_layout(m_panelRoot, LV_LAYOUT_FLEX);
@@ -52,24 +61,31 @@ Menu::Menu(const std::vector<MenuLine>& menuLines)
         }
 
     }, LV_EVENT_SCROLL_END, this);
+    ESP_LOGI(TAG,"Done creating m_panelRoot");
 
 
+    ESP_LOGI(TAG,"Creating panels");
     for (int row = 0; row < menuLines.size(); ++row)
     {
+        ESP_LOGI(TAG, "Creating panel: %d",row);
         auto* panel = lv_obj_create(m_panelRoot);
         lv_obj_set_layout(panel, LV_LAYOUT_FLEX);
         lv_obj_set_flex_flow(panel, LV_FLEX_FLOW_COLUMN);
         lv_obj_set_size(panel, lv_pct(75), lv_pct(100));
 
         const auto& line = menuLines.at(row);
-        lv_obj_t* label = createLabel(panel, line);
-        lv_obj_t* object = line.item->initializeGui(panel);
+        ESP_LOGI(TAG, "Panel label is: %s", line.title.c_str());
+        lv_obj_t* label = createLabel(panel, line);        
+        lv_obj_t* object = line.item->initializeGui(panel);        
         lv_obj_set_size(object, lv_pct(100), lv_pct(75));
         lv_obj_center(object);
+        ESP_LOGI(TAG, "Done creating panel: %d",row);
     }
+    ESP_LOGI(TAG,"Done creating panels");
 
     lv_obj_scroll_to_view(lv_obj_get_child(m_panelRoot, m_currentIndex), LV_ANIM_OFF);
 
+    ESP_LOGI(TAG,"Creating scrollLeftButton");
     auto* scrollLeftButton = lv_obj_create(m_menuRootObject);
     lv_obj_add_flag(scrollLeftButton, LV_OBJ_FLAG_FLOATING);
     lv_obj_set_size(scrollLeftButton, lv_pct(15), lv_obj_get_height(m_panelRoot));
@@ -80,7 +96,9 @@ Menu::Menu(const std::vector<MenuLine>& menuLines)
     {
         ((Menu*)lv_event_get_user_data(e))->previous();
     }, LV_EVENT_CLICKED, this);
+    ESP_LOGI(TAG,"Done creating scrollLeftButton");
     
+    ESP_LOGI(TAG,"Creating scrollRightButton");
     auto* scrollRightButton = lv_obj_create(m_menuRootObject);
     lv_obj_add_flag(scrollRightButton, LV_OBJ_FLAG_FLOATING);
     lv_obj_set_size(scrollRightButton, lv_pct(15), lv_obj_get_height(m_panelRoot));
@@ -91,14 +109,18 @@ Menu::Menu(const std::vector<MenuLine>& menuLines)
     {
         ((Menu*)lv_event_get_user_data(e))->next();
     }, LV_EVENT_CLICKED, this);
+    ESP_LOGI(TAG,"Done creating scrollRightButton");
 
+    ESP_LOGI(TAG,"Creating buttonRow");
     auto* buttonRow = lv_obj_create(m_menuRootObject);
     lv_obj_set_size(buttonRow, lv_pct(100), lv_pct(20));
     lv_obj_set_style_pad_top(buttonRow, 0, LV_STATE_DEFAULT);
     lv_obj_set_style_border_width(buttonRow, 0, LV_STATE_DEFAULT);
     lv_obj_set_layout(buttonRow, LV_LAYOUT_FLEX);
     lv_obj_set_flex_flow(buttonRow, LV_FLEX_FLOW_ROW);
+    ESP_LOGI(TAG,"Done creating buttonRow");
 
+    ESP_LOGI(TAG,"Creating cancelButton");
     auto* cancelButton = lv_button_create(buttonRow);
     lv_obj_set_size(cancelButton, lv_pct(48), lv_pct(100));
     auto* cancelButtonLabel = lv_label_create(cancelButton);
@@ -108,7 +130,9 @@ Menu::Menu(const std::vector<MenuLine>& menuLines)
     {
         ((Menu*)lv_event_get_user_data(e))->cancel();
     }, LV_EVENT_CLICKED, this);
+    ESP_LOGI(TAG,"Done creating cancelButton");
 
+    ESP_LOGI(TAG,"Creating applyButton");
     auto* applyButton = lv_button_create(buttonRow);
     lv_obj_set_size(applyButton, lv_pct(48), lv_pct(100));
     auto* applyButtonLabel = lv_label_create(applyButton);
@@ -118,6 +142,9 @@ Menu::Menu(const std::vector<MenuLine>& menuLines)
     {
         ((Menu*)lv_event_get_user_data(e))->apply();
     }, LV_EVENT_CLICKED, this);
+    ESP_LOGI(TAG,"Done creating applyButton");
+
+    ESP_LOGI(TAG,"Done creating menu");
 }
 
 Menu::~Menu()
