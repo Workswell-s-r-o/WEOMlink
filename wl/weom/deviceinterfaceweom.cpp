@@ -1,9 +1,6 @@
 #include "wl/weom/deviceinterfaceweom.h"
-
 #include "wl/communication/protocolinterfacetcsi.h"
-
 #include <cmath>
-
 
 namespace wl {
 
@@ -14,7 +11,7 @@ DeviceInterfaceWEOM::DeviceInterfaceWEOM(etl::unique_ptr<ProtocolInterfaceTCSI> 
     m_memorySpace(MemorySpaceWEOM::getDeviceSpace()),
     m_sleepFunction(sleepFunction)
 {
-
+    printf("Starting device interface\n");
 }
 
 const MemorySpaceWEOM& DeviceInterfaceWEOM::getMemorySpace() const
@@ -40,6 +37,8 @@ etl::expected<void, Error> DeviceInterfaceWEOM::readData(etl::span<uint8_t> data
 
 etl::expected<void, Error> DeviceInterfaceWEOM::writeData(const etl::span<const uint8_t> data, uint32_t address)
 {
+    Error::log("Device interface writing data");
+    printf("Device interface writing data\n");
     const auto memoryDescriptor = getMemoryDescriptorWithChecks(address, data.size());
     if (!memoryDescriptor.has_value())
     {
@@ -126,6 +125,9 @@ etl::expected<void, Error> DeviceInterfaceWEOM::handleErrorResponse(etl::expecte
             operationResult.error() == Error::TCSI__RESPONSE_STATUS_ERROR)
         {
             lastErrors.set(0, 1);
+            char errMsg[200];
+            sprintf(errMsg, "Device interface error %d",operationResult.error());
+            Error::log(errMsg);
             if (lastErrors.count() <= MAX_ERRORS_IN_WINDOW)
             {
                 return {};

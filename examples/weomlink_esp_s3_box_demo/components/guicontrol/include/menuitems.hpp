@@ -3,6 +3,7 @@
 
 #include "displaylockguard.hpp"
 
+#include "esp_log.h"
 #include "bsp/esp-bsp.h"
 
 #include <etl/string.h>
@@ -150,6 +151,7 @@ LabelMenuItem<size>::LabelMenuItem(const etl::string<size>& text)
     : BaseClass()
     , m_text(text)
 {
+    ESP_LOGI("menu_items","Creatin LabelMenuItem: %s",m_text.c_str());
 }
 
 template <size_t size>
@@ -169,7 +171,7 @@ ComboBoxMenuItem<size>::ComboBoxMenuItem(const etl::vector<const char*, size>& m
     , m_editIndex(initialIndex)
     , m_lastChangeTimePoint(Clock::now())
 {
-
+    ESP_LOGI("menu_items","Creatin ComboBoxMenuItem: %s",m_model.at(m_currentIndex));
 }
 
 template <size_t size>

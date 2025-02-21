@@ -43,7 +43,7 @@ void GuiControl::initializeDisplay()
     bsp_display_cfg_t cfg = {
         .lvgl_port_cfg = {
             .task_priority = 4,
-            .task_stack = 16384,
+            .task_stack = 16144,
             .task_affinity = -1,
             .task_max_sleep_ms = 500,
             .timer_period_ms = 5,
@@ -55,7 +55,16 @@ void GuiControl::initializeDisplay()
             .buff_spiram = false,
         }
     };
-    lv_display_t* display = bsp_display_start_with_config(&cfg);
+    /*bsp_display_cfg_t cfg = {
+        .lvgl_port_cfg = ESP_LVGL_PORT_INIT_CONFIG(),
+        .buffer_size = BSP_LCD_H_RES * CONFIG_BSP_LCD_DRAW_BUF_HEIGHT,
+        .double_buffer = 0,
+        .flags = {
+            .buff_dma = true,
+            .buff_spiram = false,
+        }
+    };*/
+    lv_display_t* display = bsp_display_start_with_config(&cfg);    
     assert(display);
     ESP_ERROR_CHECK(bsp_display_backlight_on());
 }
@@ -65,15 +74,18 @@ void GuiControl::initizalizeMenu()
     assert(m_coreControl);
     ESP_LOGI(TAG, "Creating menu");
     
+    ESP_LOGI(TAG, "Getting contrast and brightness");
     auto contrastBrightness = m_coreControl->getMgcContrastBrightness();
     if (!contrastBrightness.has_value())
     {
         ESP_LOGE(TAG, "Failed to read contrast and brightness (%s)", contrastBrightness.error().c_str());
         return;
     }
-
+    ESP_LOGI(TAG, "Got contrast and brightness");
+        
     m_contrastBrightness = contrastBrightness.value();
 
+    ESP_LOGI(TAG, "Getting flip image value");
     auto imageFlip = m_coreControl->getImageFlip();
     if (!imageFlip.has_value())
     {
@@ -82,91 +94,119 @@ void GuiControl::initizalizeMenu()
     }
 
     m_imageFlip = imageFlip.value();
+    ESP_LOGI(TAG, "Got flip image value");
+    
 
+    ESP_LOGI(TAG, "Getting serial number");
     auto serialNumber = m_coreControl->getSerialNumber();
     if (!serialNumber.has_value())
     {
         ESP_LOGE(TAG, "Failed to read serial number (%s)", serialNumber.error().c_str());
         return;
     }
+    ESP_LOGI(TAG, "Got serial number: %s", serialNumber.value().c_str());
 
+    
+    ESP_LOGI(TAG, "Getting article number");
     auto articleNumber = m_coreControl->getArticleNumber();
     if (!articleNumber.has_value())
     {
         ESP_LOGE(TAG, "Failed to read article number (%s)", articleNumber.error().c_str());
         return;
     }
+    ESP_LOGI(TAG, "Got article number: %s", articleNumber.value().c_str());
 
+    ESP_LOGI(TAG, "Getting core firmware verion");
     auto firmwareVersion = m_coreControl->getFirmwareVersion();
     if (!firmwareVersion.has_value())
     {
         ESP_LOGE(TAG, "Failed to read firmwareVersion (%s)", firmwareVersion.error().c_str());
         return;
     }
+    ESP_LOGI(TAG, "Got core firmware verion: %s",firmwareVersion.value().toString().c_str());
     
+    ESP_LOGI(TAG, "Getting palette index");
     auto paletteIndex = m_coreControl->getPaletteIndex();
     if (!paletteIndex.has_value())
     {
         ESP_LOGE(TAG, "Failed to read paletteIndex (%s)", paletteIndex.error().c_str());
         return;
     }
+    ESP_LOGI(TAG, "Got palette index %d", paletteIndex.value());
 
+    ESP_LOGI(TAG, "Getting frame rate");
     auto frameRate = m_coreControl->getFramerate();
     if (!frameRate.has_value())
     {
         ESP_LOGE(TAG, "Failed to read frame rate (%s)", frameRate.error().c_str());
         return;
     }
+    ESP_LOGI(TAG, "Got frame rate: %s", frameRate.value().c_str());
 
+    ESP_LOGI(TAG, "Getting image freeze");
     auto imageFreeze = m_coreControl->getImageFreeze();
     if (!imageFreeze.has_value())
     {
         ESP_LOGE(TAG, "Failed to read image freeze (%s)", imageFreeze.error().c_str());
         return;
     }
+    ESP_LOGI(TAG, "Got image freeze: %d", imageFreeze.value());
 
+    ESP_LOGI(TAG, "Getting image generator");
     auto imageGenerator = m_coreControl->getImageGenerator();
     if (!imageGenerator.has_value())
     {
         ESP_LOGE(TAG, "Failed to read image generator (%s)", imageGenerator.error().c_str());
         return;
     }
+    ESP_LOGI(TAG, "Got image generator: %s", imageGenerator.value().c_str());
 
+    ESP_LOGI(TAG, "Getting shutter update mode");
     auto shutterUpdateMode = m_coreControl->getShutterUpdateMode();
     if (!shutterUpdateMode.has_value())
     {
         ESP_LOGE(TAG, "Failed to read shutter update mode (%s)", shutterUpdateMode.error().c_str());
         return;
     }
+    ESP_LOGI(TAG, "Got shutter update mode: %s", shutterUpdateMode.value().c_str());
 
+    ESP_LOGI(TAG, "Getting time domain averaging");
     auto timeDomainAveraging = m_coreControl->getTimeDomainAveraging();
     if (!timeDomainAveraging.has_value())
     {
         ESP_LOGE(TAG, "Failed to read time domain averaging (%s)", timeDomainAveraging.error().c_str());
         return;
     }
+    ESP_LOGI(TAG, "Got time domain averaging: %s", timeDomainAveraging.value().c_str());
 
+    ESP_LOGI(TAG, "Getting image equalization type");
     auto imageEqualizationType = m_coreControl->getImageEqualizationType();
     if (!imageEqualizationType.has_value())
     {
         ESP_LOGE(TAG, "Failed to read image equalization type (%s)", imageEqualizationType.error().c_str());
         return;
     }
+    ESP_LOGI(TAG, "Got image equalization type: %s", imageEqualizationType.value().c_str());
 
+    ESP_LOGI(TAG, "Getting AGC smoothing frames");
     auto agcNhSmoothingFrames = m_coreControl->getAgcNhSmoothingFrames();
     if (!agcNhSmoothingFrames.has_value())
     {
         ESP_LOGE(TAG, "Failed to read article AGC NH smoothing frames (%s)", agcNhSmoothingFrames.error().c_str());
         return;
     }
+    ESP_LOGI(TAG, "Got AGC smoothing frames: %d",agcNhSmoothingFrames.value());
 
+    ESP_LOGI(TAG, "Getting spatial median filter");
     auto spatialMedianFilterEnabled = m_coreControl->getSpatialMedianFilterEnabled();
     if (!spatialMedianFilterEnabled.has_value())
     {
         ESP_LOGE(TAG, "Failed to read spatial median filter enabled (%s)", spatialMedianFilterEnabled.error().c_str());
         return;
     }
+    ESP_LOGI(TAG, "Got spatial median filter: %s", spatialMedianFilterEnabled.value() ? "true" : "false");
 
+    ESP_LOGI(TAG, "Getting preset ID");
     auto presetId = m_coreControl->getPresetId();
     if (!presetId.has_value())
     {
@@ -174,6 +214,7 @@ void GuiControl::initizalizeMenu()
         return;
     }
     m_presetId = presetId.value();
+    ESP_LOGI(TAG, "Got preset ID");
 
     std::vector<MenuLine> menuDefinition = 
     {
@@ -185,7 +226,21 @@ void GuiControl::initizalizeMenu()
                                                       [this](int index) -> bool
                                                       {
                                                          return m_coreControl->setPaletteIndex(static_cast<uint8_t>(index));
-                                                      })},
+                                                      })},                                                      
+        {"Contrast", std::make_shared<SpinBoxMenuItem>(0, 100, 10, 
+                                                       static_cast<int>(m_contrastBrightness.getContrastPercent()), 
+                                                       [this](int contrastPercent) -> bool
+                                                       {
+                                                           m_contrastBrightness.setContrastPercent(static_cast<float>(contrastPercent));
+                                                           return m_coreControl->setMgcContrastBrightness(m_contrastBrightness);
+                                                       })},
+        {"Brightness", std::make_shared<SpinBoxMenuItem>(0, 100, 10, 
+                                                         static_cast<int>(m_contrastBrightness.getBrightnessPercent()), 
+                                                         [this](int brightnessPercent) -> bool
+                                                         {
+                                                             m_contrastBrightness.setBrightnessPercent(static_cast<float>(brightnessPercent));
+                                                             return m_coreControl->setMgcContrastBrightness(m_contrastBrightness);
+                                                         })},
         {"Framerate", std::make_shared<ComboBoxMenuItem<3>>(etl::make_vector<const char*>("9 Hz", "30 Hz", "60 Hz"), 
                                                          static_cast<int>(frameRate.value()), 
                                                          [this](int index) -> bool
@@ -236,20 +291,6 @@ void GuiControl::initizalizeMenu()
                                                                   {
                                                                      return m_coreControl->setImageEqualizationType(static_cast<wl::ImageEqualizationType>(index));
                                                                   })},
-        {"Contrast", std::make_shared<SpinBoxMenuItem>(0, 100, 10, 
-                                                       static_cast<int>(m_contrastBrightness.getContrastPercent()), 
-                                                       [this](int contrastPercent) -> bool
-                                                       {
-                                                           m_contrastBrightness.setContrastPercent(static_cast<float>(contrastPercent));
-                                                           return m_coreControl->setMgcContrastBrightness(m_contrastBrightness);
-                                                       })},
-        {"Brightness", std::make_shared<SpinBoxMenuItem>(0, 100, 10, 
-                                                         static_cast<int>(m_contrastBrightness.getBrightnessPercent()), 
-                                                         [this](int brightnessPercent) -> bool
-                                                         {
-                                                             m_contrastBrightness.setBrightnessPercent(static_cast<float>(brightnessPercent));
-                                                             return m_coreControl->setMgcContrastBrightness(m_contrastBrightness);
-                                                         })},
         {"AGC NH smoothing", std::make_shared<ComboBoxMenuItem<5>>(etl::make_vector<const char*>("1 frame", "2 frames", "4 frames", "8 frames", "16 frames"), 
                                                                 static_cast<int>(agcNhSmoothingFrames.value()),
                                                                 [this](int index) -> bool
@@ -293,8 +334,13 @@ void GuiControl::connectWeom(int baudrate)
     auto uart = Uart::connectUart(baudrate);
     if (uart)
     {
-        auto coreControl = std::make_unique<wl::WEOM>([](const wl::Clock::duration& duration) { vTaskDelay(pdMS_TO_TICKS(std::chrono::duration_cast<std::chrono::milliseconds>(duration).count())); });
+        ESP_LOGI(TAG,"Getting core control");
+        auto coreControl = std::make_unique<wl::WEOM>([](const wl::Clock::duration& duration) { 
+            ESP_LOGI(TAG, "Core control sleep function duration: %lld",duration.count());
+            vTaskDelay(pdMS_TO_TICKS(std::chrono::duration_cast<std::chrono::milliseconds>(duration).count())); 
+        });        
         auto result = coreControl->setDataLinkInterface(etl::move(uart));
+                
         if (result.has_value())
         {
             m_coreControl = std::move(coreControl);
