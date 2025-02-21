@@ -7,9 +7,8 @@ idf_component_register(
         connectionscreen.cpp
     INCLUDE_DIRS
         include
-    REQUIRES
-        esp-box-3
-        uart
+    REQUIRES        
+        uart        
 )
 
 target_link_libraries(${COMPONENT_TARGET} PUBLIC WEOM::link)

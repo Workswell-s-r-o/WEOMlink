@@ -16,8 +16,6 @@
 #include "freertos/task.h"
 #include "freertos/semphr.h"
 
-#include <format>
-
 static const char* TAG = "gui_control";
 
 GuiControl::GuiControl()
