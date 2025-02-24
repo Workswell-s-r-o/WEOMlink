@@ -9,4 +9,3 @@ managed_components/
 *.lock
 *.backup
 ./settings
-sdkconfig

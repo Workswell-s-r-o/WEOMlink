@@ -81,5 +81,8 @@
 },
 "idf.openOcdConfigs": [
   "board/esp32s3-builtin.cfg"
-]
+],
+"idf.espIdfPath": "/home/jprazak/Developer/sdkz/esp-idf/v5.1.5",
+"idf.toolsPath": "/home/jprazak/.espressif",
+"idf.pythonInstallPath": "/usr/bin/python"
 }
