@@ -1,7 +1,27 @@
 # ![logo](workswell_logo_small.png) WEOMlink
-WEOMlink is a C++ library designed to manage WEOM cameras on embedded platforms, providing communication, control. It leverages C++20 features and the [ETL (Embedded Template Library)](https://www.etlcpp.com/) to optimize performance in resource-constrained environments.
+
+![WEOM](hdmi-weom.png)
+
+WEOMlink is a lightweight C++ library designed to manage [WEOM cameras](https://workswell.eu/weom-hdmi-thermal-core-advanced-thermal-imaging/) on embedded platforms over UART interface. It leverages C++20 features and the [ETL (Embedded Template Library)](https://www.etlcpp.com/) to optimize performance in resource-constrained environments as well as full fledged desktop applications. The library can access the following thermal core features
+
+* read device information such as serial number, firmware version, etc...
+* change predefined display palette
+* change contrast and brightness
+* change frame rate
+* change both horizontal and vertical image flip
+* image freezing
+* image source between sensor and predefined test patterns
+* time domain average
+* image equalization
+* ADC NH smoothing
+* toggle spatial median filter
+* change gain
+* change optical lense specification
+
+We provide ready to run examples for Espressif Kaluga a Box-3 dev kits but the library is designed to work efficiently on just about any device. You can purchase complete WEOM development kits directly from Workswell. There we provide connector boards/adapters for both the Box-3 and Kaluga as the
 
 ## Installation
+
 Clone this repository into Your CMake project folder (or add it as submodule)
 
 ```sh
@@ -14,7 +34,7 @@ or
 git submodule add https://github.com/Workswell-s-r-o/WEOMlink.git
 ```
 
-Add WEOMlink as subdirectory into CMake
+next add WEOMlink as subdirectory into `CMakeLists.txt`
 
 ```cmake
 add_subdirectory(weom-link)
@@ -26,8 +46,23 @@ Link WEOMlink to Your Cmake target:
 target_link_libraries(<your_target> PUBLIC WEOM::link)
 ```
 
+To build the library only (make sure you are in the WEOMlink directory):
+
+```bash
+cmake --build . --target weomlink
+```
+
+To build Doxygen API docs only:
+
+```bash
+cmake --build . --target weomlink-docs
+```
+
+The generated API documentation is generated into `html`directory.
+
 ## Usage
-To use WEOMlink on your embedded platform, you need to implement the `wl::IDataLinkInterface` class to define data transfer methods. 
+
+To use WEOMlink on your platform of choice you must implement the `wl::IDataLinkInterface` class to define data transfer methods
 
 ```cpp
 #include "wl/communication/idatalinkitnerface.h"
@@ -88,4 +123,17 @@ std::cout << "Serial number: " << serialNumber.value().c_str() << std::endl;
 ```
 
 ## Examples
-An example project demonstrating the usage of WEOMlink is provided in the examples directory. You can refer to it for a practical implementation of the library.
+
+We provide two ready to run example projects for widely used ESP32 dev kits, the Kaluga a Box-3. The examples can be found in `examples`subdirectory and need to be built separately. The library will be built and linked during the example build process as well, it does not need to be built separately. The examples use [esp-bsp](https://github.com/espressif/esp-bsp) HAL and we have pinned the [ESP-IDF](https://) to version `5.1.5` and `esp-box-3`to`1.2.0~2` to resolve various dependency issues.
+
+Provided that you have setup your ESP-IDF environment correctly, to build the example simply run the following commands from the project directory:
+
+```bash
+idf.py build
+```
+
+and finally to flash the device:
+
+```bash
+idf.py --port <device> flash
+```
