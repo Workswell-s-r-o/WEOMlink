@@ -58,6 +58,11 @@ To build Doxygen API docs only:
 cmake --build . --target weomlink-docs
 ```
 
+To build the library without pulling in ETL with `FetchContent` (if you're already sourcing ETL in a different way):
+```bash
+cmake -B build -DWEOMLINK_BUILD_ETL=OFF
+```
+
 The generated API documentation is generated into `html`directory.
 
 ## Usage
