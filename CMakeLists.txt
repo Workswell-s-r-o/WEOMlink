@@ -2,7 +2,10 @@ cmake_minimum_required(VERSION 3.10)
 
 project(WEOMlink)
 
-include(cmake/etl.cmake)
+option(WEOMLINK_BUILD_ETL "Build the Embedded Template Library?" ON)
+if(WEOMLINK_BUILD_ETL)
+    include(cmake/etl.cmake)
+endif()
 
 find_package(Doxygen QUIET)
 
