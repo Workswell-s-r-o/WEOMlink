@@ -1,6 +1,6 @@
 # ![logo](workswell_logo_small.png) WEOMlink
 
-![WEOM](hdmi-weom.png)
+![WEOM](weom.jpg)
 
 WEOMlink is a lightweight C++ library designed to manage [WEOM cameras](https://workswell.eu/weom-hdmi-thermal-core-advanced-thermal-imaging/) on embedded platforms over UART interface. It leverages C++20 features and the [ETL (Embedded Template Library)](https://www.etlcpp.com/) to optimize performance in resource-constrained environments as well as full fledged desktop applications. The library can access the following thermal core features
 
