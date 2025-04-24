@@ -22,7 +22,7 @@ jobs:
       - name: Configure and build PDF docs
         run: |
           mkdir build && cd build
-          cmake -G ninja ..
+          cmake -G Ninja ..
           cmake --build . --target weomlink_pdf_docs
 
       - name: Upload PDF artifact
