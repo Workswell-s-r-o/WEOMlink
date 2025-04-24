@@ -23,7 +23,7 @@ jobs:
         run: |
           mkdir build && cd build
           cmake -G Ninja ..
-          cmake --build . --target weomlink_pdf_docs
+          cmake --build . --target weomlink_docs_pdf
 
       - name: Upload PDF artifact
         uses: actions/upload-artifact@v4
