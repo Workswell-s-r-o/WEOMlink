@@ -27,4 +27,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: weomlink-docs-pdf
-          path: build/docs/weomlink.pdf
+          path: build/docs/pdf/weomlink.pdf
