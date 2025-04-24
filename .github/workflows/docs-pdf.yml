@@ -1,0 +1,32 @@
+name: Generate PDF docs
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+jobs:
+  build-pdf:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install doxygen and latex
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y doxygen \
+            texlive-latex-base texlive-latex-extra \
+            texlive-fonts-recommended texlive-fonts-extra
+
+      - name: Configure and build PDF docs
+        run: |
+          mkdir build && cd build
+          cmake -G ninja ..
+          cmake --build . --target weomlink_pdf_docs
+
+      - name: Upload PDF artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: weomlink-docs-pdf
+          path: build/docs/weomlink.pdf
