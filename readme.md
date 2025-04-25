@@ -55,7 +55,7 @@ cmake --build . --target weomlink
 To build Doxygen API docs only:
 
 ```bash
-cmake --build . --target weomlink-docs
+cmake --build . --target weomlink_docs
 ```
 
 The generated API documentation is generated into `html`directory.
