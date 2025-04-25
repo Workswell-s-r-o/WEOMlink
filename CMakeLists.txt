@@ -37,8 +37,10 @@ if (DOXYGEN_FOUND)
             ${doxygen-awesome-css_SOURCE_DIR}/doxygen-awesome.css
             documentation/workswell_style.css)
     set(DOXYGEN_HTML_EXTRA_FILES workswell_logo_small.png)
+    set(DOXYGEN_IMAGE_PATH ${CMAKE_SOURCE_DIR})
     doxygen_add_docs(weomlink_docs ALL
         readme.md
+	weom.jpg
         wl  
     )
 endif()
