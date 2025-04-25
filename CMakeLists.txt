@@ -28,9 +28,16 @@ add_library(weomlink
 )
 
 if (DOXYGEN_FOUND)
+    function(add_docs target html latex outdir)
+        set(DOXYGEN_GENERATE_HTML  ${html})
+        set(DOXYGEN_GENERATE_LATEX ${latex})
+        set(DOXYGEN_OUTPUT_DIRECTORY ${outdir})
+
+        doxygen_add_docs(${target}  ${ARGN})
+    endfunction()
+
     include(cmake/doxygen-awesome-css.cmake)
 
-    set(DOXYGEN_GENERATE_HTML YES)
     set(DOXYGEN_USE_MDFILE_AS_MAINPAGE readme.md)
     set(DOXYGEN_PROJECT_LOGO workswell_logo_small.png)
     set(DOXYGEN_HTML_EXTRA_STYLESHEET
@@ -38,30 +45,28 @@ if (DOXYGEN_FOUND)
             documentation/workswell_style.css)
     set(DOXYGEN_HTML_EXTRA_FILES workswell_logo_small.png)
     set(DOXYGEN_IMAGE_PATH ${CMAKE_SOURCE_DIR})
-    doxygen_add_docs(weomlink_docs ALL
-        readme.md
-        weom.jpg
-        wl
+    add_docs(weomlink_docs
+        YES NO
+        ${CMAKE_BINARY_DIR}/docs
+        ALL
+        readme.md weom.jpg wl
     )
 
-    set(DOXYGEN_GENERATE_HTML NO)
-    set(DOXYGEN_GENERATE_LATEX YES)
-    set(DOXYGEN_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/docs/pdf)
-    set(DOXYGEN_LATEX_OUTPUT ${CMAKE_BINARY_DIR}/docs/pdf/latex)
-    doxygen_add_docs(weomlink_docs_latex
-        INPUT readme.md wl
-        OUTPUT_DIRECTORY ${DOXYGEN_OUTPUT_DIRECTORY}
+    add_docs(weomlink_docs_latex
+        NO YES
+        ${CMAKE_BINARY_DIR}/docs/pdf
+        readme.md weom.jpg wl
     )
 
     add_custom_target(weomlink_docs_pdf
       DEPENDS weomlink_docs_latex
       COMMENT "Building PDF documentation from LaTeX sources"
 
-      COMMAND ${CMAKE_COMMAND} -E chdir ${DOXYGEN_LATEX_OUTPUT}
+      COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_BINARY_DIR}/docs/pdf/latex
               make pdf
 
       COMMAND ${CMAKE_COMMAND} -E rename
-              ${DOXYGEN_LATEX_OUTPUT}/refman.pdf
+              ${CMAKE_BINARY_DIR}/docs/pdf/latex/refman.pdf
               ${CMAKE_BINARY_DIR}/docs/pdf/weomlink.pdf
     )
 endif()
