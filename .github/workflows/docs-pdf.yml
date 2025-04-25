@@ -15,7 +15,13 @@ jobs:
       - name: Install doxygen and latex
         run: |
           sudo apt-get update
-          sudo apt-get install -y doxygen texlive-full
+          sudo apt-get install -y \
+            doxygen graphviz \
+            texlive-latex-base \
+            texlive-latex-extra \
+            texlive-fonts-recommended \
+            texlive-extra-utils \
+            ghostscript
 
       - name: Configure and build PDF docs
         run: |
