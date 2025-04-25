@@ -1,4 +1,4 @@
-# ![logo](workswell_logo_small.png) WEOMlink
+# WEOMlink
 
 ![WEOM](weom.jpg)
 
