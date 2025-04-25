@@ -32,8 +32,6 @@ if (DOXYGEN_FOUND)
 
     set(DOXYGEN_GENERATE_HTML YES)
     set(DOXYGEN_USE_MDFILE_AS_MAINPAGE readme.md)
-
-    set(DOXYGEN_GENERATE_LATEX NO)
     set(DOXYGEN_PROJECT_LOGO workswell_logo_small.png)
     set(DOXYGEN_HTML_EXTRA_STYLESHEET
             ${doxygen-awesome-css_SOURCE_DIR}/doxygen-awesome.css
@@ -60,11 +58,9 @@ if (DOXYGEN_FOUND)
       DEPENDS weomlink_docs_latex
       COMMENT "Building PDF documentation from LaTeX sources"
 
-      # 3.1 cd into the LaTeX output
       COMMAND ${CMAKE_COMMAND} -E chdir ${DOXYGEN_LATEX_OUTPUT}
               make pdf
 
-      # 3.2 rename the default refman.pdf to weomlink.pdf
       COMMAND ${CMAKE_COMMAND} -E rename
               ${DOXYGEN_LATEX_OUTPUT}/refman.pdf
               ${CMAKE_BINARY_DIR}/docs/pdf/weomlink.pdf
