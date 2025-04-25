@@ -48,7 +48,6 @@ if (DOXYGEN_FOUND)
     set(DOXYGEN_GENERATE_LATEX YES)
     set(DOXYGEN_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/docs/pdf)
     set(DOXYGEN_LATEX_OUTPUT ${CMAKE_BINARY_DIR}/docs/pdf/latex)
-    set(DOXYGNE_LATEX_EXTRA_FILES workswell_logo_small.png)
     doxygen_add_docs(weomlink_docs_latex
         INPUT readme.md wl
         OUTPUT_DIRECTORY ${DOXYGEN_OUTPUT_DIRECTORY}
