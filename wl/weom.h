@@ -67,7 +67,7 @@ public:
      */
     [[nodiscard]] etl::expected<Triggers, Error> getTriggers();
 
-     /**
+    /**
      * @brief Activates a specific trigger on the device.
      * @param trigger The trigger to activate.
      * @return An `etl::expected<void, Error>` indicating success or failure.
@@ -173,6 +173,32 @@ public:
     [[nodiscard]] etl::expected<void, Error> setShutterUpdateMode(ShutterUpdateMode mode);
 
     /**
+     * @brief Retrieves the shutter max period.
+     * @return An `etl::expected<ShutterUpdateMode, Error>` containing the shutter max period or an error.
+     */
+    [[nodiscard]] etl::expected<uint16_t, Error> getShutterMaxPeriod();
+
+    /**
+     * @brief Sets the shutter max period.
+     * @param mode The shutter max period.
+     * @return An `etl::expected<void, Error>` indicating success or failure.
+     */
+    [[nodiscard]] etl::expected<void, Error> setShutterMaxPeriod(uint16_t value);
+
+    /**
+     * @brief Retrieves the shutter adaptive threshold.
+     * @return An `etl::expected<ShutterUpdateMode, Error>` containing the shutter max period or an error.
+     */
+    [[nodiscard]] etl::expected<double, Error> getShutterAdaptiveThreshold();
+
+    /**
+     * @brief Sets the shutter adaptive threshold.
+     * @param mode The shutter adaptive threshold.
+     * @return An `etl::expected<void, Error>` indicating success or failure.
+     */
+    [[nodiscard]] etl::expected<void, Error> setShutterAdaptiveThreshold(double value);
+
+    /**
      * @brief Retrieves the time domain averaging setting.
      * @return An `etl::expected<TimeDomainAveraging, Error>` containing the averaging setting or an error.
      */
@@ -258,21 +284,8 @@ private:
     template <const AddressRange& addressRange>
     etl::expected<etl::array<uint8_t, addressRange.getSize()>, Error> readAddressRange();
 
-
-    etl::expected<void, Error> writeData(const etl::span<uint8_t>& data, uint32_t address);
+    etl::expected<void, Error> writeData(const etl::span<uint8_t>& data, const AddressRange& addressRange);
 };
-
-
-template <const AddressRange& addressRange>
-etl::expected<etl::array<uint8_t, addressRange.getSize()>, Error> WEOM::readAddressRange()
-{
-    if (!m_deviceInterface)
-    {
-        return etl::unexpected<Error>(Error::PROTOCOL__NO_DATALINK);
-    }
-    return m_deviceInterface->readAddressRange<addressRange>();
-}
-
 } // namespace wl
 
 #endif // WL_WEOM_H

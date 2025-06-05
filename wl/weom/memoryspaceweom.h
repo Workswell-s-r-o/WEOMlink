@@ -110,6 +110,8 @@ public:
 
     // NUC - 0x03xx
     static constexpr AddressRange NUC_UPDATE_MODE_CURRENT              = AddressRange::firstAndSize(0x0308, 4); ///< Address range of nuc update mode register
+    static constexpr AddressRange NUC_MAX_PERIOD_CURRENT               = AddressRange::firstAndSize(0x0320, 4);
+    static constexpr AddressRange NUC_ADAPTIVE_THRESHOLD_CURRENT       = AddressRange::firstAndSize(0x0324, 4);
 
     // Filters - 0x06xx
     static constexpr AddressRange TIME_DOMAIN_AVERAGE_CURRENT          = AddressRange::firstAndSize(0x0600, 4); ///< Address range of time domain average register
