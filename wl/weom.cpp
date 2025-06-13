@@ -135,11 +135,11 @@ etl::expected<uint8_t, Error> WEOM::getPaletteIndex()
     return result.value().at(0);
 }
 
-etl::expected<void, Error> WEOM::setPaletteIndex(uint8_t index)
+etl::expected<void, Error> WEOM::setPaletteIndex(uint8_t index, MemoryType memoryType)
 {
     etl::array<uint8_t, MemorySpaceWEOM::PALETTE_INDEX_CURRENT.getSize()> data = {};
     data.at(0) = index;
-    return writeData(data, MemorySpaceWEOM::PALETTE_INDEX_CURRENT);
+    return writeData(data, MemorySpaceWEOM::PALETTE_INDEX_CURRENT, memoryType);
 }
 
 etl::expected<Framerate, Error> WEOM::getFramerate()
@@ -227,11 +227,11 @@ etl::expected<ShutterUpdateMode, Error> WEOM::getShutterUpdateMode()
     return static_cast<ShutterUpdateMode>(result.value().at(0));
 }
 
-etl::expected<void, Error> WEOM::setShutterUpdateMode(ShutterUpdateMode mode)
+etl::expected<void, Error> WEOM::setShutterUpdateMode(ShutterUpdateMode mode, MemoryType memoryType)
 {
     etl::array<uint8_t, MemorySpaceWEOM::NUC_UPDATE_MODE_CURRENT.getSize()> data = {};
     data.at(0) = static_cast<uint8_t>(mode);
-    return writeData(data, MemorySpaceWEOM::NUC_UPDATE_MODE_CURRENT);
+    return writeData(data, MemorySpaceWEOM::NUC_UPDATE_MODE_CURRENT, memoryType);
 }
 
 etl::expected<uint16_t, Error> WEOM::getShutterMaxPeriod()
@@ -244,12 +244,12 @@ etl::expected<uint16_t, Error> WEOM::getShutterMaxPeriod()
     return (uint16_t(result.value().at(1)) << 8) | result.value().at(0);
 }
 
-etl::expected<void, Error> WEOM::setShutterMaxPeriod(uint16_t value)
+etl::expected<void, Error> WEOM::setShutterMaxPeriod(uint16_t value, MemoryType memoryType)
 {
     etl::array<uint8_t, MemorySpaceWEOM::NUC_MAX_PERIOD_CURRENT.getSize()> data = {};
     data.at(0) = static_cast<uint8_t>(value & 0x00FF);
     data.at(1) = static_cast<uint8_t>((value & 0xFF00) >> 8);
-    return writeData(data, MemorySpaceWEOM::NUC_MAX_PERIOD_CURRENT);
+    return writeData(data, MemorySpaceWEOM::NUC_MAX_PERIOD_CURRENT, memoryType);
 }
 
 etl::expected<double, Error> WEOM::getShutterAdaptiveThreshold()
@@ -262,7 +262,7 @@ etl::expected<double, Error> WEOM::getShutterAdaptiveThreshold()
     return unsignedFixedPointToDouble((uint16_t(result.value().at(1)) << 8) | result.value().at(0));
 }
 
-etl::expected<void, Error> WEOM::setShutterAdaptiveThreshold(double value)
+etl::expected<void, Error> WEOM::setShutterAdaptiveThreshold(double value, MemoryType memoryType)
 {
     const auto fixedValue = unsignedDoubleToFixedPoint(value);
     if (!fixedValue.has_value())
@@ -387,14 +387,14 @@ etl::expected<PresetId, Error> WEOM::getPresetId()
     return PresetId(range.value(), lens.value());
 }
 
-etl::expected<void, Error> WEOM::setPresetId(const PresetId& id)
+etl::expected<void, Error> WEOM::setPresetId(const PresetId& id, MemoryType memoryType)
 {
     etl::array<uint8_t, MemorySpaceWEOM::SELECTED_PRESET_ID.getSize()> data = {};
     data.at(0) = Range::getDeviceValue(id.getRange()) & 0x00FF;
     data.at(1) = (Range::getDeviceValue(id.getRange()) & 0xFF00) >> 8;
     data.at(2) = Lens::getDeviceValue(id.getLens()) & 0x00FF;
     data.at(3) = (Lens::getDeviceValue(id.getLens()) & 0xFF00) >> 8;
-    auto result = writeData(data, MemorySpaceWEOM::SELECTED_PRESET_ID);
+    auto result = writeData(data, MemorySpaceWEOM::SELECTED_PRESET_ID, memoryType);
     if (!result.has_value())
     {
         return etl::unexpected<Error>(result.error());
@@ -407,13 +407,21 @@ etl::expected<void, Error> WEOM::setPresetId(const PresetId& id)
     return {};
 }
 
-etl::expected<void, Error> WEOM::writeData(const etl::span<uint8_t>& data, const AddressRange& addressRange)
+etl::expected<void, Error> WEOM::writeData(const etl::span<uint8_t>& data, const AddressRange& addressRange, MemoryType memoryType)
 {
     if (!m_deviceInterface)
     {
         return etl::unexpected<Error>(wl::Error::PROTOCOL__NO_DATALINK);
     }
-    return m_deviceInterface->writeData(data, addressRange.getFirstAddress());
+    auto firstAddress = addressRange.getFirstAddress();
+    switch (memoryType) {
+    case MemoryType::RAM:
+        break;
+    case MemoryType::FLASH:
+        firstAddress += MemorySpaceWEOM::ADDRESS_FLASH_REGISTERS_START;
+        break;
+    }
+    return m_deviceInterface->writeData(data, firstAddress);
 }
 
 template <const AddressRange& addressRange>

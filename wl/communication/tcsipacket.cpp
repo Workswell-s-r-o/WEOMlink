@@ -29,6 +29,21 @@ TCSIPacket TCSIPacket::createWriteRequest(uint8_t packetId, uint32_t address, et
     return request;
 }
 
+TCSIPacket TCSIPacket::createBurstStartRequest(uint8_t packetId, uint32_t address)
+{
+    uint8_t payloadData[] = {0, 0, 0, 1};
+    const auto request = createPacket(static_cast<uint8_t>(Command::FLASH_BURST_START), packetId, address, payloadData);
+    assert(request.validateAsRequest().has_value());
+    return request;
+}
+
+TCSIPacket TCSIPacket::createBurstEndRequest(uint8_t packetId, uint32_t address)
+{
+    const auto request = createPacket(static_cast<uint8_t>(Command::FLASH_BURST_END), packetId, address, etl::span<const uint8_t>());
+    assert(request.validateAsRequest().has_value());
+    return request;
+}
+
 TCSIPacket TCSIPacket::createOkResponse(uint8_t packetId, uint32_t address, etl::span<const uint8_t> payloadData)
 {
     const auto response = createPacket(static_cast<uint8_t>(Status::OK), packetId, address, payloadData);
@@ -85,14 +100,26 @@ etl::expected<void, Error> TCSIPacket::validate() const
         return etl::unexpected<Error>(Error::TCSI__INVALID_SYNCHRONIZATION_VALUE);
     }
 
-    if (getStatusOrCommand() != static_cast<uint8_t>(Command::READ) && getStatusOrCommand() != static_cast<uint8_t>(Command::WRITE) &&
-        getStatusOrCommand() != static_cast<uint8_t>(Status::OK) && getStatusOrCommand() != static_cast<uint8_t>(Status::CAMERA_NOT_READY) &&
-        getStatusOrCommand() != static_cast<uint8_t>(Status::UNKNOWN_COMMAND) && getStatusOrCommand() != static_cast<uint8_t>(Status::WRONG_CHECKSUM) &&
-        getStatusOrCommand() != static_cast<uint8_t>(Status::WRONG_ADDRESS) && getStatusOrCommand() != static_cast<uint8_t>(Status::WRONG_ARGUMENT_COUNT) &&
-        getStatusOrCommand() != static_cast<uint8_t>(Status::FLASH_BURST_ERROR) && getStatusOrCommand() != static_cast<uint8_t>(Status::INVALID_SETTINGS) &&
-        getStatusOrCommand() != static_cast<uint8_t>(Status::INCORRECT_VALUE))
+    switch (getStatusOrCommand())
     {
-        return etl::unexpected<Error>(Error::TCSI__INVALID_STATUS_OR_COMMAND);
+    case static_cast<uint8_t>(Command::READ):
+    case static_cast<uint8_t>(Command::WRITE):
+    case static_cast<uint8_t>(Command::FLASH_BURST_START):
+    case static_cast<uint8_t>(Command::FLASH_BURST_END):
+        break;
+
+    case static_cast<uint8_t>(Status::OK):
+    case static_cast<uint8_t>(Status::CAMERA_NOT_READY):
+    case static_cast<uint8_t>(Status::UNKNOWN_COMMAND):
+    case static_cast<uint8_t>(Status::WRONG_CHECKSUM):
+    case static_cast<uint8_t>(Status::WRONG_ADDRESS):
+    case static_cast<uint8_t>(Status::WRONG_ARGUMENT_COUNT):
+    case static_cast<uint8_t>(Status::FLASH_BURST_ERROR):
+    case static_cast<uint8_t>(Status::INVALID_SETTINGS):
+    case static_cast<uint8_t>(Status::INCORRECT_VALUE):
+        break;
+    default:
+        return etl::unexpected<Error>(Error::TCSI__INVALID_STATUS_OR_COMMAND);;
     }
 
     if (m_packetData.at(COUNT_POSITION) != getPayloadDataImpl().size())
@@ -169,25 +196,36 @@ etl::expected<void, Error> TCSIPacket::validateAsRequest() const
         return validationResult;
     }
 
-    if (getStatusOrCommand() == static_cast<uint8_t>(Command::READ))
+    switch (getStatusOrCommand())
     {
+    case static_cast<uint8_t>(Command::READ):
         if (getPayloadDataImpl().size() != 1)
         {
             return etl::unexpected<Error>(Error::TCSI__INVALID_SIZE);
         }
-    }
-    else if (getStatusOrCommand() == static_cast<uint8_t>(Command::WRITE))
-    {
+        break;
+    case static_cast<uint8_t>(Command::WRITE):
         if (getPayloadDataImpl().size() == 0)
         {
             return etl::unexpected<Error>(Error::TCSI__INVALID_SIZE);
         }
-    }
-    else
-    {
-        return etl::unexpected<Error>(Error::TCSI__INVALID_STATUS_OR_COMMAND);
-    }
+        break;
+    case static_cast<uint8_t>(Command::FLASH_BURST_START):
+        if (getPayloadDataImpl().size() != 4)
+        {
+            return etl::unexpected<Error>(Error::TCSI__INVALID_SIZE);
+        }
+        break;
+    case static_cast<uint8_t>(Command::FLASH_BURST_END):
+        if (getPayloadDataImpl().size() != 0)
+        {
+            return etl::unexpected<Error>(Error::TCSI__INVALID_SIZE);
+        }
+        break;
 
+    default:
+        return etl::unexpected<Error>(Error::TCSI__INVALID_STATUS_OR_COMMAND);;
+    }
     return {};
 }
 

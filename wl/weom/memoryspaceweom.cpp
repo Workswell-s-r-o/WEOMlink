@@ -29,8 +29,10 @@ const etl::ivector<MemoryDescriptorWEOM>& MemorySpaceWEOM::getMemoryDescriptors(
 
 MemorySpaceWEOM MemorySpaceWEOM::getDeviceSpace()
 {
-    etl::vector<MemoryDescriptorWEOM, 1> memoryDescriptors;
-    memoryDescriptors.push_back(MemoryDescriptorWEOM{CONFIGURATION_REGISTERS, MemoryTypeWEOM::REGISTERS_CONFIGURATION});
+    etl::vector<MemoryDescriptorWEOM, 2> memoryDescriptors = {
+        MemoryDescriptorWEOM{CONFIGURATION_REGISTERS, MemoryTypeWEOM::REGISTERS_CONFIGURATION},
+        MemoryDescriptorWEOM{FLASH_MEMORY, MemoryTypeWEOM::FLASH_MEMORY},
+    };
     return MemorySpaceWEOM(memoryDescriptors);
 
 }
@@ -47,26 +49,25 @@ uint32_t MemoryDescriptorWEOM::getMinimumDataSize(MemoryTypeWEOM type)
 {
     switch (type)
     {
-        case MemoryTypeWEOM::REGISTERS_CONFIGURATION:
-            return 4;
-
-        default:
-            assert(false);
-            return 0;
+    case MemoryTypeWEOM::REGISTERS_CONFIGURATION:
+    case MemoryTypeWEOM::FLASH_MEMORY:
+        return 4;
     }
+    assert(false);
+    return 0;
 }
 
 uint32_t MemoryDescriptorWEOM::getMaximumDataSize(MemoryTypeWEOM type)
 {
     switch (type)
     {
-        case MemoryTypeWEOM::REGISTERS_CONFIGURATION:
-            return 4;
+    case MemoryTypeWEOM::REGISTERS_CONFIGURATION:
+    case MemoryTypeWEOM::FLASH_MEMORY:
+        return 4;
 
-        default:
-            assert(false);
-            return 0;
     }
+    assert(false);
+    return 0;
 }
 
 } // namespace wl

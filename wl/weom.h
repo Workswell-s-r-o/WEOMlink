@@ -41,6 +41,12 @@ namespace wl {
 class WEOM
 {
 public:
+    enum class MemoryType
+    {
+        RAM,
+        FLASH,
+    };
+
     /**
      * @brief Creates WEOM class
      * @param sleepFunction User-defined function to handle delays, taking a duration as input.
@@ -103,9 +109,10 @@ public:
     /**
      * @brief Sets the palette index.
      * @param index The palette index to set.
+     * @param memoryType The memory region to set.
      * @return An `etl::expected<void, Error>` indicating success or failure.
      */
-    [[nodiscard]] etl::expected<void, Error> setPaletteIndex(uint8_t index);
+    [[nodiscard]] etl::expected<void, Error> setPaletteIndex(uint8_t index, MemoryType memoryType);
 
     /**
      * @brief Retrieves the current frame rate setting.
@@ -168,9 +175,10 @@ public:
     /**
      * @brief Sets the shutter update mode.
      * @param mode The shutter update mode.
+     * @param memoryType The memory region to set.
      * @return An `etl::expected<void, Error>` indicating success or failure.
      */
-    [[nodiscard]] etl::expected<void, Error> setShutterUpdateMode(ShutterUpdateMode mode);
+    [[nodiscard]] etl::expected<void, Error> setShutterUpdateMode(ShutterUpdateMode mode, MemoryType memoryType);
 
     /**
      * @brief Retrieves the shutter max period.
@@ -181,9 +189,10 @@ public:
     /**
      * @brief Sets the shutter max period.
      * @param mode The shutter max period.
+     * @param memoryType The memory region to set.
      * @return An `etl::expected<void, Error>` indicating success or failure.
      */
-    [[nodiscard]] etl::expected<void, Error> setShutterMaxPeriod(uint16_t value);
+    [[nodiscard]] etl::expected<void, Error> setShutterMaxPeriod(uint16_t value, MemoryType memoryType);
 
     /**
      * @brief Retrieves the shutter adaptive threshold.
@@ -194,9 +203,10 @@ public:
     /**
      * @brief Sets the shutter adaptive threshold.
      * @param mode The shutter adaptive threshold.
+     * @param memoryType The memory region to set.
      * @return An `etl::expected<void, Error>` indicating success or failure.
      */
-    [[nodiscard]] etl::expected<void, Error> setShutterAdaptiveThreshold(double value);
+    [[nodiscard]] etl::expected<void, Error> setShutterAdaptiveThreshold(double value, MemoryType memoryType);
 
     /**
      * @brief Retrieves the time domain averaging setting.
@@ -272,9 +282,10 @@ public:
     /**
      * @brief Sets the preset ID.
      * @param id The preset ID to set.
+     * @param memoryType The memory region to set.
      * @return An `etl::expected<void, Error>` indicating success or failure.
      */
-    [[nodiscard]] etl::expected<void, Error> setPresetId(const PresetId& id);
+    [[nodiscard]] etl::expected<void, Error> setPresetId(const PresetId& id, MemoryType memoryType);
     
 private:
     etl::unique_ptr<DeviceInterfaceWEOM> m_deviceInterface;
@@ -284,7 +295,7 @@ private:
     template <const AddressRange& addressRange>
     etl::expected<etl::array<uint8_t, addressRange.getSize()>, Error> readAddressRange();
 
-    etl::expected<void, Error> writeData(const etl::span<uint8_t>& data, const AddressRange& addressRange);
+    etl::expected<void, Error> writeData(const etl::span<uint8_t>& data, const AddressRange& addressRange, MemoryType memoryType = MemoryType::RAM);
 };
 } // namespace wl
 

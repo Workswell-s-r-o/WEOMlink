@@ -16,6 +16,7 @@ namespace wl {
 enum class MemoryTypeWEOM
 {
     REGISTERS_CONFIGURATION = 1 << 0,
+    FLASH_MEMORY            = 1 << 1,
 };
 
 /**
@@ -90,6 +91,8 @@ public:
     static MemorySpaceWEOM getDeviceSpace();
 
     static constexpr AddressRange CONFIGURATION_REGISTERS              = AddressRange::firstToLast(0x00000000, 0x00000FFF); ///< Address range of configuration registers
+    static constexpr AddressRange FLASH_MEMORY                         = AddressRange::firstToLast(0xD0000000, 0xDFFFFFFF);
+    static constexpr uint32_t ADDRESS_FLASH_REGISTERS_START            = FLASH_MEMORY.getFirstAddress() + 0x00800000;
 
     // Control - 0x00xx
     static constexpr AddressRange DEVICE_IDENTIFICATOR                 = AddressRange::firstAndSize(0x0000, 4); ///< Address range of device identificator
