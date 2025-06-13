@@ -65,6 +65,22 @@ public:
     [[nodiscard]] static TCSIPacket createWriteRequest(uint8_t packetId, uint32_t address, etl::span<const uint8_t> payloadData);
 
     /**
+     * @brief Creates a burst start request packet.
+     * @param packetId The ID of the packet.
+     * @param address The flash address for the write operation.
+     * @return A TCSIPacket object representing the burst start request.
+     */
+    [[nodiscard]] static TCSIPacket createBurstStartRequest(uint8_t packetId, uint32_t address);
+
+    /**
+     * @brief Creates a burst end request packet.
+     * @param packetId The ID of the packet.
+     * @param address The memory address for the burst end operation.
+     * @return A TCSIPacket object representing the burst end request.
+     */
+    [[nodiscard]] static TCSIPacket createBurstEndRequest(uint8_t packetId, uint32_t address);
+
+    /**
      * @brief Creates an OK response packet.
      * @param packetId The ID of the packet.
      * @param address The memory address related to the response.
@@ -181,6 +197,8 @@ private:
     {
         READ  = 0x80,
         WRITE = 0x81,
+        FLASH_BURST_START = 0x82,
+        FLASH_BURST_END   = 0x83,
     };
 
     uint8_t getStatusOrCommand() const;

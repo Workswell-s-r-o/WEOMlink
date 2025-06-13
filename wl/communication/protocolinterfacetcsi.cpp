@@ -1,6 +1,6 @@
 #include "wl/communication/protocolinterfacetcsi.h"
 
-#include "wl/communication/addressrange.h"
+#include "wl/weom/memoryspaceweom.h"
 #include "wl/communication/idatalinkinterface.h"
 #include "wl/misc/elapsedtimer.h"
 
@@ -77,6 +77,23 @@ etl::expected<void, Error> ProtocolInterfaceTCSI::writeData(const etl::span<cons
     }
 
     etl::lock_guard lock(m_mutex);
+
+    if (MemorySpaceWEOM::FLASH_MEMORY.contains(address))
+    {
+        auto burstStartRequest = TCSIPacket::createBurstStartRequest(++m_lastPacketId, address);
+        if (auto result =  writeDataImpl(burstStartRequest, address, timeout); !result.has_value())
+        {
+            return etl::unexpected<Error>(result.error());
+        }
+
+        auto writeRequest = TCSIPacket::createWriteRequest(++m_lastPacketId, address, data);
+        if (auto result =  writeDataImpl(writeRequest, address, timeout); !result.has_value())
+        {
+            return etl::unexpected<Error>(result.error());
+        }
+        auto burstEndRequest = TCSIPacket::createBurstEndRequest(++m_lastPacketId, address);
+        return writeDataImpl(burstEndRequest, address, timeout);
+    }
 
     auto writeRequest = TCSIPacket::createWriteRequest(++m_lastPacketId, address, data);
     return writeDataImpl(writeRequest, address, timeout);
