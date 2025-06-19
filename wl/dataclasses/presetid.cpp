@@ -105,6 +105,7 @@ uint16_t Lens::getDeviceValue(const Lens item)
         case WTC_25: return 0x01;
         case WTC_14: return 0x02;
         case WTC_7_5: return 0x03;
+        case WTC_50: return 0x04;
         case USER_1: return 0x07;
         case USER_2: return 0x08;
     }
