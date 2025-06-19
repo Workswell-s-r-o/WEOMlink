@@ -72,7 +72,7 @@ etl::expected<Status, Error> WEOM::getStatus()
     {
         return etl::unexpected<Error>(result.error());
     }
-    return Status(result.value().at(0) || (result.value().at(1) << 8) || (result.value().at(1) << 16) || (result.value().at(1) << 24));
+    return Status(uint32_t(result.value().at(0)) | (uint32_t(result.value().at(1)) << 8) | (uint32_t(result.value().at(2)) << 16) | (uint32_t(result.value().at(3)) << 24));
 }
 
 etl::expected<Triggers, Error> WEOM::getTriggers()
@@ -82,7 +82,7 @@ etl::expected<Triggers, Error> WEOM::getTriggers()
     {
         return etl::unexpected<Error>(result.error());
     }
-    return Triggers(result.value().at(0) || (result.value().at(1) << 8) || (result.value().at(1) << 16) || (result.value().at(1) << 24));
+    return Triggers(uint32_t(result.value().at(0)) | (uint32_t(result.value().at(1)) << 8) | (uint32_t(result.value().at(2)) << 16) | (uint32_t(result.value().at(3)) << 24));
 }
 
 etl::expected<void, Error> WEOM::activateTrigger(Trigger trigger)
@@ -148,7 +148,7 @@ etl::expected<Framerate, Error> WEOM::getFramerate()
     if (!result.has_value())
     {
         return etl::unexpected<Error>(result.error());
-    } 
+    }
     return static_cast<Framerate>(result.value().at(0));
 }
 
@@ -387,19 +387,34 @@ etl::expected<PresetId, Error> WEOM::getPresetId()
     return PresetId(range.value(), lens.value());
 }
 
-etl::expected<void, Error> WEOM::setPresetId(const PresetId& id, MemoryType memoryType)
+etl::expected<void, Error> WEOM::setPresetId(const PresetId& id)
 {
     etl::array<uint8_t, MemorySpaceWEOM::SELECTED_PRESET_ID.getSize()> data = {};
     data.at(0) = Range::getDeviceValue(id.getRange()) & 0x00FF;
     data.at(1) = (Range::getDeviceValue(id.getRange()) & 0xFF00) >> 8;
     data.at(2) = Lens::getDeviceValue(id.getLens()) & 0x00FF;
     data.at(3) = (Lens::getDeviceValue(id.getLens()) & 0xFF00) >> 8;
-    auto result = writeData(data, MemorySpaceWEOM::SELECTED_PRESET_ID, memoryType);
+    auto result = writeData(data, MemorySpaceWEOM::SELECTED_PRESET_ID);
     if (!result.has_value())
     {
         return etl::unexpected<Error>(result.error());
     }
     result = activateTrigger(Trigger::SET_SELECTED_PRESET);
+    if (!result.has_value())
+    {
+        return etl::unexpected<Error>(result.error());
+    }
+    return {};
+}
+
+etl::expected<void, Error> WEOM::saveCurrentPresetIndexToFlash()
+{
+    auto readResult = readAddressRange<MemorySpaceWEOM::CURRENT_PRESET_INDEX>();
+    if (!readResult.has_value())
+    {
+        return etl::unexpected<Error>(readResult.error());
+    }
+    auto result = writeData(readResult.value(), MemorySpaceWEOM::SELECTED_PRESET_INDEX, MemoryType::FLASH);
     if (!result.has_value())
     {
         return etl::unexpected<Error>(result.error());

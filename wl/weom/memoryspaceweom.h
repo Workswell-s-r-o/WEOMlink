@@ -124,6 +124,8 @@ public:
     static constexpr AddressRange SPATIAL_MEDIAN_FILTER_ENABLE_CURRENT = AddressRange::firstAndSize(0x0614, 4); ///< Address range of spatial median filter enable register
 
     // Presets - 0x0Axx
+    static constexpr AddressRange SELECTED_PRESET_INDEX               = AddressRange::firstAndSize(0x0A00, 4);
+    static constexpr AddressRange CURRENT_PRESET_INDEX                = AddressRange::firstAndSize(0x0A04, 4);
     static constexpr AddressRange SELECTED_PRESET_ID                  = AddressRange::firstAndSize(0x0A14, 4); ///< Address range of selected preset ID
     static constexpr AddressRange CURRENT_PRESET_ID                   = AddressRange::firstAndSize(0x0A18, 4); ///< Address range of current preset ID
 
