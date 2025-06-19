@@ -285,8 +285,14 @@ public:
      * @param memoryType The memory region to set.
      * @return An `etl::expected<void, Error>` indicating success or failure.
      */
-    [[nodiscard]] etl::expected<void, Error> setPresetId(const PresetId& id, MemoryType memoryType);
-    
+    [[nodiscard]] etl::expected<void, Error> setPresetId(const PresetId& id);
+
+    /**
+     * @brief Save current preset index to flash memory.
+     * @return An `etl::expected<void, Error>` indicating success or failure.
+     */
+    [[nodiscard]] etl::expected<void, Error> saveCurrentPresetIndexToFlash();
+
 private:
     etl::unique_ptr<DeviceInterfaceWEOM> m_deviceInterface;
     uint8_t m_lastPacketId;
