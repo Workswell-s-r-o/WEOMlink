@@ -93,6 +93,7 @@ struct Lens
         WTC_25,      ///< L-WTC-25-12
         WTC_14,      ///< L-WTC-14-12
         WTC_7_5,     ///< L-WTC-7-12
+        WTC_50,
         USER_1,      ///< User 1
         USER_2,      ///< User 2
     };
@@ -124,6 +125,7 @@ struct Lens
     ETL_ENUM_TYPE(WTC_25, "WTC_25")
     ETL_ENUM_TYPE(WTC_14, "WTC_14")
     ETL_ENUM_TYPE(WTC_7_5, "WTC_7_5")
+    ETL_ENUM_TYPE(WTC_50, "WTC_50")
     ETL_ENUM_TYPE(USER_1, "USER_1")
     ETL_ENUM_TYPE(USER_2, "USER_2")
     ETL_END_ENUM_TYPE
