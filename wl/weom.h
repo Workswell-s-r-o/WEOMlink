@@ -32,10 +32,10 @@ namespace wl {
  * @brief Class for managing WEOM device configurations and operations.
  *
  * @details
- * This class provides methods to access and modify settings on the WEOM device, such as triggering actions, 
+ * This class provides methods to access and modify settings on the WEOM device, such as triggering actions,
  * managing image settings, and retrieving system status and identification information.
- * 
- * @note The data link interface must be set using the `WEOM::setDataLinkInterface` method before invoking other methods. 
+ *
+ * @note The data link interface must be set using the `WEOM::setDataLinkInterface` method before invoking other methods.
  * Without a properly configured data link interface, the device cannot be accessed or configured.
  */
 class WEOM
@@ -93,7 +93,7 @@ public:
      * @return An `etl::expected<etl::string<WEOM::ARTICLE_NUMBER_STRING_SIZE>, Error>` containing the article number or an error.
      */
     [[nodiscard]] etl::expected<etl::string<ARTICLE_NUMBER_STRING_SIZE>, Error> getArticleNumber();
-    
+
     /**
      * @brief Retrieves the firmware version of the device.
      * @return An `etl::expected<FirmwareVersion, Error>` containing the firmware version or an error.
@@ -171,6 +171,12 @@ public:
      * @return An `etl::expected<ShutterUpdateMode, Error>` containing the shutter mode or an error.
      */
     [[nodiscard]] etl::expected<ShutterUpdateMode, Error> getShutterUpdateMode();
+
+    /**
+     * @brief Retrieves the shutter temperature.
+     * @return An `etl::expected<ShutterUpdateMode, Error>` containing the shutter temperature or an error.
+     */
+    [[nodiscard]] etl::expected<double, Error> getShutterTemperature();
 
     /**
      * @brief Sets the shutter update mode.
@@ -292,6 +298,14 @@ public:
      * @return An `etl::expected<void, Error>` indicating success or failure.
      */
     [[nodiscard]] etl::expected<void, Error> saveCurrentPresetIndexToFlash();
+
+    enum class VideoFormat : std::uint8_t
+    {
+        PRE_IGC = 0,
+        POST_IGC = 1,
+    };
+
+    [[nodiscard]] etl::expected<void, Error> setVideoFormat(VideoFormat videoFormat, MemoryType memoryType);
 
 private:
     etl::unique_ptr<DeviceInterfaceWEOM> m_deviceInterface;

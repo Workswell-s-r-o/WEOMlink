@@ -56,8 +56,8 @@ etl::expected<void, Error> WEOM::setDataLinkInterface(etl::unique_ptr<IDataLinkI
     static constexpr uint8_t WEOM_IDENTIFICATOR_BYTE_0 = 0x57;
     static constexpr uint8_t WEOM_IDENTIFICATOR_BYTE_1 = 0x06;
     static constexpr uint8_t WEOM_IDENTIFICATOR_BYTE_2 = 0x4D;
-    if ((result.value().at(0) != WEOM_IDENTIFICATOR_BYTE_0) 
-        || (result.value().at(1) != WEOM_IDENTIFICATOR_BYTE_1) 
+    if ((result.value().at(0) != WEOM_IDENTIFICATOR_BYTE_0)
+        || (result.value().at(1) != WEOM_IDENTIFICATOR_BYTE_1)
         || (result.value().at(2) != WEOM_IDENTIFICATOR_BYTE_2))
     {
         return etl::unexpected<Error>(Error::DEVICE__NO_PROTOCOL);
@@ -121,7 +121,7 @@ etl::expected<FirmwareVersion, Error> WEOM::getFirmwareVersion()
     if (!result.has_value())
     {
         return etl::unexpected<Error>(result.error());
-    } 
+    }
     return FirmwareVersion(result.value().at(3), result.value().at(2), (result.value().at(1) << 8) | result.value().at(0));
 }
 
@@ -131,7 +131,7 @@ etl::expected<uint8_t, Error> WEOM::getPaletteIndex()
     if (!result.has_value())
     {
         return etl::unexpected<Error>(result.error());
-    } 
+    }
     return result.value().at(0);
 }
 
@@ -174,7 +174,7 @@ etl::expected<void, Error> WEOM::setImageFlip(const ImageFlip& flip)
     etl::array<uint8_t, MemorySpaceWEOM::IMAGE_FLIP_CURRENT.getSize()> data = {};
     if (flip.getVerticalFlip())
     {
-        data.at(0) |= 0b01; 
+        data.at(0) |= 0b01;
     }
     if (flip.getHorizontalFlip())
     {
@@ -225,6 +225,16 @@ etl::expected<ShutterUpdateMode, Error> WEOM::getShutterUpdateMode()
         return etl::unexpected<Error>(result.error());
     }
     return static_cast<ShutterUpdateMode>(result.value().at(0));
+}
+
+etl::expected<double, Error> WEOM::getShutterTemperature()
+{
+    auto result = readAddressRange<MemorySpaceWEOM::SHUTTER_TEMPERATURE>();
+    if (!result.has_value())
+    {
+        return etl::unexpected<Error>(result.error());
+    }
+    return unsignedFixedPointToDouble((uint16_t(result.value().at(1)) << 8) | result.value().at(0));
 }
 
 etl::expected<void, Error> WEOM::setShutterUpdateMode(ShutterUpdateMode mode, MemoryType memoryType)
@@ -317,7 +327,7 @@ etl::expected<ContrastBrightness, Error> WEOM::getMgcContrastBrightness()
     {
         return etl::unexpected<Error>(result.error());
     }
-    return ContrastBrightness(static_cast<uint16_t>((result.value().at(1) << 8) | result.value().at(0)), 
+    return ContrastBrightness(static_cast<uint16_t>((result.value().at(1) << 8) | result.value().at(0)),
                               static_cast<uint16_t>((result.value().at(3) << 8) | result.value().at(2)));
 }
 
@@ -420,6 +430,13 @@ etl::expected<void, Error> WEOM::saveCurrentPresetIndexToFlash()
         return etl::unexpected<Error>(result.error());
     }
     return {};
+}
+
+etl::expected<void, Error> WEOM::setVideoFormat(VideoFormat videoFormat, MemoryType memoryType)
+{
+    etl::array<uint8_t, MemorySpaceWEOM::VIDEO_FORMAT.getSize()> data = {};
+    data.at(0) = static_cast<uint8_t>(videoFormat);
+    return writeData(data, MemorySpaceWEOM::VIDEO_FORMAT, memoryType);
 }
 
 etl::expected<void, Error> WEOM::writeData(const etl::span<uint8_t>& data, const AddressRange& addressRange, MemoryType memoryType)
