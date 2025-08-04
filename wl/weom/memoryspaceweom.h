@@ -101,6 +101,7 @@ public:
 
     // General - 0x01xx
     static constexpr AddressRange MAIN_FIRMWARE_VERSION                = AddressRange::firstAndSize(0x0100, 4);  ///< Address range of firmware version
+    static constexpr AddressRange SHUTTER_TEMPERATURE                  = AddressRange::firstAndSize(0x0110, 4);
     static constexpr AddressRange SERIAL_NUMBER_CURRENT                = AddressRange::firstAndSize(0x0114, 32); ///< Address range of serial number
     static constexpr AddressRange ARTICLE_NUMBER_CURRENT               = AddressRange::firstAndSize(0x0134, 32); ///< Address range of article number
 
@@ -108,6 +109,7 @@ public:
     static constexpr AddressRange PALETTE_INDEX_CURRENT                = AddressRange::firstAndSize(0x0200, 4); ///< Address range of palette index register
     static constexpr AddressRange FRAME_RATE_CURRENT                   = AddressRange::firstAndSize(0x0204, 4); ///< Address range of framerate register
     static constexpr AddressRange IMAGE_FLIP_CURRENT                   = AddressRange::firstAndSize(0x0208, 4); ///< Address range of image flip register
+    static constexpr AddressRange VIDEO_FORMAT                         = AddressRange::firstAndSize(0x0210, 4);
     static constexpr AddressRange IMAGE_FREEZE                         = AddressRange::firstAndSize(0x020C, 4); ///< Address range of image freeze register
     static constexpr AddressRange TEST_PATTERN                         = AddressRange::firstAndSize(0x0214, 4); ///< Address range of test pattern register
 
