@@ -225,7 +225,7 @@ public:
      * @param averaging The time domain averaging setting to apply.
      * @return An `etl::expected<void, Error>` indicating success or failure.
      */
-    [[nodiscard]] etl::expected<void, Error> setTimeDomainAveraging(TimeDomainAveraging averaging);
+    [[nodiscard]] etl::expected<void, Error> setTimeDomainAveraging(TimeDomainAveraging averaging, MemoryType memoryType);
 
     /**
      * @brief Retrieves the image equalization type.
@@ -238,7 +238,7 @@ public:
      * @param type The desired equalization type.
      * @return An `etl::expected<void, Error>` indicating success or failure.
      */
-    [[nodiscard]] etl::expected<void, Error> setImageEqualizationType(ImageEqualizationType type);
+    [[nodiscard]] etl::expected<void, Error> setImageEqualizationType(ImageEqualizationType type, MemoryType memoryType);
 
     /**
      * @brief Retrieves the contrast and brightness settings.
@@ -251,7 +251,7 @@ public:
      * @param contrastBrightness The contrast and brightness settings to apply.
      * @return An `etl::expected<void, Error>` indicating success or failure.
      */
-    [[nodiscard]] etl::expected<void, Error> setMgcContrastBrightness(const ContrastBrightness& contrastBrightness);
+    [[nodiscard]] etl::expected<void, Error> setMgcContrastBrightness(const ContrastBrightness& contrastBrightness, MemoryType memoryType);
 
     /**
      * @brief Retrieves the AGC NH smoothing frames setting.
@@ -264,7 +264,7 @@ public:
      * @param frames The number of smoothing frames.
      * @return An `etl::expected<void, Error>` indicating success or failure.
      */
-    [[nodiscard]] etl::expected<void, Error> setAgcNhSmoothingFrames(uint8_t frames);
+    [[nodiscard]] etl::expected<void, Error> setAgcNhSmoothingFrames(uint8_t frames, MemoryType memoryType);
 
     /**
      * @brief Checks if the spatial median filter is enabled.
@@ -277,7 +277,16 @@ public:
      * @param enabled Boolean to enable or disable the filter.
      * @return An `etl::expected<void, Error>` indicating success or failure.
      */
-    [[nodiscard]] etl::expected<void, Error> setSpatialMedianFilterEnabled(bool enabled);
+    [[nodiscard]] etl::expected<void, Error> setSpatialMedianFilterEnabled(bool enabled, MemoryType memoryType);
+
+    [[nodiscard]] etl::expected<uint8_t, Error> getLinearGainWeight();
+    [[nodiscard]] etl::expected<void, Error> setLinearGainWeight(uint8_t value, MemoryType memoryType);
+
+    [[nodiscard]] etl::expected<uint8_t, Error> getClipLimit();
+    [[nodiscard]] etl::expected<void, Error> setClipLimit(uint8_t value, MemoryType memoryType);
+
+    [[nodiscard]] etl::expected<uint8_t, Error> getPlateauTailRejection();
+    [[nodiscard]] etl::expected<void, Error> setPlateauTailRejection(uint8_t value, MemoryType memoryType);
 
     /**
      * @brief Retrieves the current preset ID.
