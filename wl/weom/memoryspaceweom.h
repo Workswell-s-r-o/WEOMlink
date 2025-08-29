@@ -124,6 +124,9 @@ public:
     static constexpr AddressRange MGC_CONTRAST_BRIGHTNESS_CURRENT      = AddressRange::firstAndSize(0x0608, 4); ///< Address range of MGC contrast brightness register
     static constexpr AddressRange AGC_NH_SMOOTHING_CURRENT             = AddressRange::firstAndSize(0x0610, 4); ///< Address range of AGC NH smoothing register
     static constexpr AddressRange SPATIAL_MEDIAN_FILTER_ENABLE_CURRENT = AddressRange::firstAndSize(0x0614, 4); ///< Address range of spatial median filter enable register
+    static constexpr AddressRange LINEAR_GAIN_WEIGHT                   = AddressRange::firstAndSize(0x0620, 4);
+    static constexpr AddressRange CLIP_LIMIT                           = AddressRange::firstAndSize(0x0624, 4);
+    static constexpr AddressRange PLATEAU_TAIL_REJECTION               = AddressRange::firstAndSize(0x0628, 4);
 
     // Presets - 0x0Axx
     static constexpr AddressRange SELECTED_PRESET_INDEX               = AddressRange::firstAndSize(0x0A00, 4);
