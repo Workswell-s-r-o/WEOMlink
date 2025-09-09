@@ -115,6 +115,13 @@ public:
     [[nodiscard]] etl::expected<void, Error> setPaletteIndex(uint8_t index, MemoryType memoryType);
 
     /**
+     * @brief Gets the palette name.
+     * @param index The palette index to get.
+     * @return An `etl::expected<etl::string<MemorySpaceWEOM::PALETTE_NAME_SIZE>, Error>` indicating success or failure.
+     */
+    [[nodiscard]] etl::expected<etl::string<MemorySpaceWEOM::PALETTE_NAME_SIZE>, Error> getPaletteName(unsigned paletteIndex);
+
+    /**
      * @brief Retrieves the current frame rate setting.
      * @return An `etl::expected<Framerate, Error>` containing the frame rate or an error.
      */
