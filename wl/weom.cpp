@@ -142,6 +142,23 @@ etl::expected<void, Error> WEOM::setPaletteIndex(uint8_t index, MemoryType memor
     return writeData(data, MemorySpaceWEOM::PALETTE_INDEX_CURRENT, memoryType);
 }
 
+etl::expected<etl::string<MemorySpaceWEOM::PALETTE_NAME_SIZE>, Error> WEOM::getPaletteName(unsigned paletteIndex)
+{
+    if (!m_deviceInterface)
+    {
+        return etl::unexpected<Error>(Error::PROTOCOL__NO_DATALINK);
+    }
+
+    const auto addressRange = MemorySpaceWEOM::getPaletteNameAddressRange(paletteIndex);
+    etl::array<uint8_t, MemorySpaceWEOM::PALETTE_NAME_SIZE> data = {};
+    auto result = m_deviceInterface->readData(data, addressRange.getFirstAddress());
+    if (!result.has_value())
+    {
+        return etl::unexpected(result.error());
+    }
+    return etl::string<MemorySpaceWEOM::PALETTE_NAME_SIZE>(data.begin(), data.end());
+}
+
 etl::expected<Framerate, Error> WEOM::getFramerate()
 {
     auto result = readAddressRange<MemorySpaceWEOM::FRAME_RATE_CURRENT>();

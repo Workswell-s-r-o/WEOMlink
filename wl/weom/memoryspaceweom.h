@@ -90,7 +90,7 @@ public:
      */
     static MemorySpaceWEOM getDeviceSpace();
 
-    static constexpr AddressRange CONFIGURATION_REGISTERS              = AddressRange::firstToLast(0x00000000, 0x00000FFF); ///< Address range of configuration registers
+    static constexpr AddressRange CONFIGURATION_REGISTERS              = AddressRange::firstToLast(0x00000000, 0x300040FF); ///< Address range of configuration registers
     static constexpr AddressRange FLASH_MEMORY                         = AddressRange::firstToLast(0xD0000000, 0xDFFFFFFF);
     static constexpr uint32_t ADDRESS_FLASH_REGISTERS_START            = FLASH_MEMORY.getFirstAddress() + 0x00800000;
 
@@ -134,9 +134,23 @@ public:
     static constexpr AddressRange SELECTED_PRESET_ID                  = AddressRange::firstAndSize(0x0A14, 4); ///< Address range of selected preset ID
     static constexpr AddressRange CURRENT_PRESET_ID                   = AddressRange::firstAndSize(0x0A18, 4); ///< Address range of current preset ID
 
+    // Palettes data
+    static constexpr unsigned PALETTES_FACTORY_MAX_COUNT = 14;
+    static constexpr unsigned PALETTES_USER_MAX_COUNT = 2;
+    static constexpr uint32_t PALETTE_NAME_SIZE = 16;
+    static constexpr AddressRange PALETTES_REGISTERS = AddressRange::firstToLast(0x30000000, 0x300040FF);
+
+    static constexpr AddressRange getPaletteNameAddressRange(unsigned paletteIndex);
+
 private:
     etl::vector<MemoryDescriptorWEOM, 10> m_memoryDescriptors;
 };
+
+constexpr AddressRange MemorySpaceWEOM::getPaletteNameAddressRange(unsigned paletteIndex)
+{
+    assert(paletteIndex < (PALETTES_FACTORY_MAX_COUNT + PALETTES_USER_MAX_COUNT));
+    return AddressRange::firstAndSize(PALETTES_REGISTERS.getFirstAddress() + 0x4000 + paletteIndex * PALETTE_NAME_SIZE, PALETTE_NAME_SIZE);
+}
 
 } // namespace wl
 
