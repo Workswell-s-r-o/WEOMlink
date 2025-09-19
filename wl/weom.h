@@ -296,6 +296,18 @@ public:
     [[nodiscard]] etl::expected<void, Error> setPlateauTailRejection(uint8_t value, MemoryType memoryType);
 
     /**
+     * @brief Retrieves the preset ID by index.
+     * @return An `etl::expected<PresetId, Error>` containing the preset ID or an error.
+     */
+    [[nodiscard]] etl::expected<PresetId, Error> getPresetId(uint8_t index);
+
+    /**
+     * @brief Retrieves the preset ID count.
+     * @return An `etl::expected<uint8_t, Error>` containing the preset ID count or an error.
+     */
+    [[nodiscard]] etl::expected<std::uint8_t, Error> getPresetIdCount();
+
+    /**
      * @brief Retrieves the current preset ID.
      * @return An `etl::expected<PresetId, Error>` containing the preset ID or an error.
      */

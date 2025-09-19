@@ -131,8 +131,12 @@ public:
     // Presets - 0x0Axx
     static constexpr AddressRange SELECTED_PRESET_INDEX               = AddressRange::firstAndSize(0x0A00, 4);
     static constexpr AddressRange CURRENT_PRESET_INDEX                = AddressRange::firstAndSize(0x0A04, 4);
+    static constexpr AddressRange SELECTED_ATTRIBUTE_AND_PRESET_INDEX = AddressRange::firstAndSize(0x0A08, 4);
+    static constexpr AddressRange ATTRIBUTE_ADDRESS                   = AddressRange::firstAndSize(0x0A0C, 4);
+    static constexpr AddressRange NUMBER_OF_PRESETS_AND_ATTRIBUTES    = AddressRange::firstAndSize(0x0A10, 8);
     static constexpr AddressRange SELECTED_PRESET_ID                  = AddressRange::firstAndSize(0x0A14, 4); ///< Address range of selected preset ID
     static constexpr AddressRange CURRENT_PRESET_ID                   = AddressRange::firstAndSize(0x0A18, 4); ///< Address range of current preset ID
+
 
     // Palettes data
     static constexpr unsigned PALETTES_FACTORY_MAX_COUNT = 14;
