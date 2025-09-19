@@ -443,6 +443,59 @@ etl::expected<void, Error> WEOM::setPlateauTailRejection(uint8_t value, MemoryTy
     return writeData(data, MemorySpaceWEOM::PLATEAU_TAIL_REJECTION, memoryType);
 }
 
+etl::expected<PresetId, Error> WEOM::getPresetId(uint8_t index)
+{
+    if (!m_deviceInterface)
+    {
+        return etl::unexpected<Error>(Error::PROTOCOL__NO_DATALINK);
+    }
+
+    etl::array<uint8_t, MemorySpaceWEOM::SELECTED_ATTRIBUTE_AND_PRESET_INDEX.getSize()> data = {};
+    data.at(0) = 2;
+    data.at(2) = index;
+    auto writeResult = writeData(data, MemorySpaceWEOM::SELECTED_ATTRIBUTE_AND_PRESET_INDEX);
+    if (!writeResult.has_value())
+    {
+        return etl::unexpected<Error>(writeResult.error());
+    }
+
+    auto result = readAddressRange<MemorySpaceWEOM::ATTRIBUTE_ADDRESS>();
+    if (!result.has_value())
+    {
+        return etl::unexpected<Error>(result.error());
+    }
+
+    auto address = uint32_t(result.value().at(0)) | (uint32_t(result.value().at(1)) << 8) | (uint32_t(result.value().at(2)) << 16) | (uint32_t(result.value().at(3)) << 24);
+    etl::array<uint8_t, 4> presetData = {};
+    if (auto result = m_deviceInterface->readData(presetData, address);!result.has_value())
+    {
+        return etl::unexpected(result.error());
+    }
+
+    auto range = Range::getFromDeviceValue(presetData.at(0) & 0b1111);
+    if (!range.has_value())
+    {
+        return etl::unexpected<Error>(range.error());
+    }
+    auto lens = Lens::getFromDeviceValue((presetData.at(0) >> 4) & 0b1111);
+    if (!lens.has_value())
+    {
+        return etl::unexpected<Error>(lens.error());
+    }
+
+    return PresetId(range.value(), lens.value());
+}
+
+etl::expected<std::uint8_t, Error> WEOM::getPresetIdCount()
+{
+    auto result = readAddressRange<MemorySpaceWEOM::NUMBER_OF_PRESETS_AND_ATTRIBUTES>();
+    if (!result.has_value())
+    {
+        return etl::unexpected<Error>(result.error());
+    }
+    return result.value().at(2);
+}
+
 etl::expected<PresetId, Error> WEOM::getPresetId()
 {
     auto result = readAddressRange<MemorySpaceWEOM::CURRENT_PRESET_ID>();
