@@ -300,7 +300,7 @@ etl::expected<void, Error> WEOM::setShutterAdaptiveThreshold(double value, Memor
     etl::array<uint8_t, MemorySpaceWEOM::NUC_ADAPTIVE_THRESHOLD_CURRENT.getSize()> data = {};
     data.at(0) = static_cast<uint8_t>(fixedValue.value() & 0x00FF);
     data.at(1) = static_cast<uint8_t>((fixedValue.value() & 0xFF00) >> 8);
-    return writeData(data, MemorySpaceWEOM::NUC_ADAPTIVE_THRESHOLD_CURRENT);
+    return writeData(data, MemorySpaceWEOM::NUC_ADAPTIVE_THRESHOLD_CURRENT, memoryType);
 }
 
 etl::expected<TimeDomainAveraging, Error> WEOM::getTimeDomainAveraging()
