@@ -286,13 +286,46 @@ public:
      */
     [[nodiscard]] etl::expected<void, Error> setSpatialMedianFilterEnabled(bool enabled, MemoryType memoryType);
 
+    /**
+     * @brief Retrieves the linear gain weight.
+     * @return An `etl::expected<uint8_t, Error>` containing the linear gain weight or an error.
+     */
     [[nodiscard]] etl::expected<uint8_t, Error> getLinearGainWeight();
+
+    /**
+     * @brief Sets the linear gain weight.
+     * @param value The linear gain weight to set.
+     * @param memoryType The memory region to set (RAM or FLASH).
+     * @return An `etl::expected<void, Error>` indicating success or failure.
+     */
     [[nodiscard]] etl::expected<void, Error> setLinearGainWeight(uint8_t value, MemoryType memoryType);
 
+    /**
+     * @brief Retrieves the clip limit.
+     * @return An `etl::expected<uint8_t, Error>` containing the clip limit or an error.
+     */
     [[nodiscard]] etl::expected<uint8_t, Error> getClipLimit();
+
+    /**
+     * @brief Sets the clip limit.
+     * @param value The clip limit to set.
+     * @param memoryType The memory region to set (RAM or FLASH).
+     * @return An `etl::expected<void, Error>` indicating success or failure.
+     */
     [[nodiscard]] etl::expected<void, Error> setClipLimit(uint8_t value, MemoryType memoryType);
 
+    /**
+     * @brief Retrieves the plateau tail rejection.
+     * @return An `etl::expected<uint8_t, Error>` containing the plateau tail rejection value or an error.
+     */
     [[nodiscard]] etl::expected<uint8_t, Error> getPlateauTailRejection();
+
+    /**
+     * @brief Sets the plateau tail rejection value.
+     * @param value The plateau tail rejection value to set.
+     * @param memoryType The memory region to set (RAM or FLASH).
+     * @return An `etl::expected<void, Error>` indicating success or failure.
+     */
     [[nodiscard]] etl::expected<void, Error> setPlateauTailRejection(uint8_t value, MemoryType memoryType);
 
     /**
