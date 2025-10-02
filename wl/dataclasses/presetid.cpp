@@ -13,6 +13,7 @@ uint16_t Range::getDeviceValue(const Range item)
         case R3: return 0x02;
         case HIGH_GAIN: return 0x07;
         case LOW_GAIN: return 0x08;
+        case SUPER_GAIN: return 0x09;
     }
     assert(false);
     return 0x0F;
@@ -28,6 +29,7 @@ etl::expected<Range, Error> Range::getFromDeviceValue(const uint16_t deviceValue
         case 0x02: return Range(R3);
         case 0x07: return Range(HIGH_GAIN);
         case 0x08: return Range(LOW_GAIN);
+        case 0x09: return Range(SUPER_GAIN);
         default: return etl::unexpected<Error>(Error::INVALID_DATA);
     }
 }
@@ -65,6 +67,9 @@ int Range::getLowerTemperature(Range item)
         case HIGH_GAIN:
             return -50;
 
+        case SUPER_GAIN:
+            return -50;
+
         default:
             assert(false);
             return 0;
@@ -90,6 +95,9 @@ int Range::getUpperTemperature(Range item)
         case HIGH_GAIN:
             return 160;
 
+        case SUPER_GAIN:
+            return 80;
+
         default:
             assert(false);
             return 0;
@@ -106,6 +114,7 @@ uint16_t Lens::getDeviceValue(const Lens item)
         case WTC_14: return 0x02;
         case WTC_7_5: return 0x03;
         case WTC_50: return 0x04;
+        case WTC_7: return 0x05;
         case USER_1: return 0x07;
         case USER_2: return 0x08;
     }
@@ -122,6 +131,7 @@ etl::expected<Lens, Error> Lens::getFromDeviceValue(const uint16_t deviceValue)
         case 0x01: return Lens(WTC_25);
         case 0x02: return Lens(WTC_14);
         case 0x03: return Lens(WTC_7_5);
+        case 0x05: return Lens(WTC_7);
         case 0x07: return Lens(USER_1);
         case 0x08: return Lens(USER_2);
         default: return etl::unexpected<Error>(Error::INVALID_DATA);

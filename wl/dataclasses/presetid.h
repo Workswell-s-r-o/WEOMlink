@@ -28,6 +28,7 @@ struct Range
         R3,          ///< Radiometric 3
         HIGH_GAIN,   ///< High gain
         LOW_GAIN,    ///< Low gain
+        SUPER_GAIN,    ///< Super gain
     };
 
     /**
@@ -72,6 +73,7 @@ struct Range
     ETL_ENUM_TYPE(R3, "R3")
     ETL_ENUM_TYPE(HIGH_GAIN, "HIGH_GAIN")
     ETL_ENUM_TYPE(LOW_GAIN, "LOW_GAIN")
+    ETL_ENUM_TYPE(SUPER_GAIN, "SUPER_GAIN")
     ETL_END_ENUM_TYPE
 };
 
@@ -94,6 +96,7 @@ struct Lens
         WTC_14,      ///< L-WTC-14-12
         WTC_7_5,     ///< L-WTC-7-12
         WTC_50,
+        WTC_7,
         USER_1,      ///< User 1
         USER_2,      ///< User 2
     };
@@ -126,6 +129,7 @@ struct Lens
     ETL_ENUM_TYPE(WTC_14, "WTC_14")
     ETL_ENUM_TYPE(WTC_7_5, "WTC_7_5")
     ETL_ENUM_TYPE(WTC_50, "WTC_50")
+    ETL_ENUM_TYPE(WTC_7, "WTC_7")
     ETL_ENUM_TYPE(USER_1, "USER_1")
     ETL_ENUM_TYPE(USER_2, "USER_2")
     ETL_END_ENUM_TYPE
