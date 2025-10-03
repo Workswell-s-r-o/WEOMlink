@@ -131,6 +131,7 @@ etl::expected<Lens, Error> Lens::getFromDeviceValue(const uint16_t deviceValue)
         case 0x01: return Lens(WTC_25);
         case 0x02: return Lens(WTC_14);
         case 0x03: return Lens(WTC_7_5);
+        case 0x04: return Lens(WTC_50);
         case 0x05: return Lens(WTC_7);
         case 0x07: return Lens(USER_1);
         case 0x08: return Lens(USER_2);
