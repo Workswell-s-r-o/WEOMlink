@@ -7,23 +7,35 @@ namespace {
 static constexpr uint16_t FIXED_POINT_BITS = 12;
 static constexpr uint16_t FIXED_POINT_FRACTIONAL_BITS = 4;
 static constexpr uint16_t FIXED_POINT_MASK = (1 << FIXED_POINT_BITS) - 1;
+static constexpr uint16_t FIXED_POINT_SIGN_MASK = 1 << FIXED_POINT_BITS;
 
-etl::expected<uint16_t, Error> unsignedDoubleToFixedPoint(double value)
-{
-    if (value < 0)
-    {
-        return etl::unexpected<Error>(Error::INVALID_DATA);
-    }
-
-    uint16_t valueFixed = std::round(value * static_cast<double>(1 << FIXED_POINT_FRACTIONAL_BITS));
-    valueFixed &= FIXED_POINT_MASK;
-    return valueFixed;
-}
-
-etl::expected<double, Error> unsignedFixedPointToDouble(uint16_t value)
+etl::expected<double, Error> fixedPointToDouble(uint16_t value, bool signedFormat)
 {
     int16_t extendedValue = value & FIXED_POINT_MASK;
+    const bool isValueFixedNegative = value & FIXED_POINT_SIGN_MASK;
+
+    if (extendedValue == 0 && isValueFixedNegative)
+    {
+        return -0.0;
+    }
+
+    if (signedFormat && isValueFixedNegative)
+    {
+        extendedValue |= ~FIXED_POINT_MASK;
+    }
     return (static_cast<double>(extendedValue) / static_cast<double>(1 << FIXED_POINT_FRACTIONAL_BITS));
+}
+
+etl::expected<uint16_t, Error> doubleToFixedPoint(double value)
+{
+    uint16_t valueFixed = std::round(value * static_cast<double>(1 << FIXED_POINT_FRACTIONAL_BITS));
+    valueFixed &= FIXED_POINT_MASK;
+
+    if (std::signbit(value))
+    {
+        valueFixed |= FIXED_POINT_SIGN_MASK;
+    }
+    return valueFixed;
 
 }
 
@@ -251,7 +263,7 @@ etl::expected<double, Error> WEOM::getShutterTemperature()
     {
         return etl::unexpected<Error>(result.error());
     }
-    return unsignedFixedPointToDouble((uint16_t(result.value().at(1)) << 8) | result.value().at(0));
+    return fixedPointToDouble((uint16_t(result.value().at(1)) << 8) | result.value().at(0), true);
 }
 
 etl::expected<void, Error> WEOM::setShutterUpdateMode(ShutterUpdateMode mode, MemoryType memoryType)
@@ -286,12 +298,12 @@ etl::expected<double, Error> WEOM::getShutterAdaptiveThreshold()
     {
         return etl::unexpected<Error>(result.error());
     }
-    return unsignedFixedPointToDouble((uint16_t(result.value().at(1)) << 8) | result.value().at(0));
+    return fixedPointToDouble((uint16_t(result.value().at(1)) << 8) | result.value().at(0), false);
 }
 
 etl::expected<void, Error> WEOM::setShutterAdaptiveThreshold(double value, MemoryType memoryType)
 {
-    const auto fixedValue = unsignedDoubleToFixedPoint(value);
+    const auto fixedValue = doubleToFixedPoint(value);
     if (!fixedValue.has_value())
     {
         return etl::unexpected<Error>(fixedValue.error());
