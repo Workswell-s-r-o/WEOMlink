@@ -1,6 +1,6 @@
 #include "wl/dataclasses/firmwareversion.h"
 
-#include <cstdio>
+#include "etl/string_stream.h"
 
 namespace wl {
 
@@ -30,7 +30,8 @@ uint16_t FirmwareVersion::getMinor2() const
 etl::string<FirmwareVersion::MAXIMUM_STRING_SIZE> FirmwareVersion::toString() const
 {
     etl::string<FirmwareVersion::MAXIMUM_STRING_SIZE> string;
-    std::sprintf(string.data(), "%d.%d.%d", m_major, m_minor, m_minor2);
+    etl::string_stream stream(string);
+    stream << m_major << "." << m_minor << "." << m_minor2;
     return string;
 }
 
