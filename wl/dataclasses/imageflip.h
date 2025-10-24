@@ -15,7 +15,7 @@ public:
      * @brief Default constructor.
      * Initializes both vertical and horizontal flip values to false (no flip).
      */
-    explicit ImageFlip() = default;
+    explicit ImageFlip();
 
     /**
      * @brief Constructor to initialize the flip settings.
