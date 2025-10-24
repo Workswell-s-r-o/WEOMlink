@@ -126,7 +126,7 @@ etl::expected<void, Error> DeviceInterfaceWEOM::handleErrorResponse(etl::expecte
         {
             lastErrors.set(0, 1);
             char errMsg[200];
-            sprintf(errMsg, "Device interface error %d",operationResult.error());
+            sprintf(errMsg, "Device interface error %d", static_cast<int>(operationResult.error()));
             Error::log(errMsg);
             if (lastErrors.count() <= MAX_ERRORS_IN_WINDOW)
             {

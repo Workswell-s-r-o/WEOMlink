@@ -29,7 +29,7 @@ namespace wl
          * @brief Write a string message to stdout
          * @param msg Message string
          */          
-        static void log(char *msg)
+        static void log(const char *msg)
         {
             std::cout << msg << "\n";
         }
