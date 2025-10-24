@@ -2,6 +2,12 @@
 
 namespace wl {
 
+ImageFlip::ImageFlip()
+    : m_verticalFlip(false), m_horizontalFlip(false)
+{
+    
+}
+
 ImageFlip::ImageFlip(bool verticalFlip, bool horizontalFlip)
     : m_verticalFlip(verticalFlip)
     , m_horizontalFlip(horizontalFlip)
