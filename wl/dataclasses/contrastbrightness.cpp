@@ -38,22 +38,22 @@ float ContrastBrightness::getBrightnessPercent() const
 
 void ContrastBrightness::setContrastRaw(uint16_t contrastRaw)
 {
-    m_contrast = std::max(contrastRaw, UINT14_MAX_VALUE);
+    m_contrast = std::min(contrastRaw, UINT14_MAX_VALUE);
 }
 
 void ContrastBrightness::setBrightnessRaw(uint16_t brightnessRaw)
 {
-    m_brightness = std::max(brightnessRaw, UINT14_MAX_VALUE);
+    m_brightness = std::min(brightnessRaw, UINT14_MAX_VALUE);
 }
 
 void ContrastBrightness::setContrastPercent(float contrastPercent)
 {
-    m_contrast = std::max(percentToRaw(contrastPercent), UINT14_MAX_VALUE);
+    m_contrast = std::min(percentToRaw(contrastPercent), UINT14_MAX_VALUE);
 }
 
 void ContrastBrightness::setBrightnessPercent(float brightnessPercent)
 {
-    m_brightness = std::max(percentToRaw(brightnessPercent), UINT14_MAX_VALUE);
+    m_brightness = std::min(percentToRaw(brightnessPercent), UINT14_MAX_VALUE);
 }
 
 float ContrastBrightness::rawToPercent(uint16_t raw)
