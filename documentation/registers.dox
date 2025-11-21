@@ -1,0 +1,414 @@
+/**
+* @defgroup registers Registers
+* @{
+*/
+
+    /**
+    * @defgroup registers_control Control
+    * @{
+    */
+
+        /**
+        * @defgroup registers_device_identificator Device Identificator Register
+        * ### Device identifier (0x0000)
+        * - bits 0‐7: const = 0x57 ‐ ASCII ”W”
+        * - bits 8‐15: const = 0x06
+        * - bits 16‐23: const = 0x4D ‐ ASCII ”M”
+        * - bits 24‐31: const = 0x06
+        *
+        * READ ONLY
+        *
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.1">user manual</a>
+        */
+
+        /**
+        * @defgroup registers_trigger Trigger Register
+        * ### Trigger (0x0004)
+        * - bit 0: Soft reset ‐ restart WEOM (turn off and on again)
+        * - bit 1: Reset to Loader ‐ restart WEOM and enter the Loader
+        * - bit 2: NUC Offset update ‐ execute a NUC offset update immediately
+        * - bit 3: Clean dead pixels ‐ delete the current dead pixel set from WEOM
+        * - bit 4: Set selected preset ‐ Set preset whose ID is in \ref registers_selected_preset_id
+        * - bit 7: Reset to factory default ‐ Set default values to both VM and NVM and restart WEOM
+        *
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.1">user manual</a>
+        */
+
+        /**
+        * @defgroup registers_status Status Register
+        * ### Status (0x000C)
+        * - bit 0: NUC_active (1: It is possible to perform NUC offset update; 0: It is not possible to perform NUC offset update because a test pattern generator is on.)
+        * - bit 1: Camera not ready
+        * - bit 4: FW status (0: Main program; 1: Loader)
+        * - bit 11: Trigger active
+        *
+        * READ ONLY
+        * 
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.1">user manual</a>
+        */
+
+    /** @} */
+
+    /**
+    * @defgroup registers_general General
+    * @{
+    */
+
+        /**
+        * @defgroup registers_main_firmware_version Main Firmware Version Register
+        * ### Main Firmware Version (0x0100)
+        * - bits 0‐15: Firmware Minor Version 2
+        * - bits 16‐23: Firmware Minor Version
+        * - bits 24‐31: Firmware Major Version
+        *
+        * READ ONLY
+        *
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.2">user manual</a>
+        */
+
+        /**
+        * @defgroup registers_shutter_temperature Shutter Temperature Register
+        * ### Shutter Temperature (0x0110)
+        * RAW temperature value of the shutter
+        *
+        * READ ONLY
+        *
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.2">user manual</a>
+        */
+
+        /**
+        * @defgroup registers_serial_number Serial Number Register
+        * ### Serial Number (0x0114 - 0x0130)
+        * WEOM’s serial number is stored as ASCII characters.
+        * Every register holds four of these characters.
+        *
+        * READ ONLY
+        *
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.2">user manual</a>
+        */
+
+        /**
+        * @defgroup registers_article_number Article Number Register
+        * ### Article Number (0x0134 - 0x0150)
+        * WEOM’s Article number is stored as ASCII characters.
+        * Every register holds four of these characters.
+        *
+        * READ ONLY
+        *
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.2">user manual</a>
+        */
+
+    /** @} */
+
+    /**
+    * @defgroup registers_video Video
+    * @{
+    */
+        /**
+        * @defgroup registers_palette_index Palette Index Register
+        * ### Palette Index (0x0200)
+        * Index of the current RGB Palette
+        *
+        * **Allowed values:** 0 - 15
+        *
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.3">user manual</a>
+        */
+
+        /**
+        * @defgroup registers_frame_rate Frame Rate Register
+        * ### Frame Rate (0x0204)
+        * **Allowed values:** 0 - 2
+        * - 0 ‐ 9 FPS
+        * - 1 ‐ 30 FPS
+        * - 2 ‐ 60 FPS
+        *
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.3">user manual</a>
+        */
+
+        /**
+        * @defgroup registers_image_flip Image Flip  Register
+        * ### Image Flip (0x0208)
+        * **Allowed values:** 0 - 3
+        * - 0 ‐ No flipping
+        * - 1 ‐ Vertical flip
+        * - 2 ‐ Horizontal flip
+        * - 3 ‐ Horizontal and vertical flip
+        *
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.3">user manual</a>
+        */
+
+        /**
+        * @defgroup registers_video_format Video Format Register
+        * ### Video Format (0x0210)
+        * Specifies the type of image that will be sent to the output
+        * - 0 - pre-IGC (14-bit)
+        * - 1 - post-IGC (8-bit)
+        * - 2 - post-Coloring (16-bit colored)
+        *
+        * **Allowed values:** plugin type specific
+        * - CMOS: 0 - 1
+        * - USB: 0, 2
+        * - CVBS, HDMI: 2
+        *
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.3">user manual</a>
+        */
+
+        /**
+        * @defgroup registers_image_freeze Image Freeze Register
+        * ### Image Freeze (0x020C)
+        *
+        * **Allowed values:** 0 - 1
+        * - 0 ‐ Image not frozen
+        * - 1 ‐ Image frozen
+        *
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.3">user manual</a>
+        */
+
+        /**
+        * @defgroup registers_test_pattern Test Pattern Register
+        * ### Test Pattern (0x0214)
+        * Current image source.
+        *
+        * **Allowed values:** 0 - 3
+        * - 0 ‐ Real time infrared detector image
+        * - 1 ‐ Static test pattern generator
+        * - 3 ‐ Dynamic test pattern generator
+        *
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.3">user manual</a>
+        */
+    /** @} */
+
+    /**
+    * @defgroup registers_nuc NUC
+    * @{
+    */
+        /**
+        * @defgroup registers_nuc_update_mode NUC Update Mode Register
+        * ### NUC Update Mode (0x0308)
+        * Current method of triggering NUC update
+        *
+        * **Allowed values:** 1 - 2
+        * - 1 ‐ Periodic mode
+        * - 2 ‐ Adaptive mode
+        *
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.4">user manual</a>
+        */
+
+        /**
+        * @defgroup registers_nuc_max_period NUC Max Period Register
+        * ### NUC Max Period (0x0320)
+        * Maximal allowed amount of time in seconds without a NUC offset update.
+        *
+        * **Allowed values:** 120 - 7200
+        *
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.4">user manual</a>
+        */
+
+        /**
+        * @defgroup registers_nuc_adaptive_threshold NUC Adaptive Threshold Register
+        * ### NUC Adaptive Threshold (0x0324)
+        * Maximal allowed shutter temperature difference before triggering a NUC offset update.
+        *
+        * **Allowed values:** 4 - 160
+        * Value has to be divisible by 4. To get temperature in °C, divide by 24.
+        *
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.4">user manual</a>
+        */
+
+    /** @} */
+
+    /**
+    * @defgroup registers_filters Filters
+    * @{
+    */
+        /**
+        * @defgroup registers_time_domain_average Time Domain Average Register
+        * ### Time Domain Average (0x0600)
+        * Number of frames used to compute one output frame
+        * 
+        * **Allowed values:** 0 - 2
+        * - 0 ‐ no averaging
+        * - 1 ‐ averaging from 2 frames
+        * - 2 ‐ averaging from 4 frames
+        *
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.6">user manual</a>
+        */
+
+        /**
+        * @defgroup registers_linear_equalization_type Linear Equalization Type Register
+        * ### Linear Equalization Type (0x0604)
+        * Sets the method of gain control.
+        * 
+        * **Allowed values:** 0 - 1
+        * - 0 ‐ Automatic
+        * - 1 ‐ Manual
+        *
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.6">user manual</a>
+        */
+
+        /**
+        * @defgroup registers_mgc_contrast_brightness MGC Contrast Brightness  Register
+        * ### MGC Contrast Brightness(0x0608)
+        * - bits 0‐13: contrast value
+        * - bits 14‐15: unused
+        * - bits 16‐29: brightness value
+        * - bits 30‐31: unused
+        *
+        * **Allowed values:** 0 - 16383, 0 - 16383
+        *
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.6">user manual</a>
+        */
+
+        /**
+        * @defgroup registers_agc_nh_smoothing Linear AGC Smoothing Register
+        * ### Linear AGC Smoothing (0x0610)
+        * Frames used to compute values for Linear AGC.
+        * 
+        * **Allowed values:** 0 - 4 
+        * - 0 ‐ average from 1 frame
+        * - 1 ‐ average from 2 frames
+        * - 2 ‐ average from 4 frames
+        * - 3 ‐ average from 8 frames
+        * - 4 ‐ average from 16 frames
+        *
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.6">user manual</a>
+        */
+
+        /**
+        * @defgroup registers_spatial_median_filter_enable Spation Median Filter Enable Register
+        * ### Spatial Median Fitler Enable (0x0614)
+        * **Allowed values:** 0 - 1
+        * - 0 ‐ Median filter disabled
+        * - 1 ‐ Median filter enabled
+        *
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.6">user manual</a>
+        */
+
+        /**
+        * @defgroup registers_linear_gain_weight Linear gain Weight Register
+        * ### Linear Gain Weight (0x0620)
+        * Ratio of Linear to Plateau image equalization
+        * 
+        * **Allowed values:** 0 - 10
+        * - 0 ‐ only Plateau
+        * - 10 ‐ only Linear
+        *
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.6">user manual</a>
+        */
+
+        /**
+        * @defgroup registers_clip_limit Clip Limit Register
+        * ### Clip limit (0x0624)
+        * - bits 0‐7: Plateau Clip limit determines the percentage of internally computed clip limit that will be used as ”real” clip limit.
+        *
+        * **Allowed values:** 1 - 100
+        * 
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.6">user manual</a>
+        */
+
+        /**
+        * @defgroup registers_plateau_tail_rejection Plateau Tail Rejection Register
+        * ### Plateau tail rejection (0x0628)
+        * - bits 0‐7: Plateau tail rejection specifies the symmetrical (meaning on both sides of histogram) percentage of ”tail” bins of histogram 
+        *   that will be ignored for Plateau computation
+        * 
+        * **Allowed values:** 0 - 49
+        *
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.6">user manual</a>
+        */
+
+    /** @} */
+
+    /**
+    * @defgroup registers_presets Presets
+    * @{
+    */
+        /**
+        * @defgroup registers_selected_preset_index Selected Preset Index Register
+        * ### Selected Preset Index (0x0A00)
+        * **Allowed values:** 0 - maximal number of presets
+        *
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.8">user manual</a>
+        * @see registers_number_of_presets_and_attributes
+        */
+
+        /**
+        * @defgroup registers_current_preset_index Current Preset Index Register
+        * ### Selected Preset Index (0x0A04)
+        * Specifies the preset by index. To load preset, activate "Set Selected Preset" trigger (bit 4 of \ref registers_trigger)
+        * 
+        * **Allowed values:** 0 - number of presets (from register \ref registers_number_of_presets_and_attributes)
+        *
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.8">user manual</a>
+        */
+
+        /**
+        * @defgroup registers_selected_attribute_and_preset_index Selected Attribute and Preset Index Register
+        * ### Selected Attribute and Preset Index (0x0A08)
+        * - bits 0-7: attribute index
+        * - bits 8-15: unused
+        * - bits 16-23: preset index
+        * - bits 24-31: unused
+        *
+        * **Allowed values:**
+        * - Attribute Index: 0 - number of attributes (from register \ref registers_number_of_presets_and_attributes)
+        * - Preset Index: 0 - number of presets (from register \ref registers_number_of_presets_and_attributes)
+        *
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.8">user manual</a>
+        */
+
+        /**
+        * @defgroup registers_attribute_address Attribute Address Register
+        * ### Attribute Address (0x0A0C)
+        * The Flash address of the selected attribute of preset, specified by \ref registers_selected_attribute_and_preset_index
+        *
+        * READ ONLY
+        * 
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.8">user manual</a>
+        */
+
+        /**
+        * @defgroup registers_number_of_presets_and_attributes Number of Presets and Attributes Register
+        * ### Number of Presets and Attributes (0x0A10)
+        * The maximum number of presets and attributes possible in the camera
+        * - bits 0-7: maximum number of attributes
+        * - bits 8-15: unused
+        * - bits 16-23: maximum number of presets
+        * - bits 24-31: unused
+        *
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.8">user manual</a>
+        */
+
+        /**
+        * @defgroup registers_selected_preset_id Selected Preset ID Register
+        * ### Selected Preset ID (0x0A14)
+        * - bits 0‐3: Temperature Range enum
+        *     - 7 ‐ High gain
+        *     - 8 ‐ Low gain
+        * - bits 16‐19: Lens enum
+        *     - 0 ‐ L‐WTC‐35‐HE25‐A OR L‐WTC‐35‐HE34‐A
+        *     - 1 ‐ L‐WTC‐25‐HE25‐A OR L‐WTC‐25‐HE34‐A
+        *     - 2 ‐ L‐WTC‐14‐HE25‐A OR L‐WTC‐14‐HE34‐A
+        *     - 3 ‐ L‐WTC‐7‐HE34‐A
+        * 
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.8">user manual</a>
+        */
+
+        /**
+        * @defgroup registers_current_preset_id Current Preset ID Register
+        * ### Current Preset ID (0x0A18)
+        * - bits 0‐3: Temperature Range enum
+        *     - 7 ‐ High gain
+        *     - 8 ‐ Low gain
+        * - bits 16‐19: Lens enum
+        *     - 0 ‐ L‐WTC‐35‐HE25‐A OR L‐WTC‐35‐HE34‐A
+        *     - 1 ‐ L‐WTC‐25‐HE25‐A OR L‐WTC‐25‐HE34‐A
+        *     - 2 ‐ L‐WTC‐14‐HE25‐A OR L‐WTC‐14‐HE34‐A
+        *     - 3 ‐ L‐WTC‐7‐HE34‐A
+        * 
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.8">user manual</a>
+        */
+
+    /** @} */
+
+/** @} */

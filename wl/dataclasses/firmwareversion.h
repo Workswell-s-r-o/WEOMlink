@@ -12,6 +12,7 @@ namespace wl {
  * @class FirmwareVersion
  * @headerfile firmwareversion.h "wl/dataclasses/firmareversion.h"
  * @brief Represents a firmware version with major, minor, and extended minor version numbers.
+ * @see registers_main_firmware_version
  */
 class FirmwareVersion
 {

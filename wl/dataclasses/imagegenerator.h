@@ -11,6 +11,7 @@ namespace wl {
  * @struct ImageGenerator
  * @headerfile imagegenerator.h "wl/dataclasses/imagegenerator.h"
  * @brief Defines the types of image generators
+ * @see registers_test_pattern
  */
 struct ImageGenerator
 {

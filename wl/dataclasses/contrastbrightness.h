@@ -10,6 +10,7 @@ namespace wl {
  * @headerfile contrastbrightness.h "wl/dataclasses/contrastbrightness.h"
  * @brief A utility class to manage and convert contrast and brightness values 
  *        between raw 14bit values and percentages. 
+ * @see registers_mgc_contrast_brightness
  */
 class ContrastBrightness
 {

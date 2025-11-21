@@ -11,6 +11,7 @@ namespace wl {
  * @struct ShutterUpdateMode
  * @headerfile shutterupdatemode.h "wl/dataclasses/shutterupdatemode.h"
  * @brief Represents the modes of shutter updates.
+ * @see registers_nuc_update_mode
  */
 struct ShutterUpdateMode
 {

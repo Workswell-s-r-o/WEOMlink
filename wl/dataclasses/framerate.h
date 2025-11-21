@@ -11,6 +11,7 @@ namespace wl {
  * @struct Framerate
  * @headerfile framerate.h "wl/dataclasses/framerate.h"
  * @brief Defines framerate values
+ * @see registers_frame_rate
  */
 struct Framerate
 {

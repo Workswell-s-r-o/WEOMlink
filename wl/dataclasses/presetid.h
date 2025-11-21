@@ -13,6 +13,7 @@ namespace wl {
  * @struct Range
  * @headerfile presetid.h "wl/dataclasses/presetid.h"
  * @brief Represents possible ranges for the device.
+ * @see registers_selected_preset_id, registers_selected_preset_id
  */
 struct Range
 {
@@ -81,6 +82,7 @@ struct Range
  * @struct Lens
  * @headerfile presetid.h "wl/dataclasses/presetid.h"
  * @brief Represents possible lenses for the device.
+ * @see registers_selected_preset_id, registers_selected_preset_id
  */
 struct Lens
 {
@@ -140,6 +142,7 @@ struct Lens
  * @class PresetId
  * @headerfile presetid.h "wl/dataclasses/presetid.h"
  * @brief Represents a unique combination of range and lens settings.
+ * @see registers_selected_preset_id, registers_selected_preset_id
  */
 class PresetId
 {
