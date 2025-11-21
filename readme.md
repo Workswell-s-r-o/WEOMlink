@@ -92,7 +92,7 @@ public:
 };
 ```
 
-After implementing the data link interface, initialize an instance of wl::WEOM and set the data link interface using setDataLinkInterface.
+After implementing the data link interface, initialize an instance of `wl::WEOM` and set the data link interface using setDataLinkInterface.
 
 ```cpp
 #include "wl/weom.h"

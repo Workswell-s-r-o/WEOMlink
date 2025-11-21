@@ -11,6 +11,7 @@ namespace wl {
  * @struct ImageEqualizationType
  * @headerfile imageequalizationtype.h "wl/dataclasses/imageequalizationtype.h"
  * @brief Defines the types of image equalization
+ * @see registers_linear_equalization_type
  */
 struct ImageEqualizationType
 {

@@ -7,6 +7,7 @@ namespace wl {
  * @class ImageFlip
  * @headerfile imageflip.h "wl/dataclasses/imageflip.h"
  * @brief A class to manage and apply image flip transformations (vertical and horizontal).
+ * @see registers_image_flip
  */
 class ImageFlip
 {

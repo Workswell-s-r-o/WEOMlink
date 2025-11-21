@@ -48,17 +48,18 @@ if (DOXYGEN_FOUND)
             documentation/workswell_style.css)
     set(DOXYGEN_HTML_EXTRA_FILES workswell_logo_small.png)
     set(DOXYGEN_IMAGE_PATH ${CMAKE_SOURCE_DIR})
+    set(DOXYGEN_EXAMPLE_PATH ${CMAKE_SOURCE_DIR})
     add_docs(weomlink_docs
         YES NO
         ${CMAKE_BINARY_DIR}/docs
         ALL
-        readme.md weom.jpg wl
+        readme.md weom.jpg wl documentation/registers.dox
     )
 
     add_docs(weomlink_docs_latex
         NO YES
         ${CMAKE_BINARY_DIR}/docs/pdf
-        readme.md weom.jpg wl
+        readme.md weom.jpg wl documentation/registers.dox
     )
 
     add_custom_target(weomlink_docs_pdf

@@ -39,6 +39,7 @@ struct BayonetState
  * @struct DeviceType
  * @headerfile status.h "wl/dataclasses/status.h"
  * @brief Represents the type of the device.
+ * @see registers_status
  */
 struct DeviceType
 {
@@ -64,6 +65,7 @@ struct DeviceType
  * @class Status
  * @headerfile status.h "wl/dataclasses/status.h"
  * @brief Represents the status of the device
+ * @see registers_status
  */
 class Status
 {

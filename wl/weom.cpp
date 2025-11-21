@@ -147,7 +147,7 @@ etl::expected<uint8_t, Error> WEOM::getPaletteIndex()
     return result.value().at(0);
 }
 
-etl::expected<void, Error> WEOM::setPaletteIndex(uint8_t index, MemoryType memoryType)
+etl::expected<void, Error> WEOM::setPaletteIndex(uint8_t index, MemoryTypeWEOM memoryType)
 {
     etl::array<uint8_t, MemorySpaceWEOM::PALETTE_INDEX_CURRENT.getSize()> data = {};
     data.at(0) = index;
@@ -334,7 +334,7 @@ etl::expected<double, Error> WEOM::getShutterTemperature()
     return fixedPointToDouble((uint16_t(result.value().at(1)) << 8) | result.value().at(0), true);
 }
 
-etl::expected<void, Error> WEOM::setShutterUpdateMode(ShutterUpdateMode mode, MemoryType memoryType)
+etl::expected<void, Error> WEOM::setShutterUpdateMode(ShutterUpdateMode mode, MemoryTypeWEOM memoryType)
 {
     etl::array<uint8_t, MemorySpaceWEOM::NUC_UPDATE_MODE_CURRENT.getSize()> data = {};
     data.at(0) = static_cast<uint8_t>(mode);
@@ -351,7 +351,7 @@ etl::expected<uint16_t, Error> WEOM::getShutterMaxPeriod()
     return (uint16_t(result.value().at(1)) << 8) | result.value().at(0);
 }
 
-etl::expected<void, Error> WEOM::setShutterMaxPeriod(uint16_t value, MemoryType memoryType)
+etl::expected<void, Error> WEOM::setShutterMaxPeriod(uint16_t value, MemoryTypeWEOM memoryType)
 {
     etl::array<uint8_t, MemorySpaceWEOM::NUC_MAX_PERIOD_CURRENT.getSize()> data = {};
     data.at(0) = static_cast<uint8_t>(value & 0x00FF);
@@ -369,7 +369,7 @@ etl::expected<double, Error> WEOM::getShutterAdaptiveThreshold()
     return fixedPointToDouble((uint16_t(result.value().at(1)) << 8) | result.value().at(0), false);
 }
 
-etl::expected<void, Error> WEOM::setShutterAdaptiveThreshold(double value, MemoryType memoryType)
+etl::expected<void, Error> WEOM::setShutterAdaptiveThreshold(double value, MemoryTypeWEOM memoryType)
 {
     const auto fixedValue = doubleToFixedPoint(value);
     if (!fixedValue.has_value())
@@ -393,7 +393,7 @@ etl::expected<TimeDomainAveraging, Error> WEOM::getTimeDomainAveraging()
     return static_cast<TimeDomainAveraging>(result.value().at(0));
 }
 
-etl::expected<void, Error> WEOM::setTimeDomainAveraging(TimeDomainAveraging averaging, MemoryType memoryType)
+etl::expected<void, Error> WEOM::setTimeDomainAveraging(TimeDomainAveraging averaging, MemoryTypeWEOM memoryType)
 {
     etl::array<uint8_t, MemorySpaceWEOM::TIME_DOMAIN_AVERAGE_CURRENT.getSize()> data = {};
     data.at(0) = static_cast<uint8_t>(averaging);;
@@ -410,7 +410,7 @@ etl::expected<ImageEqualizationType, Error> WEOM::getImageEqualizationType()
     return static_cast<ImageEqualizationType>(result.value().at(0));
 }
 
-etl::expected<void, Error> WEOM::setImageEqualizationType(ImageEqualizationType type, MemoryType memoryType)
+etl::expected<void, Error> WEOM::setImageEqualizationType(ImageEqualizationType type, MemoryTypeWEOM memoryType)
 {
     etl::array<uint8_t, MemorySpaceWEOM::IMAGE_EQUALIZATION_TYPE_CURRENT.getSize()> data = {};
     data.at(0) = static_cast<uint8_t>(type);
@@ -428,7 +428,7 @@ etl::expected<ContrastBrightness, Error> WEOM::getMgcContrastBrightness()
                               static_cast<uint16_t>((result.value().at(3) << 8) | result.value().at(2)));
 }
 
-etl::expected<void, Error> WEOM::setMgcContrastBrightness(const ContrastBrightness& contrastBrightness, MemoryType memoryType)
+etl::expected<void, Error> WEOM::setMgcContrastBrightness(const ContrastBrightness& contrastBrightness, MemoryTypeWEOM memoryType)
 {
     etl::array<uint8_t, MemorySpaceWEOM::MGC_CONTRAST_BRIGHTNESS_CURRENT.getSize()> data = {};
     data.at(0) = static_cast<uint8_t>(contrastBrightness.getContrastRaw() & 0x00FF);
@@ -438,20 +438,20 @@ etl::expected<void, Error> WEOM::setMgcContrastBrightness(const ContrastBrightne
     return writeData(data, MemorySpaceWEOM::MGC_CONTRAST_BRIGHTNESS_CURRENT, memoryType);
 }
 
-etl::expected<uint8_t, Error> WEOM::getAgcNhSmoothingFrames()
+etl::expected<AGCNHSmoothing, Error> WEOM::getAgcNhSmoothingFrames()
 {
     auto result = readAddressRange<MemorySpaceWEOM::AGC_NH_SMOOTHING_CURRENT>();
     if (!result.has_value())
     {
         return etl::unexpected<Error>(result.error());
     }
-    return result.value().at(0);
+    return static_cast<AGCNHSmoothing>(result.value().at(0));
 }
 
-etl::expected<void, Error> WEOM::setAgcNhSmoothingFrames(uint8_t frames, MemoryType memoryType)
+etl::expected<void, Error> WEOM::setAgcNhSmoothingFrames(AGCNHSmoothing smoothing, MemoryTypeWEOM memoryType)
 {
     etl::array<uint8_t, MemorySpaceWEOM::AGC_NH_SMOOTHING_CURRENT.getSize()> data = {};
-    data.at(0) = frames;
+    data.at(0) = static_cast<uint8_t>(smoothing);
     return writeData(data, MemorySpaceWEOM::AGC_NH_SMOOTHING_CURRENT, memoryType);
 }
 
@@ -465,7 +465,7 @@ etl::expected<bool, Error> WEOM::getSpatialMedianFilterEnabled()
     return result.value().at(0) == 1;
 }
 
-etl::expected<void, Error> WEOM::setSpatialMedianFilterEnabled(bool enabled, MemoryType memoryType)
+etl::expected<void, Error> WEOM::setSpatialMedianFilterEnabled(bool enabled, MemoryTypeWEOM memoryType)
 {
     etl::array<uint8_t, MemorySpaceWEOM::SPATIAL_MEDIAN_FILTER_ENABLE_CURRENT.getSize()> data = {};
     data.at(0) = enabled ? 1 : 0;
@@ -482,7 +482,7 @@ etl::expected<uint8_t, Error> WEOM::getLinearGainWeight()
     return result.value().at(0);
 }
 
-etl::expected<void, Error> WEOM::setLinearGainWeight(uint8_t value, MemoryType memoryType)
+etl::expected<void, Error> WEOM::setLinearGainWeight(uint8_t value, MemoryTypeWEOM memoryType)
 {
     etl::array<uint8_t, MemorySpaceWEOM::LINEAR_GAIN_WEIGHT.getSize()> data = {};
     data.at(0) = value;
@@ -499,7 +499,7 @@ etl::expected<uint8_t, Error> WEOM::getClipLimit()
     return result.value().at(0);
 }
 
-etl::expected<void, Error> WEOM::setClipLimit(uint8_t value, MemoryType memoryType)
+etl::expected<void, Error> WEOM::setClipLimit(uint8_t value, MemoryTypeWEOM memoryType)
 {
     etl::array<uint8_t, MemorySpaceWEOM::CLIP_LIMIT.getSize()> data = {};
     data.at(0) = value;
@@ -516,7 +516,7 @@ etl::expected<uint8_t, Error> WEOM::getPlateauTailRejection()
     return result.value().at(0);
 }
 
-etl::expected<void, Error> WEOM::setPlateauTailRejection(uint8_t value, MemoryType memoryType)
+etl::expected<void, Error> WEOM::setPlateauTailRejection(uint8_t value, MemoryTypeWEOM memoryType)
 {
     etl::array<uint8_t, MemorySpaceWEOM::PLATEAU_TAIL_REJECTION.getSize()> data = {};
     data.at(0) = value;
@@ -625,7 +625,7 @@ etl::expected<void, Error> WEOM::saveCurrentPresetIndexToFlash()
     {
         return etl::unexpected<Error>(readResult.error());
     }
-    auto result = writeData(readResult.value(), MemorySpaceWEOM::SELECTED_PRESET_INDEX, MemoryType::FLASH);
+    auto result = writeData(readResult.value(), MemorySpaceWEOM::SELECTED_PRESET_INDEX, MemoryTypeWEOM::FLASH_MEMORY);
     if (!result.has_value())
     {
         return etl::unexpected<Error>(result.error());
@@ -633,14 +633,14 @@ etl::expected<void, Error> WEOM::saveCurrentPresetIndexToFlash()
     return {};
 }
 
-etl::expected<void, Error> WEOM::setVideoFormat(VideoFormat videoFormat, MemoryType memoryType)
+etl::expected<void, Error> WEOM::setVideoFormat(VideoFormat videoFormat, MemoryTypeWEOM memoryType)
 {
     etl::array<uint8_t, MemorySpaceWEOM::VIDEO_FORMAT.getSize()> data = {};
     data.at(0) = static_cast<uint8_t>(videoFormat);
     return writeData(data, MemorySpaceWEOM::VIDEO_FORMAT, memoryType);
 }
 
-etl::expected<void, Error> WEOM::writeData(const etl::span<uint8_t>& data, const AddressRange& addressRange, MemoryType memoryType)
+etl::expected<void, Error> WEOM::writeData(const etl::span<uint8_t>& data, const AddressRange& addressRange, MemoryTypeWEOM memoryType)
 {
     if (!m_deviceInterface)
     {
@@ -648,9 +648,9 @@ etl::expected<void, Error> WEOM::writeData(const etl::span<uint8_t>& data, const
     }
     auto firstAddress = addressRange.getFirstAddress();
     switch (memoryType) {
-    case MemoryType::RAM:
+    case MemoryTypeWEOM::REGISTERS_CONFIGURATION:
         break;
-    case MemoryType::FLASH:
+    case MemoryTypeWEOM::FLASH_MEMORY:
         firstAddress += MemorySpaceWEOM::ADDRESS_FLASH_REGISTERS_START;
         break;
     }

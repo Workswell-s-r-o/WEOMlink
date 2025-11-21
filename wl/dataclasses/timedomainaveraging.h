@@ -11,6 +11,7 @@ namespace wl {
  * @struct TimeDomainAveraging
  * @headerfile timedomainaveraging.h "wl/dataclasses/timedomainaveraging.h"
  * @brief Represents time domain averaging modes.
+ * @see registers_time_domain_average
  */
 struct TimeDomainAveraging
 {
