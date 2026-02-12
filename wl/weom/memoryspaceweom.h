@@ -104,7 +104,11 @@ public:
     static constexpr AddressRange SHUTTER_TEMPERATURE                  = AddressRange::firstAndSize(0x0110, 4);
     static constexpr AddressRange SERIAL_NUMBER_CURRENT                = AddressRange::firstAndSize(0x0114, 32); ///< Address range of serial number
     static constexpr AddressRange ARTICLE_NUMBER_CURRENT               = AddressRange::firstAndSize(0x0134, 32); ///< Address range of article number
-
+    static constexpr AddressRange TRIGGER_MODE                         = AddressRange::firstAndSize(0x0174, 4); ///< Address range of trigger mode
+    static constexpr AddressRange AUX_PIN_0                            = AddressRange::firstAndSize(0x0178, 4); ///< Address range of aux pin 0
+    static constexpr AddressRange AUX_PIN_1                            = AddressRange::firstAndSize(0x017C, 4); ///< Address range of aux pin 1
+    static constexpr AddressRange AUX_PIN_2                            = AddressRange::firstAndSize(0x0180, 4); ///< Address range of aux pin 2
+    
     // Video - 0x02xx
     static constexpr AddressRange PALETTE_INDEX_CURRENT                = AddressRange::firstAndSize(0x0200, 4); ///< Address range of palette index register
     static constexpr AddressRange FRAME_RATE_CURRENT                   = AddressRange::firstAndSize(0x0204, 4); ///< Address range of framerate register

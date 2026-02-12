@@ -122,6 +122,36 @@ public:
     [[nodiscard]] etl::expected<etl::string<MemorySpaceWEOM::PALETTE_NAME_SIZE>, Error> getPaletteName(unsigned paletteIndex);
 
     /**
+     * @brief Retrieves the current trigger mode.
+     * @return An `etl::expected<TriggerMode, Error>` containing the trigger mode or an error.
+     */
+    [[nodiscard]] etl::expected<TriggerMode, Error> getTriggerMode();
+
+    /**
+     * @brief Sets the trigger mode.
+     * @param mode The trigger mode to set.
+     * @param memoryType The memory region to set.
+     * @return An `etl::expected<void, Error>` indicating success or failure.
+     */
+    [[nodiscard]] etl::expected<void, Error> setTriggerMode(TriggerMode mode, MemoryType memoryType);
+
+    /**
+     * @brief Retrieves the current configuration of an AUX pin.
+     * @param pin The AUX pin to query (0, 1, or 2).
+     * @return An `etl::expected<AuxPin, Error>` containing the pin configuration or an error.
+     */
+    [[nodiscard]] etl::expected<AuxPin, Error> getAuxPin(uint8_t pin);
+
+    /**
+     * @brief Sets the configuration of an AUX pin.
+     * @param pin The AUX pin to configure (0, 1, or 2).
+     * @param mode The configuration to set.
+     * @param memoryType The memory region to set.
+     * @return An `etl::expected<void, Error>` indicating success or failure.
+     */
+    [[nodiscard]] etl::expected<void, Error> setAuxPin(uint8_t pin, AuxPin mode, MemoryType memoryType);
+
+    /**
      * @brief Retrieves the current frame rate setting.
      * @return An `etl::expected<Framerate, Error>` containing the frame rate or an error.
      */
