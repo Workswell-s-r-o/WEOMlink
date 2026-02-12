@@ -2,7 +2,6 @@
 #define WL_TRIGGERMODE_H
 
 #include <etl/enum_type.h>
-#include <cstdint>
 
 namespace wl {
 
