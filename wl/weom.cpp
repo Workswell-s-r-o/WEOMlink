@@ -171,6 +171,68 @@ etl::expected<etl::string<MemorySpaceWEOM::PALETTE_NAME_SIZE>, Error> WEOM::getP
     return etl::string<MemorySpaceWEOM::PALETTE_NAME_SIZE>(data.begin(), data.end());
 }
 
+etl::expected<TriggerMode, Error> WEOM::getTriggerMode()
+{
+    auto result = readAddressRange(MemorySpaceWEOM::TRIGGER_MODE);
+    if (!result.has_value())
+    {
+        return etl::unexpected<Error>(result.error());
+    }
+    return static_cast<TriggerMode>(result.value().at(0));
+}
+
+etl::expected<void, Error> WEOM::setTriggerMode(TriggerMode mode, MemoryType memoryType)
+{
+    etl::array<uint8_t, MemorySpaceWEOM::TRIGGER_MODE.getSize()> data = {};
+    data.at(0) = static_cast<uint8_t>(mode);
+    return writeData(data, MemorySpaceWEOM::TRIGGER_MODE, memoryType);
+}
+
+etl::expected<AuxPin, Error> WEOM::getAuxPin(uint8_t pin)
+{
+    if (pin > 2)
+    {
+        return etl::unexpected<Error>(Error::DEVICE__INVALID_PIN);
+    }
+    AddressRange addressRange = MemorySpaceWEOM::AUX_PIN_0;
+    if (pin == 1) 
+    {
+        addressRange = MemorySpaceWEOM::AUX_PIN_1;
+    } 
+    else if (pin == 2) 
+    {
+        addressRange = MemorySpaceWEOM::AUX_PIN_2;
+    }
+
+    auto result = readAddressRange(addressRange);
+    if (!result.has_value())
+    {
+        return etl::unexpected<Error>(result.error());
+    }
+    return static_cast<AuxPin>(result.value().at(0));
+}
+
+etl::expected<void, Error> WEOM::setAuxPin(uint8_t pin, AuxPin mode, MemoryType memoryType)
+{
+    if (pin > 2)
+    {
+        return etl::unexpected<Error>(Error::DEVICE__INVALID_PIN);
+    }
+    AddressRange addressRange = MemorySpaceWEOM::AUX_PIN_0;
+    if (pin == 1) 
+    {
+        addressRange = MemorySpaceWEOM::AUX_PIN_1;
+    }
+    else if (pin == 2) 
+    {
+        addressRange = MemorySpaceWEOM::AUX_PIN_2;
+    }
+
+    etl::array<uint8_t, 4> data = {};
+    data.at(0) = static_cast<uint8_t>(mode);
+    return writeData(data, addressRange, memoryType);
+}
+
 etl::expected<Framerate, Error> WEOM::getFramerate()
 {
     auto result = readAddressRange<MemorySpaceWEOM::FRAME_RATE_CURRENT>();

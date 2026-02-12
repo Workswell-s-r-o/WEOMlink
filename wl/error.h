@@ -59,6 +59,7 @@ namespace wl
             DEVICE__INVALID_ADDRESS,   ///< Address is invalid
             DEVICE__DISCONNECTED,      ///< Transfer failed several times, assuming connection broke
             DEVICE__BUSY,              ///< Device busy for more than allowed time
+            DEVICE__INVALID_PIN,       ///< Invalin pin number
 
             INVALID_DATA ///< Invalid data for conversion
         };
