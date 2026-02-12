@@ -3,7 +3,8 @@
 
 #include <etl/enum_type.h>
 
-#include <cstdint>
+#include <wl/dataclasses/triggermode.h>
+#include <wl/dataclasses/auxpin.h>
 
 namespace wl {
 

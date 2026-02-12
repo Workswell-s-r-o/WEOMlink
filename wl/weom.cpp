@@ -173,7 +173,7 @@ etl::expected<etl::string<MemorySpaceWEOM::PALETTE_NAME_SIZE>, Error> WEOM::getP
 
 etl::expected<TriggerMode, Error> WEOM::getTriggerMode()
 {
-    auto result = readAddressRange(MemorySpaceWEOM::TRIGGER_MODE);
+    auto result = readAddressRange<MemorySpaceWEOM::TRIGGER_MODE>();
     if (!result.has_value())
     {
         return etl::unexpected<Error>(result.error());
@@ -194,22 +194,28 @@ etl::expected<AuxPin, Error> WEOM::getAuxPin(uint8_t pin)
     {
         return etl::unexpected<Error>(Error::DEVICE__INVALID_PIN);
     }
-    AddressRange addressRange = MemorySpaceWEOM::AUX_PIN_0;
-    if (pin == 1) 
+
+    etl::expected<etl::array<uint8_t, 4>, Error> result;
+
+    switch (pin)
     {
-        addressRange = MemorySpaceWEOM::AUX_PIN_1;
-    } 
-    else if (pin == 2) 
-    {
-        addressRange = MemorySpaceWEOM::AUX_PIN_2;
+        case 0:
+            result = readAddressRange<MemorySpaceWEOM::AUX_PIN_0>();
+            break;
+        case 1:
+            result = readAddressRange<MemorySpaceWEOM::AUX_PIN_1>();
+            break;
+        case 2:
+            result = readAddressRange<MemorySpaceWEOM::AUX_PIN_2>();
+            break;
     }
 
-    auto result = readAddressRange(addressRange);
     if (!result.has_value())
     {
         return etl::unexpected<Error>(result.error());
     }
-    return static_cast<AuxPin>(result.value().at(0));
+
+    return static_cast<AuxPin>(result.value()[0]);
 }
 
 etl::expected<void, Error> WEOM::setAuxPin(uint8_t pin, AuxPin mode, MemoryType memoryType)
