@@ -118,13 +118,13 @@ namespace wl
          * @brief Address range of firmware version
          * @see registers_main_firmware_version
          */
-        static constexpr AddressRange MAIN_FIRMWARE_VERSION = AddressRange::firstAndSize(0x0100, 4); ///< 
+        static constexpr AddressRange MAIN_FIRMWARE_VERSION = AddressRange::firstAndSize(0x0100, 4);
 
         /**
          * @brief Address range of shutter temperature register
          * @see registers_shutter_temperature
          */
-        static constexpr AddressRange SHUTTER_TEMPERATURE = AddressRange::firstAndSize(0x0110, 4); ///< 
+        static constexpr AddressRange SHUTTER_TEMPERATURE = AddressRange::firstAndSize(0x0110, 4);
 
         /**
          * @brief Address range of serial number registers
@@ -137,6 +137,48 @@ namespace wl
          * @see registers_article_number
          */
         static constexpr AddressRange ARTICLE_NUMBER_CURRENT = AddressRange::firstAndSize(0x0134, 32);
+
+        /** 
+         * @brief Address range of led red brightness registers
+         * @see registers_led_r_brightness
+        */
+        static constexpr AddressRange LED_R_BRIGHTNESS = AddressRange::firstAndSize(0x0164, 4);
+
+        /** 
+         * @brief Address range of led green brightness registers
+         * @see registers_led_g_brightness
+        */
+        static constexpr AddressRange LED_G_BRIGHTNESS = AddressRange::firstAndSize(0x0168, 4);
+
+        /** 
+         * @brief Address range of led blue brightness registers
+         * @see registers_led_b_brightness
+        */
+        static constexpr AddressRange LED_B_BRIGHTNESS = AddressRange::firstAndSize(0x016C, 4);
+
+        /**
+         * @brief Address range of trigger mode register
+         * @see registers_trigger_mode
+         */
+        static constexpr AddressRange TRIGGER_MODE = AddressRange::firstAndSize(0x0174, 4);
+
+        /**
+         * @brief Address range of AUX pin 0 register
+         * @see registers_aux_pin_0
+         */
+        static constexpr AddressRange AUX_PIN_0 = AddressRange::firstAndSize(0x0178, 4);
+
+        /**
+         * @brief Address range of AUX pin 1 register
+         * @see registers_aux_pin_1
+         */
+        static constexpr AddressRange AUX_PIN_1 = AddressRange::firstAndSize(0x017C, 4);
+
+        /**
+         * @brief Address range of AUX pin 2 register
+         * @see registers_aux_pin_2
+         */
+        static constexpr AddressRange AUX_PIN_2 = AddressRange::firstAndSize(0x0180, 4);
 
         // Video - 0x02xx
         /**
@@ -158,16 +200,16 @@ namespace wl
         static constexpr AddressRange IMAGE_FLIP_CURRENT = AddressRange::firstAndSize(0x0208, 4);
 
         /**
-         * @brief Address range of video format register
-         * @see registers_video_format
-         */
-        static constexpr AddressRange VIDEO_FORMAT = AddressRange::firstAndSize(0x0210, 4);
-
-        /**
          * @brief Address range of image freeze register
          * @see registers_image_freeze
          */
         static constexpr AddressRange IMAGE_FREEZE = AddressRange::firstAndSize(0x020C, 4);
+
+        /**
+         * @brief Address range of video format register
+         * @see registers_video_format
+         */
+        static constexpr AddressRange VIDEO_FORMAT = AddressRange::firstAndSize(0x0210, 4);
 
         /**
          * @brief Address range of test pattern register
@@ -175,12 +217,49 @@ namespace wl
          */
         static constexpr AddressRange TEST_PATTERN = AddressRange::firstAndSize(0x0214, 4);
 
+        /**
+         * @brief Address range of reticle type register
+         * @see registers_reticle_type
+         */
+        static constexpr AddressRange RETICLE_TYPE = AddressRange::firstAndSize(0x0234, 4);
+
+        /**
+         * @brief Address range of reticle position x register
+         * @see registers_reticle_position_x
+         */
+        static constexpr AddressRange RETICLE_POSITION_X = AddressRange::firstAndSize(0x0238, 4);
+        
+        /**
+         * @brief Address range of reticle position y register
+         * @see registers_reticle_position_y
+         */
+        static constexpr AddressRange RETICLE_POSITION_Y = AddressRange::firstAndSize(0x023C, 4);
+
         // NUC - 0x03xx
+
+        /**
+         * @brief Address range of shutter counter register
+         * @see registers_shutter_counter
+         */
+        static constexpr AddressRange SHUTTER_COUNTER = AddressRange::firstAndSize(0x0300, 4);
+
+        /**
+         * @brief Address range of time from last nuc offset update register
+         * @see registers_time_from_last_nuc_offset_update
+         */
+        static constexpr AddressRange TIME_FROM_LAST_NUC_OFFSET_UPDATE = AddressRange::firstAndSize(0x0304, 4);
+
         /**
          * @brief Address range of nuc update mode register
          * @see registers_nuc_update_mode
          */
         static constexpr AddressRange NUC_UPDATE_MODE_CURRENT = AddressRange::firstAndSize(0x0308, 4);
+
+        /**
+         * @brief Address range of internal shutter position register
+         * @see registers_internal_shutter_position
+         */
+        static constexpr AddressRange INTERNAL_SHUTTER_POSITION = AddressRange::firstAndSize(0x0314, 4);
 
         /**
          * @brief Address range of nuc max period register
@@ -193,6 +272,13 @@ namespace wl
          * @see registers_nuc_adaptive_threshold
          */
         static constexpr AddressRange NUC_ADAPTIVE_THRESHOLD_CURRENT = AddressRange::firstAndSize(0x0324, 4);
+
+        // Connection - 0x04xx
+            /**
+         * @brief Address range of UART baudrate register
+         * @see registers_uart_baudrate
+         */
+        static constexpr AddressRange UART_BAUDRATE_CURRENT = AddressRange::firstAndSize(0x0400, 4);
 
         // Filters - 0x06xx
         /**
@@ -212,6 +298,12 @@ namespace wl
          * @see registers_mgc_contrast_brightness
          */
         static constexpr AddressRange MGC_CONTRAST_BRIGHTNESS_CURRENT = AddressRange::firstAndSize(0x0608, 4);
+
+        /**
+         * @brief Address range of frame block median contrast brightness register
+         * @see registers_frame_block_median_contrast_brightness
+         */
+        static constexpr AddressRange FRAME_BLOCK_MEDIAN_CONBRIGHT = AddressRange::firstAndSize(0x060C, 4);
 
         /**
          * @brief Address range of AGC NH smoothing register
@@ -242,6 +334,36 @@ namespace wl
          * @see registers_plateau_tail_rejection
          */
         static constexpr AddressRange PLATEAU_TAIL_REJECTION = AddressRange::firstAndSize(0x0628, 4);
+
+        /**
+         * @brief Address range of smart time domain average threshold register
+         * @see registers_smart_time_domain_average_threshold
+         */
+        static constexpr AddressRange SMART_TIME_DOMAIN_AVERAGE_THRESHOLD = AddressRange::firstAndSize(0x062C, 4);
+
+        /**
+         * @brief Address range of smart median threshold register
+         * @see registers_smart_median_threshold
+         */
+        static constexpr AddressRange SMART_MEDIAN_THRESHOLD = AddressRange::firstAndSize(0x0630, 4);
+
+        /**
+         * @brief Address range of gamma correction register
+         * @see registers_gamma_correction
+         */
+        static constexpr AddressRange GAMMA_CORRECTION = AddressRange::firstAndSize(0x0634, 4);
+
+        /**
+         * @brief Address range of max amplification register
+         * @see registers_max_amplification
+         */
+        static constexpr AddressRange MAX_AMPLIFICATION = AddressRange::firstAndSize(0x0638, 4);
+
+        /**
+         * @brief Address range of damping factor register
+         * @see registers_damping_factor
+         */
+        static constexpr AddressRange DAMPING_FACTOR = AddressRange::firstAndSize(0x063C, 4);
 
         // Presets - 0x0Axx
         /**
