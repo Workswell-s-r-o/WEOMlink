@@ -23,11 +23,13 @@ struct VideoFormat
     {
         PRE_IGC = 0,  ///< 
         POST_IGC = 1, ///< 
+        POST_COLORING = 2 ///<
     };
 
     ETL_DECLARE_ENUM_TYPE(VideoFormat, uint8_t)
     ETL_ENUM_TYPE(PRE_IGC, "PRE_IGC")
     ETL_ENUM_TYPE(POST_IGC, "POST_IGC")
+    ETL_ENUM_TYPE(POST_COLORING, "POST_COLORING")
     ETL_END_ENUM_TYPE
 };
 
