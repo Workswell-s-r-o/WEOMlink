@@ -810,18 +810,7 @@ etl::expected<PresetId, Error> WEOM::getPresetId(uint8_t index)
         return etl::unexpected(result.error());
     }
 
-    auto range = Range::getFromDeviceValue(presetData.at(0) & 0b1111);
-    if (!range.has_value())
-    {
-        return etl::unexpected<Error>(range.error());
-    }
-    auto lens = Lens::getFromDeviceValue((presetData.at(0) >> 4) & 0b1111);
-    if (!lens.has_value())
-    {
-        return etl::unexpected<Error>(lens.error());
-    }
-
-    return PresetId(range.value(), lens.value());
+    return PresetId(deserialize<uint32_t>(presetData));
 }
 
 etl::expected<std::uint8_t, Error> WEOM::getPresetIdCount()
@@ -841,26 +830,13 @@ etl::expected<PresetId, Error> WEOM::getPresetId()
     {
         return etl::unexpected<Error>(result.error());
     }
-
-    auto range = Range::getFromDeviceValue((result.value().at(0) | (result.value().at(1) << 8)));
-    if (!range.has_value())
-    {
-        return etl::unexpected<Error>(range.error());
-    }
-    auto lens = Lens::getFromDeviceValue((result.value().at(2) | (result.value().at(3) << 8)));
-    if (!lens.has_value())
-    {
-        return etl::unexpected<Error>(lens.error());
-    }
-
-    return PresetId(range.value(), lens.value());
+    return PresetId(deserialize<uint32_t>(result.value()));
 }
 
 etl::expected<void, Error> WEOM::setPresetId(const PresetId& id)
 {
     etl::array<uint8_t, MemorySpaceWEOM::SELECTED_PRESET_ID.getSize()> data = {};
-    serialize(Range::getDeviceValue(id.getRange()), data.data(), sizeof(uint16_t));
-    serialize(Lens::getDeviceValue(id.getLens()), data.data() + sizeof(uint16_t), sizeof(uint16_t));
+    serialize(id.toDeviceValue(), data.data(), sizeof(uint32_t));
     auto result = writeData(data, MemorySpaceWEOM::SELECTED_PRESET_ID);
     if (!result.has_value())
     {

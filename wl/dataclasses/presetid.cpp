@@ -2,38 +2,6 @@
 
 namespace wl {
 
-
-uint16_t Range::getDeviceValue(const Range item)
-{
-    switch (item)
-    {
-        case NOT_DEFINED: return 0x0F;
-        case R1: return 0x00;
-        case R2: return 0x01;
-        case R3: return 0x02;
-        case HIGH_GAIN: return 0x07;
-        case LOW_GAIN: return 0x08;
-        case SUPER_GAIN: return 0x09;
-    }
-    assert(false);
-    return 0x0F;
-}
-
-etl::expected<Range, Error> Range::getFromDeviceValue(const uint16_t deviceValue)
-{
-    switch (deviceValue)
-    {
-        case 0x0F: return Range(NOT_DEFINED);
-        case 0x00: return Range(R1);
-        case 0x01: return Range(R2);
-        case 0x02: return Range(R3);
-        case 0x07: return Range(HIGH_GAIN);
-        case 0x08: return Range(LOW_GAIN);
-        case 0x09: return Range(SUPER_GAIN);
-        default: return etl::unexpected<Error>(Error::INVALID_DATA);
-    }
-}
-
 bool Range::isRadiometric(Range item)
 {
     switch (item)
@@ -104,57 +72,20 @@ int Range::getUpperTemperature(Range item)
     }
 }
 
-uint16_t Lens::getDeviceValue(const Lens item)
-{
-    switch(item)
-    {
-        case NOT_DEFINED: return 0xF0;
-        case WTC_35: return 0x00;
-        case WTC_25: return 0x01;
-        case WTC_14: return 0x02;
-        case WTC_7_5: return 0x03;
-        case WTC_50: return 0x04;
-        case WTC_7: return 0x05;
-        case USER_1: return 0x07;
-        case USER_2: return 0x08;
-    }
-    assert(false);
-    return 0xF0;
-}
-
-etl::expected<Lens, Error> Lens::getFromDeviceValue(const uint16_t deviceValue)
-{
-    switch(deviceValue)
-    {
-        case 0x0F: return Lens(NOT_DEFINED);
-        case 0x00: return Lens(WTC_35);
-        case 0x01: return Lens(WTC_25);
-        case 0x02: return Lens(WTC_14);
-        case 0x03: return Lens(WTC_7_5);
-        case 0x04: return Lens(WTC_50);
-        case 0x05: return Lens(WTC_7);
-        case 0x07: return Lens(USER_1);
-        case 0x08: return Lens(USER_2);
-        default: return etl::unexpected<Error>(Error::INVALID_DATA);
-    }
-}
-
-bool Lens::isUserDefined(Lens item)
-{
-    switch (item)
-    {
-        case USER_1:
-        case USER_2:
-            return true;
-
-        default:
-            return false;
-    }
-}
-
-PresetId::PresetId(Range range, Lens lens)
+PresetId::PresetId(Range range, Lens lens, PresetVersion presetVersion, LensVariant lensVariant)
     : m_range(range)
     , m_lens(lens)
+    , m_presetVersion(presetVersion)
+    , m_lensVariant(lensVariant)
+{
+
+}
+
+PresetId::PresetId(uint32_t deviceValue)
+    : m_range(static_cast<Range>((deviceValue && RANGE_MASK) >> RANGE_SHIFT))
+    , m_lens(static_cast<Lens>((deviceValue && LENS_MASK) >> LENS_SHIFT))
+    , m_presetVersion(static_cast<PresetVersion>((deviceValue && VERSION_MASK) >> VERSION_SHIFT))
+    , m_lensVariant(static_cast<LensVariant>((deviceValue && LENS_VARIANT_MASK) >> LENS_VARIANT_SHIFT))
 {
 
 }
@@ -177,6 +108,36 @@ Lens PresetId::getLens() const
 void PresetId::setLens(Lens lens)
 {
     m_lens = lens;
+}
+
+LensVariant PresetId::getLensVariant() const
+{
+    return m_lensVariant;
+}
+
+void PresetId::setLensVariant(LensVariant lensVariant)
+{
+    m_lensVariant = lensVariant;
+}
+
+PresetVersion PresetId::getPresetVersion() const
+{
+    return m_presetVersion;
+}
+
+void PresetId::setPresetVersion(PresetVersion presetVersion)
+{
+    m_presetVersion = presetVersion;
+}
+
+uint32_t PresetId::toDeviceValue() const
+{
+    uint32_t deviceValue = 0;
+    deviceValue |= (static_cast<uint32_t>(m_range) << RANGE_SHIFT) && RANGE_MASK;
+    deviceValue |= (static_cast<uint32_t>(m_lens) << LENS_SHIFT) && LENS_MASK;
+    deviceValue |= (static_cast<uint32_t>(m_presetVersion) << VERSION_SHIFT) && VERSION_MASK;
+    deviceValue |= (static_cast<uint32_t>(m_lensVariant) << LENS_VARIANT_SHIFT) && LENS_VARIANT_MASK;
+    return deviceValue;
 }
 
 } // namespace wl
