@@ -257,6 +257,22 @@ public:
      */
     [[nodiscard]] etl::expected<void, Error> setImageFreeze(bool freeze);
 
+    /** 
+     * @brief Retrieves the current video format.
+     * @return An `etl::expected<VideoFormat, Error>` containing the video format or an error.
+     * @see registers_video_format
+     */
+    [[nodiscard]] etl::expected<VideoFormat, Error> getVideoFormat();
+
+    /**
+     * @brief Sets the video format.
+     * @param videoFormat The video format to set.
+     * @param memoryType The memory region to set (RAM or FLASH).
+     * @return An `etl::expected<void, Error>` indicating success or failure.
+     * @see registers_video_format
+     */
+    [[nodiscard]] etl::expected<void, Error> setVideoFormat(VideoFormat videoFormat, MemoryTypeWEOM memoryType);
+
     /**
      * @brief Retrieves the current image generator setting.
      * @return An `etl::expected<ImageGenerator, Error>` containing the image generator or an error.
@@ -671,15 +687,6 @@ public:
      * @see registers_selected_preset_index
      */
     [[nodiscard]] etl::expected<void, Error> saveCurrentPresetIndexToFlash();
-
-    /**
-     * @brief Sets the video format.
-     * @param videoFormat The video format to set.
-     * @param memoryType The memory region to set (RAM or FLASH).
-     * @return An `etl::expected<void, Error>` indicating success or failure.
-     * @see registers_video_format
-     */
-    [[nodiscard]] etl::expected<void, Error> setVideoFormat(VideoFormat videoFormat, MemoryTypeWEOM memoryType);
 
 private:
     etl::unique_ptr<DeviceInterfaceWEOM> m_deviceInterface;

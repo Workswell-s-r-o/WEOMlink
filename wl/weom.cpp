@@ -865,6 +865,16 @@ etl::expected<void, Error> WEOM::saveCurrentPresetIndexToFlash()
     return {};
 }
 
+etl::expected<VideoFormat, Error> WEOM::getVideoFormat()
+{
+    auto result = readAddressRange<MemorySpaceWEOM::VIDEO_FORMAT>();
+    if (!result.has_value())
+    {
+        return etl::unexpected<Error>(result.error());
+    }
+    return static_cast<VideoFormat>(result.value().at(0));
+}
+
 etl::expected<void, Error> WEOM::setVideoFormat(VideoFormat videoFormat, MemoryTypeWEOM memoryType)
 {
     etl::array<uint8_t, MemorySpaceWEOM::VIDEO_FORMAT.getSize()> data = {};
