@@ -16,6 +16,11 @@
 #include "wl/dataclasses/triggers.h"
 #include "wl/dataclasses/videoformat.h"
 #include "wl/dataclasses/agcnhsmoothing.h"
+#include "wl/dataclasses/triggermode.h"
+#include "wl/dataclasses/auxpinmode.h"
+#include "wl/dataclasses/reticletype.h"
+#include "wl/dataclasses/internalshutterposition.h"
+#include "wl/dataclasses/baudrate.h"
 
 #include "wl/communication/protocolinterfacetcsi.h"
 #include "wl/weom/deviceinterfaceweom.h"
@@ -81,6 +86,48 @@ public:
     [[nodiscard]] etl::expected<void, Error> activateTrigger(Trigger trigger);
 
     /**
+     * @brief Retrieves the brightness of the red LED on the device.
+     * @return An `etl::expected<uint8_t, Error>` containing the red LED brightness or an error.
+     */
+    [[nodiscard]] etl::expected<uint8_t, Error> getLedRedBrightness();
+
+    /**
+     * @brief Sets the brightness of the red LED on the device.
+     * @param brightness The brightness value to set (1-7).
+     * @param memoryType The memory region to set. 
+     * @return An `etl::expected<void, Error>` indicating success or failure.
+     */
+    [[nodiscard]] etl::expected<void, Error> setLedRedBrightness(uint8_t brightness, MemoryTypeWEOM memoryType);
+
+    /**
+     * @brief Retrieves the brightness of the green LED on the device.
+     * @return An `etl::expected<uint8_t, Error>` containing the green LED brightness or an error.
+     */
+    [[nodiscard]] etl::expected<uint8_t, Error> getLedGreenBrightness();
+
+    /**
+     * @brief Sets the brightness of the green LED on the device.
+     * @param brightness The brightness value to set (0-7).
+     * @param memoryType The memory region to set.
+     * @return An `etl::expected<void, Error>` indicating success or failure.
+     */
+    [[nodiscard]] etl::expected<void, Error> setLedGreenBrightness(uint8_t brightness, MemoryTypeWEOM memoryType);
+
+    /**
+     * @brief Retrieves the brightness of the blue LED on the device.
+     * @return An `etl::expected<uint8_t, Error>` containing the blue LED brightness or an error.
+     */
+    [[nodiscard]] etl::expected<uint8_t, Error> getLedBlueBrightness();
+
+    /**
+     * @brief Sets the brightness of the blue LED on the device.
+     * @param brightness The brightness value to set (0-7).
+     * @param memoryType The memory region to set.
+     * @return An `etl::expected<void, Error>` indicating success or failure.
+     */
+    [[nodiscard]] etl::expected<void, Error> setLedBlueBrightness(uint8_t brightness, MemoryTypeWEOM memoryType);
+
+    /**
      * @brief Maximal size of serial number string
      * @see registers_serial_number
      */
@@ -112,6 +159,36 @@ public:
     [[nodiscard]] etl::expected<FirmwareVersion, Error> getFirmwareVersion();
 
     /**
+     * @brief Retrieves the current trigger mode.
+     * @return An `etl::expected<TriggerMode, Error>` containing the trigger mode or an error.
+     */
+    [[nodiscard]] etl::expected<TriggerMode, Error> getTriggerMode();
+
+    /**
+     * @brief Sets the trigger mode.
+     * @param mode The trigger mode to set.
+     * @param memoryType The memory region to set.
+     * @return An `etl::expected<void, Error>` indicating success or failure.
+     */
+    [[nodiscard]] etl::expected<void, Error> setTriggerMode(TriggerMode mode, MemoryTypeWEOM memoryType);
+
+    /**
+     * @brief Retrieves the current configuration of an AUX pin.
+     * @param pin The AUX pin to query (0, 1, or 2).
+     * @return An `etl::expected<AuxPin, Error>` containing the pin configuration or an error.
+     */
+    [[nodiscard]] etl::expected<AuxPin, Error> getAuxPin(uint8_t pin);
+
+    /**
+     * @brief Sets the configuration of an AUX pin.
+     * @param pin The AUX pin to configure (0, 1, or 2).
+     * @param mode The configuration to set.
+     * @param memoryType The memory region to set.
+     * @return An `etl::expected<void, Error>` indicating success or failure.
+     */
+    [[nodiscard]] etl::expected<void, Error> setAuxPin(uint8_t pin, AuxPin mode, MemoryTypeWEOM memoryType);
+
+    /**
      * @brief Retrieves the current palette index setting.
      * @return An `etl::expected<uint8_t, Error>` containing the palette index or an error.
      * @see registers_palette_index
@@ -134,36 +211,6 @@ public:
      * @see registers_palette_index
      */
     [[nodiscard]] etl::expected<etl::string<MemorySpaceWEOM::PALETTE_NAME_SIZE>, Error> getPaletteName(unsigned paletteIndex);
-
-    /**
-     * @brief Retrieves the current trigger mode.
-     * @return An `etl::expected<TriggerMode, Error>` containing the trigger mode or an error.
-     */
-    [[nodiscard]] etl::expected<TriggerMode, Error> getTriggerMode();
-
-    /**
-     * @brief Sets the trigger mode.
-     * @param mode The trigger mode to set.
-     * @param memoryType The memory region to set.
-     * @return An `etl::expected<void, Error>` indicating success or failure.
-     */
-    [[nodiscard]] etl::expected<void, Error> setTriggerMode(TriggerMode mode, MemoryType memoryType);
-
-    /**
-     * @brief Retrieves the current configuration of an AUX pin.
-     * @param pin The AUX pin to query (0, 1, or 2).
-     * @return An `etl::expected<AuxPin, Error>` containing the pin configuration or an error.
-     */
-    [[nodiscard]] etl::expected<AuxPin, Error> getAuxPin(uint8_t pin);
-
-    /**
-     * @brief Sets the configuration of an AUX pin.
-     * @param pin The AUX pin to configure (0, 1, or 2).
-     * @param mode The configuration to set.
-     * @param memoryType The memory region to set.
-     * @return An `etl::expected<void, Error>` indicating success or failure.
-     */
-    [[nodiscard]] etl::expected<void, Error> setAuxPin(uint8_t pin, AuxPin mode, MemoryType memoryType);
 
     /**
      * @brief Retrieves the current frame rate setting.
@@ -226,6 +273,83 @@ public:
     [[nodiscard]] etl::expected<void, Error> setImageGenerator(ImageGenerator generator);
 
     /**
+     * @brief Retrieves the current reticle type setting.
+     * @return An `etl::expected<ReticleType, Error>` containing the reticle type or an error.
+     * @see registers_reticle_type
+     */
+    [[nodiscard]] etl::expected<ReticleType, Error> getReticleType();
+
+    /**
+     * @brief Sets the reticle type.
+     * @param mode The reticle type to set.
+     * @param memoryType The memory region to set.
+     * @return An `etl::expected<void, Error>` indicating success or failure.
+     * @see registers_reticle_type
+     */
+    [[nodiscard]] etl::expected<void, Error> setReticleType(ReticleType mode, MemoryTypeWEOM memoryType);
+
+    /**
+     * @brief Retrieves the current reticle X-axis coordinate.
+     * @return An `etl::expected<int32_t, Error>` containing the reticle position or an error.
+     * @see registers_reticle_position_x
+     */
+    [[nodiscard]] etl::expected<int32_t, Error> getReticlePositionX();
+
+    /**
+     * @brief Sets the reticle X-axis coordinate.
+     * @param position The reticle position to set (-200, 200)
+     * @param memoryType The memory region to set.
+     * @return An `etl::expected<void, Error>` indicating success or failure.
+     * @see registers_reticle_position_x
+     */
+    [[nodiscard]] etl::expected<void, Error> setReticlePositionX(int32_t position, MemoryTypeWEOM memoryType);
+
+    /**
+     * @brief Retrieves the current reticle Y-axis coordinate.
+     * @return An `etl::expected<int32_t, Error>` containing the reticle position or an error.
+     * @see registers_reticle_position_y
+     */
+    [[nodiscard]] etl::expected<int32_t, Error> getReticlePositionY();
+
+    /**
+     * @brief Sets the reticle Y-axis coordinate.
+     * @param position The reticle position to set (-100, 100)
+     * @param memoryType The memory region to set.
+     * @return An `etl::expected<void, Error>` indicating success or failure.
+     * @see registers_reticle_position_y
+     */
+    [[nodiscard]] etl::expected<void, Error> setReticlePositionY(int32_t position, MemoryTypeWEOM memoryType);
+
+    /**
+     * @brief Retrieves the current shutter counter value
+     * @return An `etl::expected<uint32_t, Error>` containing the shutter counter or an error.
+     * @see registers_shutter_counter
+     */
+    [[nodiscard]] etl::expected<uint32_t, Error> getShutterCounter();
+
+    /**
+     * @brief Retrieves the time since the last NUC offset update in milliseconds.
+     * @return An `etl::expected<uint32_t, Error>` containing the time or an error.
+     * @see registers_time_from_last_nuc_offset_update
+     */
+    [[nodiscard]] etl::expected<uint32_t, Error> getTimeFromLastNucOffsetUpdate();
+
+    /**
+     * @brief Retrieves the current internal shutter position.
+     * @return An `etl::expected<InternalShutterPosition, Error>` containing the internal shutter position or an error.
+     * @see registers_internal_shutter_position
+     */
+    [[nodiscard]] etl::expected<InternalShutterPosition, Error> getInternalShutterPosition();
+
+    /**
+     * @brief Sets the internal shutter position.
+     * @param position The internal shutter position to set (open or closed).
+     * @return An `etl::expected<void, Error>` indicating success or failure.
+     * @see registers_internal_shutter_position
+     */
+    [[nodiscard]] etl::expected<void, Error> setInternalShutterPosition(InternalShutterPosition position);
+
+    /**
      * @brief Retrieves the shutter update mode.
      * @return An `etl::expected<ShutterUpdateMode, Error>` containing the shutter mode or an error.
      * @see registers_nuc_update_mode
@@ -281,6 +405,22 @@ public:
     [[nodiscard]] etl::expected<void, Error> setShutterAdaptiveThreshold(double value, MemoryTypeWEOM memoryType);
 
     /**
+     * @brief Retrieves the UART baudrate.
+     * @return An `etl::expected<Baudrate, Error>` containing the baudrate or an error.
+     * @see registers_uart_baudrate
+     */
+    [[nodiscard]] etl::expected<Baudrate, Error> getUartBaudrate();
+
+    /**
+     * @brief Sets the UART baudrate.
+     * @param baudrate The baudrate to set.
+     * @param memoryType The memory region to set.
+     * @return An `etl::expected<void, Error>` indicating success or failure.
+     * @see registers_uart_baudrate
+     */
+    [[nodiscard]] etl::expected<void, Error> setUartBaudrate(Baudrate baudrate, MemoryTypeWEOM memoryType);
+
+    /**
      * @brief Retrieves the time domain averaging setting.
      * @return An `etl::expected<TimeDomainAveraging, Error>` containing the averaging setting or an error.
      * @see registers_time_domain_average
@@ -327,6 +467,13 @@ public:
      * @see registers_mgc_contrast_brightness
      */
     [[nodiscard]] etl::expected<void, Error> setMgcContrastBrightness(const ContrastBrightness& contrastBrightness, MemoryTypeWEOM memoryType);
+
+    /**
+     * @brief Retrieves the frame block median contrast and brightness settings.
+     * @return An `etl::expected<ContrastBrightness, Error>` containing the settings or an error.
+     * @see registers_frameblock_median_conbright
+     */
+    [[nodiscard]] etl::expected<ContrastBrightness, Error> getFrameBlockMedianConbright();
 
     /**
      * @brief Retrieves the AGC NH smoothing frames setting.
@@ -407,6 +554,86 @@ public:
      * @see registers_plateau_tail_rejection
      */
     [[nodiscard]] etl::expected<void, Error> setPlateauTailRejection(uint8_t value, MemoryTypeWEOM memoryType);
+
+    /**
+     * @brief Retrieves the smart time domain average threshold.
+     * @return An `etl::expected<uint8_t, Error>` containing the smart time domain average threshold or an error.
+     * @see registers_smart_time_domain_average_threshold
+     */
+    [[nodiscard]] etl::expected<uint8_t, Error> getSmartTimeDomainAverageThreshold();
+
+    /**
+     * @brief Sets the smart time domain average threshold.
+     * @param value The smart time domain average threshold to set. Allowed values 0 - 31
+     * @param memoryType The memory region to set (RAM or FLASH).
+     * @return An `etl::expected<void, Error>` indicating success or failure.
+     * @see registers_smart_time_domain_average_threshold
+     */
+    [[nodiscard]] etl::expected<void, Error> setSmartTimeDomainAverageThreshold(uint8_t value, MemoryTypeWEOM memoryType);
+
+    /** 
+     * @brief Retrieves the smart median threshold.
+     * @return An `etl::expected<uint8_t, Error>` containing the smart median threshold or an error.
+     * @see registers_smart_median_threshold
+     */
+    [[nodiscard]] etl::expected<uint8_t, Error> getSmartMedianThreshold();
+
+    /**
+     * @brief Sets the smart median threshold.
+     * @param value The smart median threshold to set. Allowed values 0 - 31
+     * @param memoryType The memory region to set (RAM or FLASH).
+     * @return An `etl::expected<void, Error>` indicating success or failure.
+     * @see registers_smart_median_threshold
+     */
+    [[nodiscard]] etl::expected<void, Error> setSmartMedianThreshold(uint8_t value, MemoryTypeWEOM memoryType);
+
+    /**
+     * @brief Retrieves the gamma correction value.
+     * @return An `etl::expected<double, Error>` containing the gamma correction value or an error.
+     * @see registers_gamma_correction
+     */
+    [[nodiscard]] etl::expected<double, Error> getGammaCorrection();
+
+    /** 
+     * @brief Sets the gamma correction value.
+     * @param value The gamma correction value to set. Allowed values 0.25 - 4.0 in steps of 0.25.
+     * @param memoryType The memory region to set (RAM or FLASH).
+     * @return An `etl::expected<void, Error>` indicating success or failure.
+     * @see registers_gamma_correction
+     */
+    [[nodiscard]] etl::expected<void, Error> setGammaCorrection(double value, MemoryTypeWEOM memoryType);
+
+    /** 
+     * @brief Retrieves the max amplification value.
+     * @return An `etl::expected<double, Error>` containing the max amplification value or an error.
+     * @see registers_max_amplification
+     */
+    [[nodiscard]] etl::expected<double, Error> getMaxAmplification();
+
+    /** 
+     * @brief Sets the max amplification value.
+     * @param value The max amplification value to set. Allowed values 0.25 - 4.0 in steps of 0.25.
+     * @param memoryType The memory region to set (RAM or FLASH).
+     * @return An `etl::expected<void, Error>` indicating success or failure.
+     * @see registers_max_amplification
+     */
+    [[nodiscard]] etl::expected<void, Error> setMaxAmplification(double value, MemoryTypeWEOM memoryType);   
+    
+    /**
+     * @brief Retrieves the damping factor value.
+     * @return An `etl::expected<uint8_t, Error>` containing the damping factor value or an error.
+     * @see registers_damping_factor
+     */
+    [[nodiscard]] etl::expected<uint8_t, Error> getDampingFactor();
+
+    /**
+     * @brief Sets the damping factor value.
+     * @param value The damping factor value to set. Allowed values 0 - 100
+     * @param memoryType The memory region to set (RAM or FLASH).
+     * @return An `etl::expected<void, Error>` indicating success or failure.
+     * @see registers_damping_factor
+     */
+    [[nodiscard]] etl::expected<void, Error> setDampingFactor(uint8_t value, MemoryTypeWEOM memoryType);
 
     /**
      * @brief Retrieves the preset ID by index.

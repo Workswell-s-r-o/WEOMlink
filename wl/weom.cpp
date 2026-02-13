@@ -84,7 +84,7 @@ etl::expected<Status, Error> WEOM::getStatus()
     {
         return etl::unexpected<Error>(result.error());
     }
-    return Status(uint32_t(result.value().at(0)) | (uint32_t(result.value().at(1)) << 8) | (uint32_t(result.value().at(2)) << 16) | (uint32_t(result.value().at(3)) << 24));
+    return Status(deserialize<uint32_t>(result.value()));
 }
 
 etl::expected<Triggers, Error> WEOM::getTriggers()
@@ -94,17 +94,65 @@ etl::expected<Triggers, Error> WEOM::getTriggers()
     {
         return etl::unexpected<Error>(result.error());
     }
-    return Triggers(uint32_t(result.value().at(0)) | (uint32_t(result.value().at(1)) << 8) | (uint32_t(result.value().at(2)) << 16) | (uint32_t(result.value().at(3)) << 24));
+    return Triggers(deserialize<uint32_t>(result.value()));
 }
 
 etl::expected<void, Error> WEOM::activateTrigger(Trigger trigger)
 {
     etl::array<uint8_t, MemorySpaceWEOM::TRIGGER.getSize()> data = {};
-    data.at(0) = static_cast<uint32_t>(trigger) & 0x000000FF;
-    data.at(1) = (static_cast<uint32_t>(trigger) & 0x0000FF00) >> 8;
-    data.at(2) = (static_cast<uint32_t>(trigger) & 0x00FF0000) >> 16;
-    data.at(3) = (static_cast<uint32_t>(trigger) & 0xFF000000) >> 24;
+    serialize(static_cast<uint32_t>(trigger), data.data(), data.size());
     return writeData(data, MemorySpaceWEOM::TRIGGER);
+}
+
+etl::expected<uint8_t, Error> WEOM::getLedRedBrightness()
+{
+    auto result = readAddressRange<MemorySpaceWEOM::LED_R_BRIGHTNESS>();
+    if (!result.has_value())
+    {
+        return etl::unexpected<Error>(result.error());
+    }
+    return result.value().at(0);
+}
+
+etl::expected<void, Error> WEOM::setLedRedBrightness(uint8_t brightness, MemoryTypeWEOM memoryType)
+{
+    etl::array<uint8_t, MemorySpaceWEOM::LED_R_BRIGHTNESS.getSize()> data = {};
+    data.at(0) = brightness;
+    return writeData(data, MemorySpaceWEOM::LED_R_BRIGHTNESS, memoryType);
+}
+
+etl::expected<uint8_t, Error> WEOM::getLedGreenBrightness()
+{
+    auto result = readAddressRange<MemorySpaceWEOM::LED_G_BRIGHTNESS>();
+    if (!result.has_value())
+    {
+        return etl::unexpected<Error>(result.error());
+    }
+    return result.value().at(0);
+}
+
+etl::expected<void, Error> WEOM::setLedGreenBrightness(uint8_t brightness, MemoryTypeWEOM memoryType)
+{
+    etl::array<uint8_t, MemorySpaceWEOM::LED_G_BRIGHTNESS.getSize()> data = {};
+    data.at(0) = brightness;
+    return writeData(data, MemorySpaceWEOM::LED_G_BRIGHTNESS, memoryType);
+}
+
+etl::expected<uint8_t, Error> WEOM::getLedBlueBrightness()
+{
+    auto result = readAddressRange<MemorySpaceWEOM::LED_B_BRIGHTNESS>();
+    if (!result.has_value())
+    {
+        return etl::unexpected<Error>(result.error());
+    }
+    return result.value().at(0);
+}
+
+etl::expected<void, Error> WEOM::setLedBlueBrightness(uint8_t brightness, MemoryTypeWEOM memoryType)
+{
+    etl::array<uint8_t, MemorySpaceWEOM::LED_B_BRIGHTNESS.getSize()> data = {};
+    data.at(0) = brightness;
+    return writeData(data, MemorySpaceWEOM::LED_B_BRIGHTNESS, memoryType);
 }
 
 etl::expected<etl::string<WEOM::SERIAL_NUMBER_STRING_SIZE>, Error> WEOM::getSerialNumber()
@@ -181,7 +229,7 @@ etl::expected<TriggerMode, Error> WEOM::getTriggerMode()
     return static_cast<TriggerMode>(result.value().at(0));
 }
 
-etl::expected<void, Error> WEOM::setTriggerMode(TriggerMode mode, MemoryType memoryType)
+etl::expected<void, Error> WEOM::setTriggerMode(TriggerMode mode, MemoryTypeWEOM memoryType)
 {
     etl::array<uint8_t, MemorySpaceWEOM::TRIGGER_MODE.getSize()> data = {};
     data.at(0) = static_cast<uint8_t>(mode);
@@ -218,7 +266,7 @@ etl::expected<AuxPin, Error> WEOM::getAuxPin(uint8_t pin)
     return static_cast<AuxPin>(result.value()[0]);
 }
 
-etl::expected<void, Error> WEOM::setAuxPin(uint8_t pin, AuxPin mode, MemoryType memoryType)
+etl::expected<void, Error> WEOM::setAuxPin(uint8_t pin, AuxPin mode, MemoryTypeWEOM memoryType)
 {
     if (pin > 2)
     {
@@ -314,6 +362,94 @@ etl::expected<void, Error> WEOM::setImageGenerator(ImageGenerator generator)
     return writeData(data, MemorySpaceWEOM::TEST_PATTERN);
 }
 
+etl::expected<ReticleType, Error> WEOM::getReticleType()
+{
+    auto result = readAddressRange<MemorySpaceWEOM::RETICLE_TYPE>();
+    if (!result.has_value())
+    {
+        return etl::unexpected<Error>(result.error());
+    }
+    return static_cast<ReticleType>(result.value().at(0));
+}
+
+etl::expected<void, Error> WEOM::setReticleType(ReticleType mode, MemoryTypeWEOM memoryType)
+{
+    etl::array<uint8_t, MemorySpaceWEOM::RETICLE_TYPE.getSize()> data = {};
+    data.at(0) = static_cast<uint8_t>(mode);
+    return writeData(data, MemorySpaceWEOM::RETICLE_TYPE, memoryType);
+}
+
+etl::expected<int32_t, Error> WEOM::getReticlePositionX()
+{
+    auto result = readAddressRange<MemorySpaceWEOM::RETICLE_POSITION_X>();
+    if (!result.has_value())
+    {
+        return etl::unexpected<Error>(result.error());
+    }
+    return deserialize<int32_t>(result.value());
+}
+
+etl::expected<void, Error> WEOM::setReticlePositionX(int32_t position, MemoryTypeWEOM memoryType)
+{
+    etl::array<uint8_t, MemorySpaceWEOM::RETICLE_POSITION_X.getSize()> data = {};
+    serialize(position, data.data(), data.size());
+    return writeData(data, MemorySpaceWEOM::RETICLE_POSITION_X, memoryType);
+}
+
+etl::expected<int32_t, Error> WEOM::getReticlePositionY()
+{
+    auto result = readAddressRange<MemorySpaceWEOM::RETICLE_POSITION_Y>();
+    if (!result.has_value())
+    {
+        return etl::unexpected<Error>(result.error());
+    }
+    return deserialize<int32_t>(result.value());
+}
+
+etl::expected<void, Error> WEOM::setReticlePositionY(int32_t position, MemoryTypeWEOM memoryType)
+{
+    etl::array<uint8_t, MemorySpaceWEOM::RETICLE_POSITION_Y.getSize()> data = {};
+    serialize(position, data.data(), data.size());
+    return writeData(data, MemorySpaceWEOM::RETICLE_POSITION_Y, memoryType);
+}
+
+etl::expected<uint32_t, Error> WEOM::getShutterCounter()
+{
+    auto result = readAddressRange<MemorySpaceWEOM::SHUTTER_COUNTER>();
+    if (!result.has_value())
+    {
+        return etl::unexpected<Error>(result.error());
+    }
+    return deserialize<uint32_t>(result.value());
+}
+
+etl::expected<uint32_t, Error> WEOM::getTimeFromLastNucOffsetUpdate()
+{
+    auto result = readAddressRange<MemorySpaceWEOM::TIME_FROM_LAST_NUC_OFFSET_UPDATE>();
+    if (!result.has_value())
+    {
+        return etl::unexpected<Error>(result.error());
+    }
+    return deserialize<uint32_t>(result.value());
+}
+
+etl::expected<InternalShutterPosition, Error> WEOM::getInternalShutterPosition()
+{
+    auto result = readAddressRange<MemorySpaceWEOM::INTERNAL_SHUTTER_POSITION>();
+    if (!result.has_value())
+    {
+        return etl::unexpected<Error>(result.error());
+    }
+    return static_cast<InternalShutterPosition>(result.value().at(0));
+}
+
+etl::expected<void, Error> WEOM::setInternalShutterPosition(InternalShutterPosition position)
+{
+    etl::array<uint8_t, MemorySpaceWEOM::INTERNAL_SHUTTER_POSITION.getSize()> data = {};
+    data.at(0) = static_cast<uint8_t>(position);
+    return writeData(data, MemorySpaceWEOM::INTERNAL_SHUTTER_POSITION);
+}
+
 etl::expected<ShutterUpdateMode, Error> WEOM::getShutterUpdateMode()
 {
     auto result = readAddressRange<MemorySpaceWEOM::NUC_UPDATE_MODE_CURRENT>();
@@ -331,7 +467,7 @@ etl::expected<double, Error> WEOM::getShutterTemperature()
     {
         return etl::unexpected<Error>(result.error());
     }
-    return fixedPointToDouble((uint16_t(result.value().at(1)) << 8) | result.value().at(0), true);
+    return fixedPointToDouble(deserialize<uint16_t>(result.value()), true);
 }
 
 etl::expected<void, Error> WEOM::setShutterUpdateMode(ShutterUpdateMode mode, MemoryTypeWEOM memoryType)
@@ -348,7 +484,7 @@ etl::expected<uint16_t, Error> WEOM::getShutterMaxPeriod()
     {
         return etl::unexpected<Error>(result.error());
     }
-    return (uint16_t(result.value().at(1)) << 8) | result.value().at(0);
+    return deserialize<uint16_t>(result.value());
 }
 
 etl::expected<void, Error> WEOM::setShutterMaxPeriod(uint16_t value, MemoryTypeWEOM memoryType)
@@ -366,7 +502,7 @@ etl::expected<double, Error> WEOM::getShutterAdaptiveThreshold()
     {
         return etl::unexpected<Error>(result.error());
     }
-    return fixedPointToDouble((uint16_t(result.value().at(1)) << 8) | result.value().at(0), false);
+    return fixedPointToDouble(deserialize<uint16_t>(result.value()), false);
 }
 
 etl::expected<void, Error> WEOM::setShutterAdaptiveThreshold(double value, MemoryTypeWEOM memoryType)
@@ -378,9 +514,25 @@ etl::expected<void, Error> WEOM::setShutterAdaptiveThreshold(double value, Memor
     }
 
     etl::array<uint8_t, MemorySpaceWEOM::NUC_ADAPTIVE_THRESHOLD_CURRENT.getSize()> data = {};
-    data.at(0) = static_cast<uint8_t>(fixedValue.value() & 0x00FF);
-    data.at(1) = static_cast<uint8_t>((fixedValue.value() & 0xFF00) >> 8);
+    serialize(fixedValue.value(), data.data(), sizeof(uint16_t));
     return writeData(data, MemorySpaceWEOM::NUC_ADAPTIVE_THRESHOLD_CURRENT, memoryType);
+}
+
+etl::expected<Baudrate, Error> WEOM::getUartBaudrate()
+{
+    auto result = readAddressRange<MemorySpaceWEOM::UART_BAUDRATE_CURRENT>();
+    if (!result.has_value())
+    {
+        return etl::unexpected<Error>(result.error());
+    }
+    return static_cast<Baudrate>(result.value().at(0));
+}
+
+etl::expected<void, Error> WEOM::setUartBaudrate(Baudrate baudrate, MemoryTypeWEOM memoryType)
+{
+    etl::array<uint8_t, MemorySpaceWEOM::UART_BAUDRATE_CURRENT.getSize()> data = {};
+    data.at(0) = static_cast<uint8_t>(baudrate);
+    return writeData(data, MemorySpaceWEOM::UART_BAUDRATE_CURRENT, memoryType);
 }
 
 etl::expected<TimeDomainAveraging, Error> WEOM::getTimeDomainAveraging()
@@ -431,11 +583,20 @@ etl::expected<ContrastBrightness, Error> WEOM::getMgcContrastBrightness()
 etl::expected<void, Error> WEOM::setMgcContrastBrightness(const ContrastBrightness& contrastBrightness, MemoryTypeWEOM memoryType)
 {
     etl::array<uint8_t, MemorySpaceWEOM::MGC_CONTRAST_BRIGHTNESS_CURRENT.getSize()> data = {};
-    data.at(0) = static_cast<uint8_t>(contrastBrightness.getContrastRaw() & 0x00FF);
-    data.at(1) = static_cast<uint8_t>((contrastBrightness.getContrastRaw() & 0xFF00) >> 8);
-    data.at(2) = static_cast<uint8_t>(contrastBrightness.getBrightnessRaw() & 0x00FF);
-    data.at(3) = static_cast<uint8_t>((contrastBrightness.getBrightnessRaw() & 0xFF00) >> 8);
+    serialize(contrastBrightness.getContrastRaw(), data.data(), sizeof(uint16_t));
+    serialize(contrastBrightness.getBrightnessRaw(), data.data() + sizeof(uint16_t), sizeof(uint16_t));
     return writeData(data, MemorySpaceWEOM::MGC_CONTRAST_BRIGHTNESS_CURRENT, memoryType);
+}
+
+etl::expected<ContrastBrightness, Error> WEOM::getFrameBlockMedianConbright()
+{
+    auto result = readAddressRange<MemorySpaceWEOM::FRAME_BLOCK_MEDIAN_CONBRIGHT>();
+    if (!result.has_value())
+    {
+        return etl::unexpected<Error>(result.error());
+    }
+    return ContrastBrightness(static_cast<uint16_t>((result.value().at(1) << 8) | result.value().at(0)),
+                              static_cast<uint16_t>((result.value().at(3) << 8) | result.value().at(2)));
 }
 
 etl::expected<AGCNHSmoothing, Error> WEOM::getAgcNhSmoothingFrames()
@@ -523,6 +684,103 @@ etl::expected<void, Error> WEOM::setPlateauTailRejection(uint8_t value, MemoryTy
     return writeData(data, MemorySpaceWEOM::PLATEAU_TAIL_REJECTION, memoryType);
 }
 
+etl::expected<uint8_t, Error> WEOM::getSmartTimeDomainAverageThreshold()
+{
+    auto result = readAddressRange<MemorySpaceWEOM::SMART_TIME_DOMAIN_AVERAGE_THRESHOLD>();
+    if (!result.has_value())
+    {
+        return etl::unexpected<Error>(result.error());
+    }
+    return result.value().at(0);
+}
+
+etl::expected<void, Error> WEOM::setSmartTimeDomainAverageThreshold(uint8_t value, MemoryTypeWEOM memoryType)
+{
+    etl::array<uint8_t, MemorySpaceWEOM::SMART_TIME_DOMAIN_AVERAGE_THRESHOLD.getSize()> data = {};
+    data.at(0) = value;
+    return writeData(data, MemorySpaceWEOM::SMART_TIME_DOMAIN_AVERAGE_THRESHOLD, memoryType);
+}
+
+etl::expected<uint8_t, Error> WEOM::getSmartMedianThreshold()
+{
+    auto result = readAddressRange<MemorySpaceWEOM::SMART_MEDIAN_THRESHOLD>();
+    if (!result.has_value())
+    {
+        return etl::unexpected<Error>(result.error());
+    }
+    return result.value().at(0);
+}
+
+etl::expected<void, Error> WEOM::setSmartMedianThreshold(uint8_t value, MemoryTypeWEOM memoryType)
+{
+    etl::array<uint8_t, MemorySpaceWEOM::SMART_MEDIAN_THRESHOLD.getSize()> data = {};
+    data.at(0) = value;
+    return writeData(data, MemorySpaceWEOM::SMART_MEDIAN_THRESHOLD, memoryType);
+}
+
+etl::expected<double, Error> WEOM::getGammaCorrection()
+{
+    auto result = readAddressRange<MemorySpaceWEOM::GAMMA_CORRECTION>();
+    if (!result.has_value())
+    {
+        return etl::unexpected<Error>(result.error());
+    }
+    return fixedPointToDouble(deserialize<uint16_t>(result.value()), false);
+}
+
+etl::expected<void, Error> WEOM::setGammaCorrection(double value, MemoryTypeWEOM memoryType)
+{
+    const auto fixedValue = doubleToFixedPoint(value);
+    if (!fixedValue.has_value())
+    {
+        return etl::unexpected<Error>(fixedValue.error());
+    }
+
+    etl::array<uint8_t, MemorySpaceWEOM::GAMMA_CORRECTION.getSize()> data = {};
+    serialize(fixedValue.value(), data.data(), sizeof(uint16_t));
+    return writeData(data, MemorySpaceWEOM::GAMMA_CORRECTION, memoryType);
+}
+
+etl::expected<double, Error> WEOM::getMaxAmplification()
+{
+    auto result = readAddressRange<MemorySpaceWEOM::MAX_AMPLIFICATION>();
+    if (!result.has_value())
+    {
+        return etl::unexpected<Error>(result.error());
+    }
+    return fixedPointToDouble(deserialize<uint16_t>(result.value()), false);
+}
+
+etl::expected<void, Error> WEOM::setMaxAmplification(double value, MemoryTypeWEOM memoryType)
+{
+    const auto fixedValue = doubleToFixedPoint(value);
+    if (!fixedValue.has_value())
+    {
+        return etl::unexpected<Error>(fixedValue.error());
+    }
+
+    etl::array<uint8_t, MemorySpaceWEOM::MAX_AMPLIFICATION.getSize()> data = {};
+    serialize(fixedValue.value(), data.data(), sizeof(uint16_t));
+    return writeData(data, MemorySpaceWEOM::MAX_AMPLIFICATION, memoryType);
+}
+
+etl::expected<uint8_t, Error> WEOM::getDampingFactor()
+{
+    auto result = readAddressRange<MemorySpaceWEOM::DAMPING_FACTOR>();
+    if (!result.has_value())
+    {
+        return etl::unexpected<Error>(result.error());
+    }
+    return result.value().at(0);
+}
+
+etl::expected<void, Error> WEOM::setDampingFactor(uint8_t value, MemoryTypeWEOM memoryType)
+{
+    etl::array<uint8_t, MemorySpaceWEOM::DAMPING_FACTOR.getSize()> data = {};
+    data.at(0) = value;
+    return writeData(data, MemorySpaceWEOM::DAMPING_FACTOR, memoryType);
+}
+
 etl::expected<PresetId, Error> WEOM::getPresetId(uint8_t index)
 {
     if (!m_deviceInterface)
@@ -545,7 +803,7 @@ etl::expected<PresetId, Error> WEOM::getPresetId(uint8_t index)
         return etl::unexpected<Error>(result.error());
     }
 
-    auto address = uint32_t(result.value().at(0)) | (uint32_t(result.value().at(1)) << 8) | (uint32_t(result.value().at(2)) << 16) | (uint32_t(result.value().at(3)) << 24);
+    auto address = deserialize<uint32_t>(result.value());
     etl::array<uint8_t, 4> presetData = {};
     if (auto result = m_deviceInterface->readData(presetData, address);!result.has_value())
     {
@@ -601,10 +859,8 @@ etl::expected<PresetId, Error> WEOM::getPresetId()
 etl::expected<void, Error> WEOM::setPresetId(const PresetId& id)
 {
     etl::array<uint8_t, MemorySpaceWEOM::SELECTED_PRESET_ID.getSize()> data = {};
-    data.at(0) = Range::getDeviceValue(id.getRange()) & 0x00FF;
-    data.at(1) = (Range::getDeviceValue(id.getRange()) & 0xFF00) >> 8;
-    data.at(2) = Lens::getDeviceValue(id.getLens()) & 0x00FF;
-    data.at(3) = (Lens::getDeviceValue(id.getLens()) & 0xFF00) >> 8;
+    serialize(Range::getDeviceValue(id.getRange()), data.data(), sizeof(uint16_t));
+    serialize(Lens::getDeviceValue(id.getLens()), data.data() + sizeof(uint16_t), sizeof(uint16_t));
     auto result = writeData(data, MemorySpaceWEOM::SELECTED_PRESET_ID);
     if (!result.has_value())
     {
