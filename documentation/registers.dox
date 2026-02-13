@@ -18,7 +18,6 @@
         *
         * READ ONLY
         *
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.1">user manual</a>
         */
 
         /**
@@ -31,7 +30,6 @@
         * - bit 4: Set selected preset ‐ Set preset whose ID is in \ref registers_selected_preset_id
         * - bit 7: Reset to factory default ‐ Set default values to both VM and NVM and restart WEOM
         *
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.1">user manual</a>
         */
 
         /**
@@ -44,7 +42,6 @@
         *
         * READ ONLY
         * 
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.1">user manual</a>
         */
 
     /** @} */
@@ -63,7 +60,6 @@
         *
         * READ ONLY
         *
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.2">user manual</a>
         */
 
         /**
@@ -73,7 +69,6 @@
         *
         * READ ONLY
         *
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.2">user manual</a>
         */
 
         /**
@@ -84,7 +79,6 @@
         *
         * READ ONLY
         *
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.2">user manual</a>
         */
 
         /**
@@ -95,7 +89,6 @@
         *
         * READ ONLY
         *
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.2">user manual</a>
         */
 
         /**
@@ -105,7 +98,6 @@
         *
         * **Allowed values:** 1 (lowest brightness) - 7 (highest brightness)
         * 
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.1">user manual</a>
         */
 
         /**
@@ -115,7 +107,6 @@
         *
         * **Allowed values:** 0 (off) - 7 (highest brightness) 
         * 
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.1">user manual</a>
         */
 
         /**
@@ -125,7 +116,6 @@
         *
         * **Allowed values:** 0 (off) - 7 (highest brightness) 
         * 
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.1">user manual</a>
         */
 
         /**
@@ -138,7 +128,6 @@
         * - 1 - External Continuous Trigger
         * - 2 - External One-Shot Trigger (reacts to the rising edge)
         * 
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.1">user manual</a>
         */
 
         /**
@@ -155,7 +144,6 @@
         * - 5 - NUC Offset Update Trigger Output
         * - 6 - NUC Offset Update Request Input
         * 
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.1">user manual</a>
         */
 
         /**
@@ -172,7 +160,6 @@
         * - 5 - NUC Offset Update Trigger Output
         * - 6 - NUC Offset Update Request Input
         * 
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.1">user manual</a>
         */
 
         /**
@@ -189,7 +176,6 @@
         * - 5 - NUC Offset Update Trigger Output
         * - 6 - NUC Offset Update Request Input
         * 
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.1">user manual</a>
         */
 
     /** @} */
@@ -205,7 +191,6 @@
         *
         * **Allowed values:** 0 - 15
         *
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.3">user manual</a>
         */
 
         /**
@@ -216,7 +201,6 @@
         * - 1 ‐ 30 FPS
         * - 2 ‐ 60 FPS
         *
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.3">user manual</a>
         */
 
         /**
@@ -228,7 +212,6 @@
         * - 2 ‐ Horizontal flip
         * - 3 ‐ Horizontal and vertical flip
         *
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.3">user manual</a>
         */
 
         /**
@@ -244,7 +227,6 @@
         * - USB: 0, 2
         * - CVBS, HDMI: 2
         *
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.3">user manual</a>
         */
 
         /**
@@ -255,7 +237,6 @@
         * - 0 ‐ Image not frozen
         * - 1 ‐ Image frozen
         *
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.3">user manual</a>
         */
 
         /**
@@ -268,7 +249,6 @@
         * - 1 ‐ Static test pattern generator
         * - 3 ‐ Dynamic test pattern generator
         *
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.3">user manual</a>
         */
 
         /**
@@ -282,7 +262,6 @@
         * - 3 - Reticle with adaptive value (Auto)
         * - 4 - Reticle with inverted 8-bit value (Inverted)
         *
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.3">user manual</a>
         */
 
         /**
@@ -292,7 +271,6 @@
         *
         * **Allowed values:** -200 - 200 (32 bit two's comlement)
         *
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.3">user manual</a>
         */
 
         /**
@@ -302,7 +280,6 @@
         *
         * **Allowed values:** -100 - 100 (32 bit two's comlement)
         *
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.3">user manual</a>
         */
 
     /** @} */
@@ -318,7 +295,6 @@
         *
         * READ ONLY
         *
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.4">user manual</a>
         */
 
         /**
@@ -328,7 +304,6 @@
         *
         * READ ONLY
         *
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.4">user manual</a>
         */
 
         /**
@@ -340,7 +315,6 @@
         * - 1 ‐ Periodic mode
         * - 2 ‐ Adaptive mode
         *
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.4">user manual</a>
         */
 
         /**
@@ -351,7 +325,6 @@
         * - 0 - Internal Shutter Closed
         * - 1 - Internal Shutter Open
         *
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.4">user manual</a>
         */
 
         /**
@@ -361,7 +334,6 @@
         *
         * **Allowed values:** 120 - 7200
         *
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.4">user manual</a>
         */
 
         /**
@@ -372,7 +344,6 @@
         * **Allowed values:** 4 - 160
         * Value has to be divisible by 4. To get temperature in °C, divide by 24.
         *
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.4">user manual</a>
         */
 
     /** @} */
@@ -392,7 +363,6 @@
         *
         * **Allowed values:** 4 (115200 Bd), 7 (921600 Bd), 9 (3000000 Bd)
         *
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.4">user manual</a>
         */
 
     /** @} */
@@ -411,7 +381,6 @@
         * - 1 ‐ averaging from 2 frames
         * - 2 ‐ averaging from 4 frames
         *
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.6">user manual</a>
         */
 
         /**
@@ -423,7 +392,6 @@
         * - 0 ‐ Automatic
         * - 1 ‐ Manual
         *
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.6">user manual</a>
         */
 
         /**
@@ -436,7 +404,6 @@
         *
         * **Allowed values:** 0 - 16383, 0 - 16383
         *
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.6">user manual</a>
         */
 
         /**
@@ -450,7 +417,6 @@
         *
         * READ ONLY
         *
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.6">user manual</a>
         */
 
         /**
@@ -465,7 +431,6 @@
         * - 3 ‐ average from 8 frames
         * - 4 ‐ average from 16 frames
         *
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.6">user manual</a>
         */
 
         /**
@@ -475,7 +440,6 @@
         * - 0 ‐ Median filter disabled
         * - 1 ‐ Median filter enabled
         *
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.6">user manual</a>
         */
 
         /**
@@ -487,7 +451,6 @@
         * - 0 ‐ only Plateau
         * - 10 ‐ only Linear
         *
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.6">user manual</a>
         */
 
         /**
@@ -497,7 +460,6 @@
         *
         * **Allowed values:** 1 - 100
         * 
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.6">user manual</a>
         */
 
         /**
@@ -508,7 +470,6 @@
         * 
         * **Allowed values:** 0 - 49
         *
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.6">user manual</a>
         */
 
         /**
@@ -520,7 +481,6 @@
         * 
         * **Allowed values:** 0 (off) - 31
         *
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.6">user manual</a>
         */
 
         /**
@@ -532,7 +492,6 @@
         * 
         * **Allowed values:** 0 (off) - 31
         *
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.6">user manual</a>
         */
 
         /**
@@ -542,7 +501,6 @@
         * 
         * **Allowed values:** 0.25 - 4.0 with 0.25 step
         *
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.6">user manual</a>
         */
 
         /**
@@ -555,7 +513,6 @@
         * 
         * **Allowed values:** 0.25 - 4.0 with 0.125 step
         *
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.6">user manual</a>
         */
 
         /**
@@ -569,7 +526,6 @@
         * 
         * **Allowed values:** 0 (instant) - 100 (static)
         *
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.6">user manual</a>
         */
 
     /** @} */
@@ -583,7 +539,6 @@
         * ### Selected Preset Index (0x0A00)
         * **Allowed values:** 0 - maximal number of presets
         *
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.8">user manual</a>
         * @see registers_number_of_presets_and_attributes
         */
 
@@ -594,7 +549,6 @@
         * 
         * **Allowed values:** 0 - number of presets (from register \ref registers_number_of_presets_and_attributes)
         *
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.8">user manual</a>
         */
 
         /**
@@ -609,7 +563,6 @@
         * - Attribute Index: 0 - number of attributes (from register \ref registers_number_of_presets_and_attributes)
         * - Preset Index: 0 - number of presets (from register \ref registers_number_of_presets_and_attributes)
         *
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.8">user manual</a>
         */
 
         /**
@@ -619,7 +572,6 @@
         *
         * READ ONLY
         * 
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.8">user manual</a>
         */
 
         /**
@@ -631,7 +583,6 @@
         * - bits 16-23: maximum number of presets
         * - bits 24-31: unused
         *
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.8">user manual</a>
         */
 
         /**
@@ -646,7 +597,6 @@
         *     - 2 ‐ L‐WTC‐14‐HE25‐A OR L‐WTC‐14‐HE34‐A
         *     - 3 ‐ L‐WTC‐7‐HE34‐A
         * 
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.8">user manual</a>
         */
 
         /**
@@ -661,7 +611,6 @@
         *     - 2 ‐ L‐WTC‐14‐HE25‐A OR L‐WTC‐14‐HE34‐A
         *     - 3 ‐ L‐WTC‐7‐HE34‐A
         * 
-        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.8">user manual</a>
         */
 
     /** @} */
