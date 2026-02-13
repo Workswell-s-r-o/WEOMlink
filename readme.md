@@ -70,7 +70,7 @@ The generated API documentation is generated into `html`directory.
 To use WEOMlink on your platform of choice you must implement the `wl::IDataLinkInterface` class to define data transfer methods
 
 ```cpp
-#include "wl/communication/idatalinkitnerface.h"
+#include "wl/communication/idatalinkinterface.h"
 
 
 class MyDataLinkInterface : public wl::IDataLinkInterface
