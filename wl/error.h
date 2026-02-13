@@ -21,8 +21,10 @@ namespace wl
          */
         static void log(const etl::exception &e)
         {
+#ifdef WL_ENABLE_LOGGING
             std::cout << "The error was " << e.what() << " in " << e.file_name() << " at "
                       << e.line_number() << "\n";
+#endif
         }
 
         /**
@@ -31,7 +33,9 @@ namespace wl
          */          
         static void log(const char *msg)
         {
+#ifdef WL_ENABLE_LOGGING
             std::cout << msg << "\n";
+#endif
         }
 
         /**

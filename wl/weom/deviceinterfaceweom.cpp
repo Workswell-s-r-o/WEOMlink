@@ -11,7 +11,6 @@ DeviceInterfaceWEOM::DeviceInterfaceWEOM(etl::unique_ptr<ProtocolInterfaceTCSI> 
     m_memorySpace(MemorySpaceWEOM::getDeviceSpace()),
     m_sleepFunction(sleepFunction)
 {
-    printf("Starting device interface\n");
 }
 
 const MemorySpaceWEOM& DeviceInterfaceWEOM::getMemorySpace() const
@@ -37,8 +36,6 @@ etl::expected<void, Error> DeviceInterfaceWEOM::readData(etl::span<uint8_t> data
 
 etl::expected<void, Error> DeviceInterfaceWEOM::writeData(const etl::span<const uint8_t> data, uint32_t address)
 {
-    Error::log("Device interface writing data");
-    printf("Device interface writing data\n");
     const auto memoryDescriptor = getMemoryDescriptorWithChecks(address, data.size());
     if (!memoryDescriptor.has_value())
     {
