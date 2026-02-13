@@ -78,7 +78,7 @@ struct Lens
      */
     enum enum_type: uint8_t
     {
-        NOT_DEFINED = 0xF, ///< Lens not defined
+        NOT_DEFINED = 0xFF, ///< Lens not defined
         WTC_35      = 0x0, ///< 35 mm f/1.10
         WTC_25      = 0x1, ///< 25 mm f/1.20
         WTC_14      = 0x2, ///< 14 mm f/1.20
@@ -126,7 +126,7 @@ struct LensVariant
      */
     enum enum_type: uint8_t
     {
-        NOT_DEFINED = 0xF, ///< Variant not defined
+        NOT_DEFINED = 0xFF, ///< Variant not defined
         A           = 0x0, ///< Variant A
         B           = 0x1, ///< Variant B
         C           = 0x2  ///< Variant C
@@ -256,14 +256,14 @@ private:
     PresetVersion m_presetVersion;
     LensVariant m_lensVariant;
 
-    static constexpr uint32_t RANGE_MASK          = 0xF000'0000;
-    static constexpr uint32_t RANGE_SHIFT         = 28;
-    static constexpr uint32_t LENS_MASK           = 0x0FF0'0000;
-    static constexpr uint32_t LENS_SHIFT          = 24;
-    static constexpr uint32_t VERSION_MASK        = 0x000F'0000;
-    static constexpr uint32_t VERSION_SHIFT       = 16;
-    static constexpr uint32_t LENS_VARIANT_MASK   = 0x0000'00FF;
-    static constexpr uint32_t LENS_VARIANT_SHIFT  = 0;
+    static constexpr uint32_t RANGE_MASK          = 0x0000'000F;
+    static constexpr uint32_t RANGE_SHIFT         = 0;
+    static constexpr uint32_t LENS_MASK           = 0x0000'0FF0;
+    static constexpr uint32_t LENS_SHIFT          = 4;
+    static constexpr uint32_t VERSION_MASK        = 0x0000'F000;
+    static constexpr uint32_t VERSION_SHIFT       = 12;
+    static constexpr uint32_t LENS_VARIANT_MASK   = 0xFF00'0000;
+    static constexpr uint32_t LENS_VARIANT_SHIFT  = 24;
 };
 
 } // namespace wl

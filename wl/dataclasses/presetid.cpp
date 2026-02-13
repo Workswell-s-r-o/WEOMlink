@@ -82,12 +82,11 @@ PresetId::PresetId(Range range, Lens lens, PresetVersion presetVersion, LensVari
 }
 
 PresetId::PresetId(uint32_t deviceValue)
-    : m_range(static_cast<Range>((deviceValue && RANGE_MASK) >> RANGE_SHIFT))
-    , m_lens(static_cast<Lens>((deviceValue && LENS_MASK) >> LENS_SHIFT))
-    , m_presetVersion(static_cast<PresetVersion>((deviceValue && VERSION_MASK) >> VERSION_SHIFT))
-    , m_lensVariant(static_cast<LensVariant>((deviceValue && LENS_VARIANT_MASK) >> LENS_VARIANT_SHIFT))
+    : m_range(static_cast<Range>((deviceValue & RANGE_MASK) >> RANGE_SHIFT))
+    , m_lens(static_cast<Lens>((deviceValue & LENS_MASK) >> LENS_SHIFT))
+    , m_presetVersion(static_cast<PresetVersion>((deviceValue & VERSION_MASK) >> VERSION_SHIFT))
+    , m_lensVariant(static_cast<LensVariant>((deviceValue & LENS_VARIANT_MASK) >> LENS_VARIANT_SHIFT))
 {
-
 }
 
 Range PresetId::getRange() const
