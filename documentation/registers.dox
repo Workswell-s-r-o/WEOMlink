@@ -98,6 +98,100 @@
         * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.2">user manual</a>
         */
 
+        /**
+        * @defgroup registers_led_r_brightness LED Red Brightness Register
+        * ### LED Red Brightness (0x0164)
+        * Changes the brightness of RED LED on the plugin
+        *
+        * **Allowed values:** 1 (lowest brightness) - 7 (highest brightness)
+        * 
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.1">user manual</a>
+        */
+
+        /**
+        * @defgroup registers_led_g_brightness LED Green Brightness Register
+        * ### LED Green Brightness (0x0168)
+        * Changes the brightness of GREEN LED on the plugin
+        *
+        * **Allowed values:** 0 (off) - 7 (highest brightness) 
+        * 
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.1">user manual</a>
+        */
+
+        /**
+        * @defgroup registers_led_b_brightness LED Blue Brightness Register
+        * ### LED Blue Brightness (0x0168)
+        * Changes the brightness of BLUE LED on the plugin
+        *
+        * **Allowed values:** 0 (off) - 7 (highest brightness) 
+        * 
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.1">user manual</a>
+        */
+
+        /**
+        * @defgroup registers_trigger_mode Trigger Mode Register
+        * ### Trigger Mode (0x0174)
+        * Specifies the Triggering Mode (a way we trigger Bolometer to get a frame)
+        *
+        * **Allowed values:** 0 - 2
+        * - 0 - Internal Trigger (regular mode)
+        * - 1 - External Continuous Trigger
+        * - 2 - External One-Shot Trigger (reacts to the rising edge)
+        * 
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.1">user manual</a>
+        */
+
+        /**
+        * @defgroup registers_aux_pin_0 AUX Pin 0 Register
+        * ### AUX Pin 0 (0x0178)
+        * Describes behaviour of AUX_PIN_0 (is completely turned off for CVBS/WTVC plugins)
+        *
+        * **Allowed values:** 0 - 6
+        * - 0 - High Impedance
+        * - 1 - Fixed High Logic Level
+        * - 2 - Fixed Low Logic Level
+        * - 3 - Internal Trigger Output
+        * - 4 - External Trigger Input, only available if TRIGGER_MODE is 1 - External Continuous Trigger or 2 - External One-Shot Trigger(reacts to the rising edge)
+        * - 5 - NUC Offset Update Trigger Output
+        * - 6 - NUC Offset Update Request Input
+        * 
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.1">user manual</a>
+        */
+
+        /**
+        * @defgroup registers_aux_pin_1 AUX Pin 1 Register
+        * ### AUX Pin 1 (0x017C)
+        * Describes behaviour of AUX_PIN_1 (is completely turned off for CVBS/WTVC plugins)
+        *
+        * **Allowed values:** 0 - 6
+        * - 0 - High Impedance
+        * - 1 - Fixed High Logic Level
+        * - 2 - Fixed Low Logic Level
+        * - 3 - Internal Trigger Output
+        * - 4 - External Trigger Input, only available if TRIGGER_MODE is 1 - External Continuous Trigger or 2 - External One-Shot Trigger(reacts to the rising edge)
+        * - 5 - NUC Offset Update Trigger Output
+        * - 6 - NUC Offset Update Request Input
+        * 
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.1">user manual</a>
+        */
+
+        /**
+        * @defgroup registers_aux_pin_2 AUX Pin 2 Register
+        * ### AUX Pin 2 (0x017C)
+        * Describes behaviour of AUX_PIN_2 (is completely turned off for CMOS/Pleora GigE and SEP plugins)
+        *
+        * **Allowed values:** 0 - 6
+        * - 0 - High Impedance
+        * - 1 - Fixed High Logic Level
+        * - 2 - Fixed Low Logic Level
+        * - 3 - Internal Trigger Output
+        * - 4 - External Trigger Input, only available if TRIGGER_MODE is 1 - External Continuous Trigger or 2 - External One-Shot Trigger(reacts to the rising edge)
+        * - 5 - NUC Offset Update Trigger Output
+        * - 6 - NUC Offset Update Request Input
+        * 
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.1">user manual</a>
+        */
+
     /** @} */
 
     /**
@@ -176,12 +270,67 @@
         *
         * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.3">user manual</a>
         */
+
+        /**
+        * @defgroup registers_reticle_type Reticle Type Register
+        * ### Reticle Type (0x0234)
+        *
+        * **Allowed values:** 0 - 3
+        * - 0 - Off, no Reticle Overlay
+        * - 1 - Reticle with fixed Min value (Dark)
+        * - 2 - Reticle with fixed Max value (Bright)
+        * - 3 - Reticle with adaptive value (Auto)
+        * - 4 - Reticle with inverted 8-bit value (Inverted)
+        *
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.3">user manual</a>
+        */
+
+        /**
+        * @defgroup registers_reticle_position_x Reticle Position X Register
+        * ### Reticle Position X (0x0238)
+        * This register is used to offset the horizontal pozition of the reticle
+        *
+        * **Allowed values:** -200 - 200 (32 bit two's comlement)
+        *
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.3">user manual</a>
+        */
+
+        /**
+        * @defgroup registers_reticle_position_y Reticle Position Y Register
+        * ### Reticle Position Y (0x023C)
+        * This register is used to offset the vertical pozition of the reticle
+        *
+        * **Allowed values:** -100 - 100 (32 bit two's comlement)
+        *
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.3">user manual</a>
+        */
+
     /** @} */
 
     /**
     * @defgroup registers_nuc NUC
     * @{
     */
+        /**
+        * @defgroup registers_shutter_counter Shutter Counter Register
+        * ### Shutter Counter (0x0300)
+        * Stores the cumulative number of shutter cycles (total openings and closings)
+        *
+        * READ ONLY
+        *
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.4">user manual</a>
+        */
+
+        /**
+        * @defgroup registers_time_from_last_nuc_offset_update Time From Last NUC Offset Update Register
+        * ### Time From Last NUC Offset Update (0x0304)
+        * Seconds passed since the last NUC offset update
+        *
+        * READ ONLY
+        *
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.4">user manual</a>
+        */
+
         /**
         * @defgroup registers_nuc_update_mode NUC Update Mode Register
         * ### NUC Update Mode (0x0308)
@@ -190,6 +339,17 @@
         * **Allowed values:** 1 - 2
         * - 1 ‐ Periodic mode
         * - 2 ‐ Adaptive mode
+        *
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.4">user manual</a>
+        */
+
+        /**
+        * @defgroup registers_internal_shutter_position Internal Shutter Position Register
+        * ### Internal Shutter Position (0x0314)
+        *
+        * **Allowed values:** 0 - 1 
+        * - 0 - Internal Shutter Closed
+        * - 1 - Internal Shutter Open
         *
         * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.4">user manual</a>
         */
@@ -211,6 +371,26 @@
         *
         * **Allowed values:** 4 - 160
         * Value has to be divisible by 4. To get temperature in °C, divide by 24.
+        *
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.4">user manual</a>
+        */
+
+    /** @} */
+
+    /**
+    * @defgroup registers_connection Connection
+    * @{
+    */
+
+        /**
+        * @defgroup registers_uart_baudrate UART Baudrate Register
+        * ### UART Baudrate (0x0400)
+        * Specifies the UART (communication) baudrate. 
+        * Baudrate cannot be changed for WZB (fixed 3000000 Bd, writing to the register will cause TCSI ERROR 0x07);
+        * Pleora (fixed 921600 Bd); Smart Ethernet (legacy name ONVIF) (fixed 3000000 Bd, 
+        * writing to the register will cause TCSI ERROR 0x07) plugins/FW types
+        *
+        * **Allowed values:** 4 (115200 Bd), 7 (921600 Bd), 9 (3000000 Bd)
         *
         * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.4">user manual</a>
         */
@@ -247,14 +427,28 @@
         */
 
         /**
-        * @defgroup registers_mgc_contrast_brightness MGC Contrast Brightness  Register
-        * ### MGC Contrast Brightness(0x0608)
+        * @defgroup registers_mgc_contrast_brightness MGC Contrast Brightness Register
+        * ### MGC Contrast Brightness (0x0608)
         * - bits 0‐13: contrast value
         * - bits 14‐15: unused
         * - bits 16‐29: brightness value
         * - bits 30‐31: unused
         *
         * **Allowed values:** 0 - 16383, 0 - 16383
+        *
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.6">user manual</a>
+        */
+
+        /**
+        * @defgroup registers_frame_block_median_contrast_brightness Frame Block Median Conbright Register
+        * ### Frame Block Median Conbright (0x060C)
+        * Specifies the current contrast and brightness for Linear Normalization (regardless of the type)
+        * - bits 0‐13: contrast value
+        * - bits 14‐15: unused
+        * - bits 16‐29: brightness value
+        * - bits 30‐31: unused
+        *
+        * READ ONLY
         *
         * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.6">user manual</a>
         */
@@ -313,6 +507,67 @@
         *   that will be ignored for Plateau computation
         * 
         * **Allowed values:** 0 - 49
+        *
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.6">user manual</a>
+        */
+
+        /**
+        * @defgroup registers_smart_time_domain_average_threshold Smart Time Domain Average Threshold Register
+        * ### Smart Time Domain Average Threshold (0x062C)
+        * If averaging is enabled (@ref registers_time_domain_average has value higher than zero) 
+        * and the per-pixel difference between ALL frames in the averaging window is smaller than this threshold, 
+        * pixel from averaged frame is used, otherwise the pixel from the latest frame is used.
+        * 
+        * **Allowed values:** 0 (off) - 31
+        *
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.6">user manual</a>
+        */
+
+        /**
+        * @defgroup registers_smart_median_threshold Smart Median Threshold Register
+        * ### Smart Median Threshold (0x0630)
+        * If median filter is enabled (@ref registers_spatial_median_filter_enable is set to 1) 
+        * and per-pixel difference between original and median-filtered frame is smaller than the threshold, 
+        * the median-filtered pixel is used, else - original pixel is used.
+        * 
+        * **Allowed values:** 0 (off) - 31
+        *
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.6">user manual</a>
+        */
+
+        /**
+        * @defgroup registers_gamma_correction Gamma Correction Register
+        * ### Gamma Correction (0x0634)
+        * Gamma correction of 8-bit (post-IGC) image
+        * 
+        * **Allowed values:** 0.25 - 4.0 with 0.25 step
+        *
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.6">user manual</a>
+        */
+
+        /**
+        * @defgroup registers_max_amplification Max Amplification Register
+        * ### Max Amplification (0x0638)
+        * Limits the maximum slope of the mapping function. In a relatively uniform image, 
+        * a high Max Amplification value increases the contrast of the image at the risk of over-exposure
+        * and more apparent noise in the image. Lower values of Max Amplification result in a less grainy,
+        * lower contrast display. The effect is visible on low-contrast scenes
+        * 
+        * **Allowed values:** 0.25 - 4.0 with 0.125 step
+        *
+        * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.6">user manual</a>
+        */
+
+        /**
+        * @defgroup registers_damping_factor Damping Factor Register
+        * ### Damping Factor (0x063C)
+        * Increases or decreases the update rate of Plateau Equalization. 
+        * A small value of Damping Factor allows a faster remapping in response to a change in the scene, 
+        * but in some cases this can result in the background appearing to “flash” as it is quickly remapped to new 8-bit grayshades.
+        * A larger value of Damping Factor minimize flashing in response to a change in scene 
+        * but at the expense of requiring more time to optimize the mapping function for the new scene content.
+        * 
+        * **Allowed values:** 0 (instant) - 100 (static)
         *
         * Detailed decription can be found in <a href="https://my.workswell.eu/link/latest/1733126843aTiJDdwZvVMa9OVAeEnN#subsection.8.6.6">user manual</a>
         */
