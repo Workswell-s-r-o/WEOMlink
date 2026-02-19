@@ -4,15 +4,15 @@
 
 namespace wl {
 namespace {
-static constexpr uint16_t FIXED_POINT_BITS = 12;
-static constexpr uint16_t FIXED_POINT_FRACTIONAL_BITS = 4;
-static constexpr uint16_t FIXED_POINT_MASK = (1 << FIXED_POINT_BITS) - 1;
-static constexpr uint16_t FIXED_POINT_SIGN_MASK = 1 << FIXED_POINT_BITS;
 
-etl::expected<double, Error> fixedPointToDouble(uint16_t value, bool signedFormat)
+etl::expected<double, Error> fixedPointToDouble(uint16_t value, bool signedFormat, uint16_t fixedPointBits = 12)
 {
-    int16_t extendedValue = value & FIXED_POINT_MASK;
-    const bool isValueFixedNegative = value & FIXED_POINT_SIGN_MASK;
+    const uint16_t fractionalBits = (16 - fixedPointBits);
+    const uint16_t fixedPointMask = (1 << fixedPointBits) - 1;
+    const uint16_t fixedPointSignMask = 1 << fixedPointBits;
+
+    int16_t extendedValue = value & fixedPointMask;
+    const bool isValueFixedNegative = value & fixedPointSignMask;
 
     if (extendedValue == 0 && isValueFixedNegative)
     {
@@ -21,22 +21,25 @@ etl::expected<double, Error> fixedPointToDouble(uint16_t value, bool signedForma
 
     if (signedFormat && isValueFixedNegative)
     {
-        extendedValue |= ~FIXED_POINT_MASK;
+        extendedValue |= ~fixedPointMask;
     }
-    return (static_cast<double>(extendedValue) / static_cast<double>(1 << FIXED_POINT_FRACTIONAL_BITS));
+    return (static_cast<double>(extendedValue) / static_cast<double>(1 << fractionalBits));
 }
 
-etl::expected<uint16_t, Error> doubleToFixedPoint(double value)
+etl::expected<uint16_t, Error> doubleToFixedPoint(double value, const uint16_t fixedPointBits = 12)
 {
-    uint16_t valueFixed = std::round(value * static_cast<double>(1 << FIXED_POINT_FRACTIONAL_BITS));
-    valueFixed &= FIXED_POINT_MASK;
+    const uint16_t fractionalBits = (16 - fixedPointBits);
+    const uint16_t fixedPointMask = (1 << fixedPointBits) - 1;
+    const uint16_t fixedPointSignMask = 1 << fixedPointBits;
+
+    uint16_t valueFixed = std::round(value * static_cast<double>(1 << fractionalBits));
+    valueFixed &= fixedPointMask;
 
     if (std::signbit(value))
     {
-        valueFixed |= FIXED_POINT_SIGN_MASK;
+        valueFixed |= fixedPointSignMask;
     }
     return valueFixed;
-
 }
 
 } // namespace
@@ -748,12 +751,12 @@ etl::expected<double, Error> WEOM::getMaxAmplification()
     {
         return etl::unexpected<Error>(result.error());
     }
-    return fixedPointToDouble(deserialize<uint16_t>(result.value()), false);
+    return fixedPointToDouble(deserialize<uint16_t>(result.value()), false, 13);
 }
 
 etl::expected<void, Error> WEOM::setMaxAmplification(double value, MemoryTypeWEOM memoryType)
 {
-    const auto fixedValue = doubleToFixedPoint(value);
+    const auto fixedValue = doubleToFixedPoint(value, 13);
     if (!fixedValue.has_value())
     {
         return etl::unexpected<Error>(fixedValue.error());
