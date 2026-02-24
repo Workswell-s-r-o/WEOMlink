@@ -132,10 +132,10 @@ void PresetId::setPresetVersion(PresetVersion presetVersion)
 uint32_t PresetId::toDeviceValue() const
 {
     uint32_t deviceValue = 0;
-    deviceValue |= (static_cast<uint32_t>(m_range) << RANGE_SHIFT) && RANGE_MASK;
-    deviceValue |= (static_cast<uint32_t>(m_lens) << LENS_SHIFT) && LENS_MASK;
-    deviceValue |= (static_cast<uint32_t>(m_presetVersion) << VERSION_SHIFT) && VERSION_MASK;
-    deviceValue |= (static_cast<uint32_t>(m_lensVariant) << LENS_VARIANT_SHIFT) && LENS_VARIANT_MASK;
+    deviceValue |= (static_cast<uint32_t>(m_range) << RANGE_SHIFT) & RANGE_MASK;
+    deviceValue |= (static_cast<uint32_t>(m_lens) << LENS_SHIFT) & LENS_MASK;
+    deviceValue |= (static_cast<uint32_t>(m_presetVersion) << VERSION_SHIFT) & VERSION_MASK;
+    deviceValue |= (static_cast<uint32_t>(m_lensVariant) << LENS_VARIANT_SHIFT) & LENS_VARIANT_MASK;
     return deviceValue;
 }
 
