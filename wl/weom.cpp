@@ -833,13 +833,19 @@ etl::expected<PresetId, Error> WEOM::getPresetId()
     {
         return etl::unexpected<Error>(result.error());
     }
-    return PresetId(deserialize<uint32_t>(result.value()));
+    return PresetId(static_cast<Range>(result.value()[0]),
+                    static_cast<Lens>(result.value()[2]),
+                    PresetVersion::NOT_DEFINED,
+                    static_cast<LensVariant>(result.value()[3]));
 }
 
 etl::expected<void, Error> WEOM::setPresetId(const PresetId& id)
 {
     etl::array<uint8_t, MemorySpaceWEOM::SELECTED_PRESET_ID.getSize()> data = {};
-    serialize(id.toDeviceValue(), data.data(), sizeof(uint32_t));
+    data[0] = static_cast<uint8_t>(id.getRange());
+    data[2] = static_cast<uint8_t>(id.getLens());
+    data[3] = static_cast<uint8_t>(id.getLensVariant());
+
     auto result = writeData(data, MemorySpaceWEOM::SELECTED_PRESET_ID);
     if (!result.has_value())
     {
