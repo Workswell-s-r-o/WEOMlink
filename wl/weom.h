@@ -674,6 +674,13 @@ public:
     [[nodiscard]] etl::expected<PresetId, Error> getPresetId();
 
     /**
+     * @brief Retrieves the current preset ID index.
+     * @return An `etl::expected<PresetId, Error>` containing the preset ID index or an error.
+     * @see registers_current_preset_id
+     */
+    [[nodiscard]] etl::expected<uint8_t, Error> getPresetIndex();
+
+    /**
      * @brief Sets the preset ID.
      * @param id The preset ID to set.
      * @return An `etl::expected<void, Error>` indicating success or failure.
