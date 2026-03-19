@@ -839,6 +839,16 @@ etl::expected<PresetId, Error> WEOM::getPresetId()
                     static_cast<LensVariant>(result.value()[3]));
 }
 
+etl::expected<uint8_t, Error> WEOM::getPresetIndex()
+{
+    auto readResult = readAddressRange<MemorySpaceWEOM::CURRENT_PRESET_INDEX>();
+    if (!readResult.has_value())
+    {
+        return etl::unexpected<Error>(readResult.error());
+    }
+    return readResult.value()[0];
+}
+
 etl::expected<void, Error> WEOM::setPresetId(const PresetId& id)
 {
     etl::array<uint8_t, MemorySpaceWEOM::SELECTED_PRESET_ID.getSize()> data = {};
