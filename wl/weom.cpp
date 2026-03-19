@@ -859,6 +859,23 @@ etl::expected<void, Error> WEOM::setPresetId(const PresetId& id)
     return {};
 }
 
+etl::expected<void, Error> WEOM::setPresetId(uint8_t index)
+{
+    etl::array<uint8_t, MemorySpaceWEOM::SELECTED_PRESET_INDEX.getSize()> data = {};
+    data[0] = index;
+    auto result = writeData(data, MemorySpaceWEOM::SELECTED_PRESET_INDEX);
+    if (!result.has_value())
+    {
+        return etl::unexpected<Error>(result.error());
+    }
+    result = activateTrigger(Trigger::SET_SELECTED_PRESET);
+    if (!result.has_value())
+    {
+        return etl::unexpected<Error>(result.error());
+    }
+    return {};
+}
+
 etl::expected<void, Error> WEOM::saveCurrentPresetIndexToFlash()
 {
     auto readResult = readAddressRange<MemorySpaceWEOM::CURRENT_PRESET_INDEX>();
