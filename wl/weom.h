@@ -682,6 +682,14 @@ public:
     [[nodiscard]] etl::expected<void, Error> setPresetId(const PresetId& id);
 
     /**
+     * @brief Sets the preset ID by index.
+     * @param index of the preset ID to set.
+     * @return An `etl::expected<void, Error>` indicating success or failure.
+     * @see registers_selected_preset_id, registers_trigger
+     */
+    [[nodiscard]] etl::expected<void, Error> setPresetId(uint8_t index);
+
+    /**
      * @brief Save current preset index to flash memory.
      * @return An `etl::expected<void, Error>` indicating success or failure.
      * @see registers_selected_preset_index
